@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLPrincipalController">
+<BorderPane maxHeight="600.0" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="1005.0" prefHeight="594.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLPrincipalController">
    <top>
       <AnchorPane prefHeight="90.0" prefWidth="987.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER">
          <children>
@@ -19,12 +21,53 @@
       <AnchorPane prefHeight="18.0" prefWidth="987.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
-      <VBox prefHeight="473.0" prefWidth="187.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
+      <VBox alignment="TOP_CENTER" maxWidth="800.0" minWidth="200.0" prefHeight="473.0" prefWidth="187.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+         <children>
+            <MenuButton mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Cadastro" textAlignment="CENTER">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </MenuButton>
+            <MenuButton mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Consulta">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem mnemonicParsing="false" text="Action 2" />
+               </items>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </MenuButton>
+            <MenuButton mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Financeiro">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem mnemonicParsing="false" text="Action 2" />
+               </items>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </MenuButton>
+            <MenuButton mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Relatórios">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Action 1" />
+                  <MenuItem mnemonicParsing="false" text="Action 2" />
+               </items>
+            </MenuButton>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding></VBox>
    </left>
    <center>
-      <Pane prefHeight="473.0" prefWidth="35.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER" />
+      <Pane maxWidth="35.0" minWidth="35.0" prefHeight="473.0" prefWidth="35.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER" />
    </center>
    <right>
-      <Pane prefHeight="473.0" prefWidth="783.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
+      <Pane maxWidth="3000.0" minWidth="783.0" prefHeight="473.0" prefWidth="783.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
    </right>
 </BorderPane>

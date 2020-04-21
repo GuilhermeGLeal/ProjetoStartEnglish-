@@ -10,10 +10,8 @@ import javafx.scene.control.Label;
 
 public class FXMLPrincipalController implements Initializable {
     
-    @FXML
     private Label label;
     
-    @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!!");
         label.setText("Hello World!");
@@ -21,7 +19,7 @@ public class FXMLPrincipalController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
     
 }

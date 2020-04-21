@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLPrincipalController">
-    <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
-    </children>
-</AnchorPane>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLPrincipalController">
+   <top>
+      <AnchorPane prefHeight="90.0" prefWidth="987.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="86.0" fitWidth="106.0" layoutX="14.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </AnchorPane>
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="18.0" prefWidth="987.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER" />
+   </bottom>
+   <left>
+      <VBox prefHeight="473.0" prefWidth="187.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
+   </left>
+   <center>
+      <Pane prefHeight="473.0" prefWidth="35.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER" />
+   </center>
+   <right>
+      <Pane prefHeight="473.0" prefWidth="783.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>

@@ -10,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
+import startenglish.db.util.Banco;
 
 /**
  *
@@ -24,7 +26,6 @@ public class StartEnglish extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        stage.setFullScreen(true);
         stage.setResizable(false);
         stage.show();
     }
@@ -33,7 +34,14 @@ public class StartEnglish extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        launch(args);
+        
+        if(Banco.conectar()){
+            launch(args);
+        }
+        else{
+             JOptionPane.showMessageDialog(null, "Erro: "+Banco.getCon().getMensagemErro());
+        }
+        
     }
     
 }

@@ -11,7 +11,7 @@
 
 <SplitPane dividerPositions="0.43023255813953487" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="432.0" prefWidth="671.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLLivroController">
    <items>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="736.0">
          <children>
             <HBox alignment="CENTER" prefHeight="61.0" prefWidth="671.0" spacing="50.0" style="-fx-background-color: #FF7F27; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <children>
@@ -22,10 +22,14 @@
                   <JFXButton style="-fx-font-weight: bold;" text="Cancelar" />
                </children>
             </HBox>
-            <Label alignment="CENTER" layoutX="20.0" layoutY="71.0" prefHeight="17.0" prefWidth="627.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Dados do Livro" textAlignment="CENTER" />
-            <JFXTextField fx:id="txNome" alignment="CENTER" layoutX="124.0" layoutY="103.0" prefHeight="25.0" prefWidth="338.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Nome do Livro" />
-            <JFXTextField fx:id="txValor" alignment="CENTER" layoutX="473.0" layoutY="103.0" prefHeight="25.0" prefWidth="174.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Valor" />
-            <JFXTextField fx:id="txID" alignment="CENTER" layoutX="20.0" layoutY="103.0" prefHeight="25.0" prefWidth="91.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="ID" />
+            <AnchorPane layoutX="-2.0" layoutY="60.0" prefHeight="119.0" prefWidth="671.0" style="-fx-background-color: black; -fx-border-color: #FF7F27; -fx-border-width: 5;">
+               <children>
+                  <Label alignment="CENTER" layoutX="21.0" layoutY="14.0" prefHeight="17.0" prefWidth="627.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Dados do Livro" textAlignment="CENTER" />
+                  <JFXTextField fx:id="txNome" alignment="CENTER" layoutX="125.0" layoutY="46.0" prefHeight="25.0" prefWidth="338.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Nome do Livro" />
+                  <JFXTextField fx:id="txValor" alignment="CENTER" layoutX="474.0" layoutY="46.0" prefHeight="25.0" prefWidth="174.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Valor" />
+                  <JFXTextField fx:id="txID" alignment="CENTER" layoutX="21.0" layoutY="46.0" prefHeight="25.0" prefWidth="91.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="ID" />
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="213.0" prefWidth="669.0" style="-fx-background-color: black;">

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import startenglish.db.Entidades.Livro;
 
 public class FXMLLivroController implements Initializable {
 

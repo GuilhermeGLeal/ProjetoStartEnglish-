@@ -11,7 +11,7 @@
 
 <SplitPane dividerPositions="0.5620542082738944" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="703.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLAlunoController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="736.0">
          <children>
             <HBox alignment="CENTER" prefHeight="61.0" prefWidth="736.0" spacing="50.0" style="-fx-background-color: #FF7F27; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <children>
@@ -22,19 +22,23 @@
                   <JFXButton style="-fx-font-weight: bold;" text="Cancelar" />
                </children>
             </HBox>
-            <Label alignment="CENTER" layoutX="20.0" layoutY="71.0" prefHeight="17.0" prefWidth="698.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Dados do Aluno" textAlignment="CENTER" />
-            <JFXTextField fx:id="txNome" alignment="CENTER" layoutX="20.0" layoutY="103.0" prefHeight="25.0" prefWidth="307.0" promptText="Nome do Aluno" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txTelefone" alignment="CENTER" layoutX="427.0" layoutY="143.0" prefHeight="25.0" prefWidth="220.0" promptText="Telefone" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txEmail" alignment="CENTER" layoutX="20.0" layoutY="143.0" prefHeight="25.0" prefWidth="307.0" promptText="E-mail" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txRg" alignment="CENTER" layoutX="350.0" layoutY="103.0" prefHeight="25.0" prefWidth="174.0" promptText="RG" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txCpf" alignment="CENTER" layoutX="543.0" layoutY="103.0" prefHeight="25.0" prefWidth="174.0" promptText="CPF" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txRua" alignment="CENTER" layoutX="129.0" layoutY="240.0" prefHeight="25.0" prefWidth="390.0" promptText="Rua" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <Label alignment="CENTER" layoutX="19.0" layoutY="203.0" prefHeight="17.0" prefWidth="698.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Endereço do Aluno" textAlignment="CENTER" />
-            <JFXTextField fx:id="txCEP" alignment="CENTER" layoutX="20.0" layoutY="282.0" prefHeight="25.0" prefWidth="237.0" promptText="CEP" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txId" alignment="CENTER" layoutX="20.0" layoutY="240.0" prefHeight="25.0" prefWidth="89.0" promptText="ID" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txBairro" alignment="CENTER" layoutX="273.0" layoutY="282.0" prefHeight="25.0" prefWidth="450.0" promptText="Bairro" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txNumero" alignment="CENTER" layoutX="539.0" layoutY="240.0" prefHeight="25.0" prefWidth="183.0" promptText="Número" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txCidade" alignment="CENTER" layoutX="20.0" layoutY="323.0" prefHeight="25.0" prefWidth="237.0" promptText="Cidade" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+            <AnchorPane layoutX="-3.0" layoutY="61.0" prefHeight="326.0" prefWidth="738.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+               <children>
+                  <Label alignment="CENTER" layoutX="12.0" layoutY="14.0" prefHeight="17.0" prefWidth="698.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Dados do Aluno" textAlignment="CENTER" />
+                  <JFXTextField fx:id="txNome" alignment="CENTER" layoutX="12.0" layoutY="46.0" prefHeight="25.0" prefWidth="307.0" promptText="Nome do Aluno" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txTelefone" alignment="CENTER" layoutX="419.0" layoutY="86.0" prefHeight="25.0" prefWidth="220.0" promptText="Telefone" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txEmail" alignment="CENTER" layoutX="12.0" layoutY="86.0" prefHeight="25.0" prefWidth="307.0" promptText="E-mail" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txRg" alignment="CENTER" layoutX="342.0" layoutY="46.0" prefHeight="25.0" prefWidth="174.0" promptText="RG" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txCpf" alignment="CENTER" layoutX="535.0" layoutY="46.0" prefHeight="25.0" prefWidth="174.0" promptText="CPF" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txRua" alignment="CENTER" layoutX="121.0" layoutY="183.0" prefHeight="25.0" prefWidth="390.0" promptText="Rua" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <Label alignment="CENTER" layoutX="11.0" layoutY="146.0" prefHeight="17.0" prefWidth="698.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Endereço do Aluno" textAlignment="CENTER" />
+                  <JFXTextField fx:id="txCEP" alignment="CENTER" layoutX="12.0" layoutY="225.0" prefHeight="25.0" prefWidth="237.0" promptText="CEP" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txId" alignment="CENTER" layoutX="12.0" layoutY="183.0" prefHeight="25.0" prefWidth="89.0" promptText="ID" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txBairro" alignment="CENTER" layoutX="265.0" layoutY="225.0" prefHeight="25.0" prefWidth="450.0" promptText="Bairro" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txNumero" alignment="CENTER" layoutX="531.0" layoutY="183.0" prefHeight="25.0" prefWidth="183.0" promptText="Número" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txCidade" alignment="CENTER" layoutX="12.0" layoutY="266.0" prefHeight="25.0" prefWidth="237.0" promptText="Cidade" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+               </children>
+            </AnchorPane>
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="177.0" prefWidth="736.0" style="-fx-background-color: black;">
          <children>

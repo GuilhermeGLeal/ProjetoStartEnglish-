@@ -17,9 +17,9 @@ public class DALProfessor {
         
     }
        
-    public boolean apagar(Professor p){
+    public boolean apagar(int p){
         
-        return Banco.getCon().manipular("delete from Professor where FuncID="+p.getFunc().getID());
+        return Banco.getCon().manipular("delete from Professor where FuncID="+p);
     }
     
     public Professor get(int cod){

@@ -52,7 +52,7 @@
                   <JFXTextField fx:id="txPesquisa" layoutX="5.0" layoutY="7.0" prefHeight="25.0" prefWidth="582.0" />
                </children>
             </AnchorPane>
-            <TableView fx:id="tabela" layoutY="36.0" prefHeight="273.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+            <TableView fx:id="tabela" layoutY="36.0" onMouseClicked="#evtClicarTabela" prefHeight="273.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
                   <TableColumn fx:id="tabelaNome" prefWidth="176.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Nome" />
                   <TableColumn fx:id="tabelaCPF" minWidth="0.0" prefWidth="161.0" style="-fx-background-color: #FF7F27;" text="CPF" />

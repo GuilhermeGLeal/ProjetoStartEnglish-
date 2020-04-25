@@ -40,10 +40,10 @@ public class DALParametrizacao {
         return Banco.getCon().manipular("delete from Parametrizacao where NomeEmpresa="+p.getNome());
     }
     
-    public Parametrizacao get(String nome){
+    public Parametrizacao get(){
         
         Parametrizacao paramet = null;
-        ResultSet rs = Banco.getCon().consultar("select NomeEmpresa,Telefone,RazaoSociala,E-mail,EnderecoID from Parametrizacao where NomeEmpresa="+nome);
+        ResultSet rs = Banco.getCon().consultar("select NomeEmpresa,Telefone,RazaoSociala,E-mail,EnderecoID from Parametrizacao");
         
         DALEndereco dal = new DALEndereco();
         

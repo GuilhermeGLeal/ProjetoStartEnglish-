@@ -18,7 +18,7 @@ public class Parametrizacao {
         this.endereco = endereco;
     }
 
-    private Parametrizacao(){
+    public Parametrizacao(){
         
     }
     
@@ -62,5 +62,9 @@ public class Parametrizacao {
         this.endereco = endereco;
     }
     
+    @Override
+    public String toString(){
+        return this.nome;
+    }
     
 }

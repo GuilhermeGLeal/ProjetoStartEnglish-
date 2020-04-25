@@ -273,6 +273,25 @@ public class FXMLParametrizacaoController implements Initializable {
              
                 if(!txRazao.getText().isEmpty()){
                     
+                    if(!txEmail.getText().isEmpty()){
+                        
+                        if(!txCEP.getText().isEmpty()){
+                            
+                            
+                        }
+                        else{
+                            
+                            Alert a = new Alert(Alert.AlertType.WARNING, "CEP obrigatório", ButtonType.CLOSE);
+                            txRazao.requestFocus();
+                            a.showAndWait();
+                        }
+                    }
+                    else{
+                        
+                        Alert a = new Alert(Alert.AlertType.WARNING, "Email obrigatório", ButtonType.CLOSE);
+                        txRazao.requestFocus();
+                        a.showAndWait();
+                    }
                 }
                 else{
                     

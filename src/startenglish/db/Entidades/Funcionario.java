@@ -1,5 +1,7 @@
 package startenglish.db.Entidades;
 
+import javafx.scene.control.CheckBox;
+
 public class Funcionario {
     private int ID;
     private String Nome;
@@ -8,6 +10,7 @@ public class Funcionario {
     private String email;
     private String fone;
     private Endereco endereco;
+    private Boolean professor;
 
     public Funcionario(int ID, String Nome, String cpf, String rg, String email, String fone, Endereco endereco) {
         this.ID = ID;
@@ -17,6 +20,7 @@ public class Funcionario {
         this.email = email;
         this.fone = fone;
         this.endereco = endereco;
+        professor = false;
     }
 
     public Funcionario(String Nome, String cpf, String rg, String email, String fone, Endereco endereco) {
@@ -86,6 +90,12 @@ public class Funcionario {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
-    
-    
+
+    public Boolean getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(Boolean professor) {
+        this.professor = professor;
+    }
 }

@@ -38,6 +38,7 @@ import javax.imageio.ImageIO;
 import startenglish.db.DAL.DALEndereco;
 import startenglish.db.DAL.DALFuncionario;
 import startenglish.db.DAL.DALProfessor;
+import startenglish.db.Entidades.Endereco;
 import startenglish.db.Entidades.Funcionario;
 import startenglish.db.Entidades.Professor;
 import startenglish.db.util.Banco;
@@ -264,20 +265,31 @@ public class FXMLFuncionarioController implements Initializable {
                 }
              }
              catch(SQLException ex){}
+             
+            a.showAndWait();
             CarregaTabela("");
         }
     }
 
     @FXML
     private void evtConfirmar(ActionEvent event) {
-        int cod;
+        int cod,codEnd;
+        boolean ok;
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+        Endereco end = new Endereco();
+        DALEndereco dale = new DALEndereco();
+        DALFuncionario dalf = new DALFuncionario();
+        DALProfessor dalp = new DALProfessor();
+        
         try 
         {
             cod = Integer.parseInt(txIdFunc.getText());
+            codEnd = Integer.parseInt(txId.getText());
         } 
         catch (Exception e) 
         {
             cod = 0;
+            codEnd = 0;
         }
         
         if(checkProf.isArmed())
@@ -293,7 +305,41 @@ public class FXMLFuncionarioController implements Initializable {
             f.setCpf(txCpf.getText());
             f.setEmail(txEmail.getText());
             f.setFone(txTelefone.getText());
-            //f.setEndereco(endereco);
+            end.setEnderecoID(codEnd);
+            end.setRua(txRua.getText());
+            end.setNumero(Integer.parseInt(txNumero.getText()));
+            end.setCEP(txCEP.getText());
+            end.setBairro(txBairro.getText());
+            end.setCidade(txCidade.getText());
+            f.setEndereco(end);
+            
+            try{
+
+                   Banco.getCon().getConnect().setAutoCommit(false);
+
+                   ok = dalf.gravar(f);
+
+                    if(ok){
+
+                       ok = dale.gravar(end);
+                    }
+                    else
+                       ok = false;
+              }
+              catch(SQLException ex){System.out.println(ex.getMessage()); ok = false;}
+
+             try{
+
+                 if(ok){
+
+                   a = new Alert(Alert.AlertType.CONFIRMATION,"Funcionário excluído!!", ButtonType.OK);
+                   Banco.getCon().getConnect().commit();
+                } 
+                else{
+                      a = new Alert(Alert.AlertType.CONFIRMATION,"Problemas ao deletar funcionário!!", ButtonType.OK);
+                      Banco.getCon().getConnect().rollback();
+                }
+             }catch(SQLException ex){}
         }
         
         

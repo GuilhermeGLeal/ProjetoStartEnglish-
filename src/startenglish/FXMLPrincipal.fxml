@@ -9,19 +9,19 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="600.0" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="1005.0" prefHeight="594.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLPrincipalController">
+<BorderPane maxHeight="600.0" maxWidth="1920.0" minHeight="0.0" minWidth="1005.0" prefHeight="594.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLPrincipalController">
    <top>
-      <AnchorPane prefHeight="90.0" prefWidth="987.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER">
+      <AnchorPane maxWidth="1920.0" prefHeight="90.0" prefWidth="987.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="86.0" fitWidth="106.0" layoutX="14.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
    </top>
    <bottom>
-      <AnchorPane prefHeight="18.0" prefWidth="987.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER" />
+      <AnchorPane maxWidth="1920.0" prefHeight="18.0" prefWidth="987.0" style="-fx-background-color: #FF7F27; -fx-border-color: #FF7F27; -fx-border-width: 10;" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
-      <VBox alignment="TOP_CENTER" maxWidth="800.0" minWidth="200.0" prefHeight="473.0" prefWidth="187.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" maxWidth="800.0" minWidth="200.0" prefHeight="473.0" prefWidth="187.0" style="-fx-background-color: black; -fx-border-width: 0 10 0 0; -fx-border-color: black  #FF7F27 black black;" BorderPane.alignment="CENTER">
          <children>
             <MenuButton mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Cadastro" textAlignment="CENTER">
               <items>
@@ -65,9 +65,6 @@
          </padding></VBox>
    </left>
    <center>
-      <Pane maxWidth="35.0" minWidth="35.0" prefHeight="473.0" prefWidth="35.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER" />
+      <Pane maxWidth="1820.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
    </center>
-   <right>
-      <Pane maxWidth="3000.0" minWidth="783.0" prefHeight="473.0" prefWidth="783.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
-   </right>
 </BorderPane>

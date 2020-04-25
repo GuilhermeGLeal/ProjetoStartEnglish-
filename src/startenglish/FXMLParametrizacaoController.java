@@ -266,6 +266,34 @@ public class FXMLParametrizacaoController implements Initializable {
 
     @FXML
     private void evtConfirmar(ActionEvent event) {
+        
+        if(!txNome.getText().isEmpty()){
+            
+            if(!txTelefone.getText().isEmpty()){
+             
+                if(!txRazao.getText().isEmpty()){
+                    
+                }
+                else{
+                    
+                    Alert a = new Alert(Alert.AlertType.WARNING, "Razao Social obrigatória", ButtonType.CLOSE);
+                    txRazao.requestFocus();
+                    a.showAndWait();
+                }
+            }
+            else{
+                
+                Alert a = new Alert(Alert.AlertType.WARNING, "Telefone obrigatório", ButtonType.CLOSE);
+                txTelefone.requestFocus();
+                a.showAndWait();
+            }
+        }
+        else{
+            
+            Alert a = new Alert(Alert.AlertType.WARNING, "Nome obrigatório", ButtonType.CLOSE);
+            txNome.requestFocus();
+            a.showAndWait();
+        }
     }
 
     @FXML

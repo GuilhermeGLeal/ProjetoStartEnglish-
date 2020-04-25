@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import startenglish.db.Entidades.Aluno;
 
 /**
  * FXML Controller class
@@ -22,15 +23,15 @@ import javafx.scene.control.TableView;
 public class FXMLAlunoController implements Initializable {
 
     @FXML
-    private TableView<?> tabela;
+    private TableView<Aluno> tabela;
     @FXML
-    private TableColumn<?, ?> tabelaNome;
+    private TableColumn<Aluno,String> tabelaNome;
     @FXML
-    private TableColumn<?, ?> tabelaCPF;
+    private TableColumn<Aluno,String> tabelaCPF;
     @FXML
-    private TableColumn<?, ?> tabelaTelefone;
+    private TableColumn<Aluno,String> tabelaTelefone;
     @FXML
-    private TableColumn<?, ?> tabelaEmail;
+    private TableColumn<Aluno,String> tabelaEmail;
     @FXML
     private JFXButton btNovo;
     @FXML

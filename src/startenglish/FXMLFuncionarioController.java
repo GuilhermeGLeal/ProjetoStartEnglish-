@@ -296,6 +296,7 @@ public class FXMLFuncionarioController implements Initializable {
         
         Funcionario f = new Funcionario();
         f.setID(cod);
+        end.setEnderecoID(codEnd);
         if(!txNome.getText().isEmpty())
             if(!txCpf.getText().isEmpty())
                 if(!txCEP.getText().isEmpty())
@@ -313,16 +314,23 @@ public class FXMLFuncionarioController implements Initializable {
                     
                     f.setNome(txNome.getText());
                     f.setCpf(txCpf.getText());
-                    
-                    
-                    end.setCEP(txCEP.getText());
-                    
+                    if(!txEmail.getText().isEmpty())
+                        f.setEmail(txEmail.getText());
+                    if(!txTelefone.getText().isEmpty())
+                        f.setFone(txTelefone.getText());
+                    if(!txRua.getText().isEmpty())                 
+                        end.setRua(txRua.getText());
+                    if(!txNumero.getText().isEmpty())
+                        end.setNumero(Integer.parseInt(txNumero.getText()));
+                    if(!txCEP.getText().isEmpty())
+                        end.setCEP(txCEP.getText());
+                    if(!txBairro.getText().isEmpty())
+                        end.setBairro(txBairro.getText());
+                    if(!txCidade.getText().isEmpty())
+                        end.setCidade(txCidade.getText());
                     f.setEndereco(end);
                 }
             
-            
-            
-                
         if(checkProf.isArmed())
         {
             Professor p = new Professor();

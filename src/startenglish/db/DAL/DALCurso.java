@@ -32,9 +32,9 @@ public class DALCurso {
         return Banco.getCon().manipular(sql);
     }
      
-    public boolean apagar(Cursos c){
+    public boolean apagar(int cod){
         
-        return Banco.getCon().manipular("delete from Curso where CursoID="+c.getCursoID());
+        return Banco.getCon().manipular("delete from Curso where CursoID="+cod);
     }
     
      public Cursos get(int cod){

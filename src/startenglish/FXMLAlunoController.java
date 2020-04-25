@@ -5,6 +5,8 @@
  */
 package startenglish;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -29,6 +31,34 @@ public class FXMLAlunoController implements Initializable {
     private TableColumn<?, ?> tabelaTelefone;
     @FXML
     private TableColumn<?, ?> tabelaEmail;
+    @FXML
+    private JFXButton btNovo;
+    @FXML
+    private JFXTextField txNome;
+    @FXML
+    private JFXTextField txTelefone;
+    @FXML
+    private JFXTextField txEmail;
+    @FXML
+    private JFXTextField txRg;
+    @FXML
+    private JFXTextField txCpf;
+    @FXML
+    private JFXTextField txRua;
+    @FXML
+    private JFXTextField txCEP;
+    @FXML
+    private JFXTextField txId;
+    @FXML
+    private JFXTextField txBairro;
+    @FXML
+    private JFXTextField txNumero;
+    @FXML
+    private JFXTextField txCidade;
+    @FXML
+    private JFXButton btPesquisar;
+    @FXML
+    private JFXTextField txPesquisa;
 
     /**
      * Initializes the controller class.

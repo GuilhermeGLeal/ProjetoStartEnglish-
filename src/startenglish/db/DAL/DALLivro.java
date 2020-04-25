@@ -28,9 +28,9 @@ public class DALLivro {
         return Banco.getCon().manipular(sql);
     }
      
-    public boolean apagar(Livro lv){
+    public boolean apagar(int cod){
         
-        return Banco.getCon().manipular("delete from Livro where LivroID="+lv.getLivroID());
+        return Banco.getCon().manipular("delete from Livro where LivroID="+cod);
     }
     
      public Livro get(int cod){

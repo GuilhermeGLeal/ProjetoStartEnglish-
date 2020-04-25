@@ -34,10 +34,11 @@ public class DALEndereco {
         
         return Banco.getCon().manipular(sql);
     }
-    
-    public boolean apagar(int e){
-        
-        return Banco.getCon().manipular("delete from Endereco where EnderecoID="+e);
+      
+   public boolean apagar(int cod){       
+
+        return Banco.getCon().manipular("delete from Endereco where EnderecoID="+cod);
+
     }
     
     public Endereco get(int cod){

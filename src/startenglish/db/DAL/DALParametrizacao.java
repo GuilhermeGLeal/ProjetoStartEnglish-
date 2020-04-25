@@ -1,7 +1,11 @@
 package startenglish.db.DAL;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import startenglish.db.Entidades.Parametrizacao;
@@ -62,13 +66,71 @@ public class DALParametrizacao {
     }
        
     
-    public boolean gravarFoto(int cod,File arq){
+    public boolean gravarFoto(String nome,File arq) throws FileNotFoundException{
         
-        return false;
+         FileInputStream imagem = null;
+         
+        if(arq != null){
+             imagem = new FileInputStream(arq);
+            try
+            {
+                PreparedStatement ps = Banco.getCon().getConnect().
+                prepareStatement("UPDATE Parametrizacao set Logotipo = ? where NomeEmpresa= ?");
+                ps.setBinaryStream(1, imagem);
+                ps.setString(2, nome);
+                ps.executeUpdate();
+                ps.close();
+                imagem.close();
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+        else{
+             try
+            {
+                PreparedStatement ps = Banco.getCon().getConnect().
+                prepareStatement("UPDATE Parametrizacao set Logotipo = null where NomeEmpresa = ?");
+                ps.setString(1, nome);
+                ps.executeUpdate();
+                ps.close();
+                imagem.close();
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+            
+        }
+        
+        return true;
     }
     
-    public InputStream getFoto(int cod){
+    public InputStream getFoto(String nome){
          
-        return null;
+        InputStream is=null;
+        
+        try
+        {
+            PreparedStatement ps = Banco.getCon().getConnect().
+            prepareStatement("SELECT Logotipo from Parametrizacao where NomeEmpresa=?");
+            ps.setString(1,nome);
+            
+            ResultSet rs=ps.executeQuery();
+            
+            if(rs.next())
+            {
+                byte[] bytes=rs.getBytes("Logotipo");
+                is=new ByteArrayInputStream(bytes);
+            }
+            ps.close();
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+        
+        return is;
      }
 }

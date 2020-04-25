@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -50,5 +51,33 @@ public class FXMLParametrizacaoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void evtNovo(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtAlterar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtApagar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtConfirmar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtCancelar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtEscolher(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtLimpar(ActionEvent event) {
+    }
     
 }

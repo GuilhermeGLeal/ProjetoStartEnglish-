@@ -1,14 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package startenglish.db.DAL;
 
-/**
- *
- * @author guilh
- */
+import java.util.List;
+import startenglish.db.Entidades.Endereco;
+
+
 public class DALEndereco {
+ 
+     public boolean gravar(Endereco e){
+        
+    }
     
+    public boolean alterar(Endereco p){
+        
+        
+    }
+    
+    public boolean apagar(Endereco p){
+        
+    }
+    
+    public Endereco get(int cod){
+        
+    }
+    
+    public List<Endereco> get(String filtro){
+        
+    }
 }

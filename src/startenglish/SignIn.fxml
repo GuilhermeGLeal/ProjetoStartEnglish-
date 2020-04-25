@@ -38,7 +38,7 @@
             <Insets left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
       </HBox>
-      <JFXButton prefHeight="38.0" prefWidth="442.0" styleClass="orange-btn" text="Sign In" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+      <JFXButton fx:id="btLogin" onAction="#evtLogin" prefHeight="38.0" prefWidth="442.0" styleClass="orange-btn" text="Sign In" textAlignment="CENTER" VBox.vgrow="ALWAYS">
          <font>
             <Font size="17.0" />
          </font>

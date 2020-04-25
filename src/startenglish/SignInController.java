@@ -5,8 +5,11 @@
  */
 package startenglish;
 
+import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 /**
@@ -16,6 +19,9 @@ import javafx.fxml.Initializable;
  */
 public class SignInController implements Initializable {
 
+    @FXML
+    private JFXButton btLogin;
+
     /**
      * Initializes the controller class.
      */
@@ -23,5 +29,10 @@ public class SignInController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void evtLogin(ActionEvent event) {
+        
+    }
     
 }

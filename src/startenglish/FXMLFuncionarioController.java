@@ -122,6 +122,8 @@ public class FXMLFuncionarioController implements Initializable {
         MaskFieldUtil.cpfField(txCpf);
         MaskFieldUtil.foneField(txTelefone);
         
+        EstadoOriginal();
+        
     }
     
     private void EstadoOriginal()
@@ -145,7 +147,7 @@ public class FXMLFuncionarioController implements Initializable {
                 ((ComboBox)n).getItems().clear();
         }
       
-        CarregaTabela("");
+        //CarregaTabela("");
     }
     
     private void EstadoEdicao()
@@ -292,28 +294,76 @@ public class FXMLFuncionarioController implements Initializable {
             codEnd = 0;
         }
         
+        Funcionario f = new Funcionario();
+        f.setID(cod);
+        if(!txNome.getText().isEmpty())
+            if(!txCpf.getText().isEmpty())
+                if(!txCEP.getText().isEmpty())
+                {
+                    try 
+                    {
+                        cod = Integer.parseInt(txIdFunc.getText());
+                        codEnd = Integer.parseInt(txId.getText());
+                    } 
+                    catch (Exception e) 
+                    {
+                        cod = 0;
+                        codEnd = 0;
+                    }
+                    
+                    f.setNome(txNome.getText());
+                    f.setCpf(txCpf.getText());
+                    
+                    
+                    end.setCEP(txCEP.getText());
+                    
+                    f.setEndereco(end);
+                }
+            
+            
+            
+                
         if(checkProf.isArmed())
         {
-            
+            Professor p = new Professor();
+            p.setFunc(f);
+            try{
+
+                   Banco.getCon().getConnect().setAutoCommit(false);
+
+                   ok = dalf.gravar(f);
+
+                    if(ok){
+
+                       ok = dale.gravar(end);
+                       
+                       if(ok)
+                           ok = dalp.gravar(p);
+                       else ok = false;
+
+                    }
+                    else
+                       ok = false;
+              }
+              catch(SQLException ex){System.out.println(ex.getMessage()); ok = false;}
+
+             try{
+
+                 if(ok){
+
+                   a = new Alert(Alert.AlertType.CONFIRMATION,"Professor salvo!!", ButtonType.OK);
+                   Banco.getCon().getConnect().commit();
+                } 
+                else{
+                      a = new Alert(Alert.AlertType.CONFIRMATION,"Problemas ao gravar professor!!", ButtonType.OK);
+                      Banco.getCon().getConnect().rollback();
+                }
+             }
+             catch(SQLException ex){}
         }
         else
         {
-            Funcionario f = new Funcionario();
-            f.setID(cod);
-            f.setNome(txNome.getText());
-            f.setRg(txRg.getText());
-            f.setCpf(txCpf.getText());
-            f.setEmail(txEmail.getText());
-            f.setFone(txTelefone.getText());
-            end.setEnderecoID(codEnd);
-            end.setRua(txRua.getText());
-            end.setNumero(Integer.parseInt(txNumero.getText()));
-            end.setCEP(txCEP.getText());
-            end.setBairro(txBairro.getText());
-            end.setCidade(txCidade.getText());
-            f.setEndereco(end);
-            
-            try{
+                try{
 
                    Banco.getCon().getConnect().setAutoCommit(false);
 
@@ -342,6 +392,8 @@ public class FXMLFuncionarioController implements Initializable {
              }catch(SQLException ex){}
         }
         
+        a.showAndWait();
+        CarregaTabela("");
         
     }
 
@@ -351,6 +403,7 @@ public class FXMLFuncionarioController implements Initializable {
 
     @FXML
     private void evtPesquisar(ActionEvent event) {
+        CarregaTabela("upper(gar_nome) like '%"+txPesquisa.getText().toUpperCase()+"%'");
     }
 
     @FXML

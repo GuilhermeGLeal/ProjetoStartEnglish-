@@ -10,7 +10,7 @@ import startenglish.db.util.Banco;
 public class DALFuncionario {
     public boolean gravar(Funcionario f){
         
-        String sql = "insert into Endereco(Nome,CPF,RG,E-mail,Fone,EnderecoID) values('#1','#2','#3','#4','#5',#6)";
+        String sql = "insert into funcionario(nome,cpf,rg,email,fone,enderecoid) values('#1','#2','#3','#4','#5',#6)";
         sql = sql.replaceAll("#1", ""+f.getNome());
         sql = sql.replaceAll("#2", ""+f.getCpf());
         sql = sql.replaceAll("#3", ""+f.getRg());
@@ -24,7 +24,7 @@ public class DALFuncionario {
     
     public boolean alterar(Funcionario f){
         
-       String sql = "update Funcionario set Nome = '#1', CPF = '#2', RG='#3', E-mail= '#4', Fone='#5', EnderecoID=#6 where FuncID = "+f.getID();
+       String sql = "update funcionario set nome = '#1', cpf = '#2', rg='#3', email= '#4', fone='#5', enderecoid=#6 where funcid = "+f.getID();
         sql = sql.replaceAll("#1", ""+f.getNome());
         sql = sql.replaceAll("#2", ""+f.getCpf());
         sql = sql.replaceAll("#3", ""+f.getRg());
@@ -37,13 +37,13 @@ public class DALFuncionario {
     
     public boolean apagar(Funcionario f){
         
-        return Banco.getCon().manipular("delete from Funcionario where FuncID="+f.getID());
+        return Banco.getCon().manipular("delete from funcionario where funcid="+f.getID());
     }
     
     public Funcionario get(int cod){
      
         Funcionario func = null;
-        ResultSet rs = Banco.getCon().consultar("select * from Funcionario where FuncID="+cod);
+        ResultSet rs = Banco.getCon().consultar("select * from funcionario where funcid="+cod);
         
         try{
             
@@ -52,7 +52,7 @@ public class DALFuncionario {
                 
                         
                 DALEndereco dale = new DALEndereco();
-                func = new Funcionario(rs.getInt("FuncID"), rs.getString("Nome"), rs.getString("CPF"), rs.getString("RG"), rs.getString("E-mail"), rs.getString("Fone"), dale.get(rs.getInt("EnderecoID")));
+                func = new Funcionario(rs.getInt("funcid"), rs.getString("nome"), rs.getString("cpf"), rs.getString("rg"), rs.getString("email"), rs.getString("fone"), dale.get(rs.getInt("enderecoid")));
                  
              }
         }
@@ -63,7 +63,7 @@ public class DALFuncionario {
     
     public List<Funcionario> get(String filtro){
         
-       String sql="select * from Funcionario";
+       String sql="select * from funcionario";
        
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
@@ -75,7 +75,7 @@ public class DALFuncionario {
             while(rs.next())
             {
                 DALEndereco dale = new DALEndereco();
-                aux.add(new Funcionario(rs.getInt("FuncID"), rs.getString("Nome"), rs.getString("CPF"), rs.getString("RG"), rs.getString("E-mail"), rs.getString("Fone"), dale.get(rs.getInt("EnderecoID"))));
+                aux.add(new Funcionario(rs.getInt("funcid"), rs.getString("nome"), rs.getString("cpf"), rs.getString("rg"), rs.getString("email"), rs.getString("fone"), dale.get(rs.getInt("enderecoid"))));
             }
         } 
         catch (SQLException ex) 

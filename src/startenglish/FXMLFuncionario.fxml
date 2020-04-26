@@ -31,14 +31,14 @@
                   <JFXTextField fx:id="txEmail" alignment="CENTER" layoutX="25.0" layoutY="97.0" prefHeight="25.0" prefWidth="411.0" promptText="E-mail" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
                   <JFXTextField fx:id="txRg" alignment="CENTER" layoutX="370.0" layoutY="57.0" prefHeight="25.0" prefWidth="174.0" promptText="RG" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
                   <JFXTextField fx:id="txCpf" alignment="CENTER" layoutX="548.0" layoutY="57.0" prefHeight="25.0" prefWidth="174.0" promptText="CPF" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-                  <JFXTextField fx:id="txRua" alignment="CENTER" layoutX="134.0" layoutY="194.0" prefHeight="25.0" prefWidth="390.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Rua" />
+                  <JFXTextField fx:id="txRua" alignment="CENTER" layoutX="134.0" layoutY="194.0" prefHeight="25.0" prefWidth="390.0" promptText="Rua" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
                   <Label alignment="CENTER" layoutX="24.0" layoutY="166.0" prefHeight="17.0" prefWidth="698.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Endereço do Aluno" textAlignment="CENTER" />
-                  <JFXTextField fx:id="txCEP" alignment="CENTER" layoutX="25.0" layoutY="236.0" prefHeight="25.0" prefWidth="237.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="CEP" />
-                  <JFXTextField fx:id="txId" alignment="CENTER" layoutX="25.0" layoutY="194.0" prefHeight="25.0" prefWidth="89.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="ID" />
-                  <JFXTextField fx:id="txBairro" alignment="CENTER" layoutX="278.0" layoutY="236.0" prefHeight="25.0" prefWidth="450.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Bairro" />
-                  <JFXTextField fx:id="txNumero" alignment="CENTER" layoutX="544.0" layoutY="194.0" prefHeight="25.0" prefWidth="183.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Número" />
-                  <JFXTextField fx:id="txCidade" alignment="CENTER" layoutX="25.0" layoutY="277.0" prefHeight="25.0" prefWidth="237.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Cidade" />
-                  <JFXTextField fx:id="txIdFunc" alignment="CENTER" layoutX="26.0" layoutY="57.0" prefHeight="25.0" prefWidth="35.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="ID" />
+                  <JFXTextField fx:id="txCEP" alignment="CENTER" layoutX="25.0" layoutY="236.0" prefHeight="25.0" prefWidth="237.0" promptText="CEP" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txId" alignment="CENTER" layoutX="25.0" layoutY="194.0" prefHeight="25.0" prefWidth="89.0" promptText="ID" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txBairro" alignment="CENTER" layoutX="278.0" layoutY="236.0" prefHeight="25.0" prefWidth="450.0" promptText="Bairro" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txNumero" alignment="CENTER" layoutX="544.0" layoutY="194.0" prefHeight="25.0" prefWidth="183.0" promptText="Número" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txCidade" alignment="CENTER" layoutX="25.0" layoutY="277.0" prefHeight="25.0" prefWidth="237.0" promptText="Cidade" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txIdFunc" alignment="CENTER" editable="false" layoutX="26.0" layoutY="57.0" prefHeight="25.0" prefWidth="35.0" promptText="ID" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
                   <CheckBox fx:id="checkProf" layoutX="337.0" layoutY="128.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: black;" text="Professor" textFill="#bebebe" />
                </children>
             </AnchorPane>

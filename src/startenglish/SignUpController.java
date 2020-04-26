@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -31,7 +32,7 @@ public class SignUpController implements Initializable {
     }    
 
     @FXML
-    private void evtLogin(ActionEvent event) {
+    private void evtLogin(MouseEvent event) {
         
     }
     

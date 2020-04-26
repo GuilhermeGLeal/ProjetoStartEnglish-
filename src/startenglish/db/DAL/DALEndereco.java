@@ -12,12 +12,12 @@ public class DALEndereco {
  
      public boolean gravar(Endereco e){
         
-        String sql = "insert into Endereco(Rua,CEP,Bairro,Numero,Cidade) values('#1','#2','#3','#4','#5')";
-        sql = sql.replaceAll("#1", e.getRua());
-        sql = sql.replaceAll("#2", e.getCEP());
-        sql = sql.replaceAll("#3", e.getBairro());
+        String sql = "insert into Endereco(Rua,CEP,Bairro,Numero,Cidade) values('#1','#2','#3',#4,'#5')";
+        sql = sql.replaceAll("#1", ""+e.getRua());
+        sql = sql.replaceAll("#2", ""+e.getCEP());
+        sql = sql.replaceAll("#3", ""+e.getBairro());
         sql = sql.replaceAll("#4", ""+e.getNumero());
-        sql = sql.replaceAll("#5", e.getCidade());
+        sql = sql.replaceAll("#5", ""+e.getCidade());
         
         return Banco.getCon().manipular(sql);
         

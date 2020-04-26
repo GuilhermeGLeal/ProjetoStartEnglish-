@@ -276,7 +276,7 @@ public class FXMLFuncionarioController implements Initializable {
     @FXML
     private void evtConfirmar(ActionEvent event) {
         int cod,codEnd;
-        boolean ok;
+        boolean ok = true;
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         Endereco end = new Endereco();
         DALEndereco dale = new DALEndereco();
@@ -297,111 +297,93 @@ public class FXMLFuncionarioController implements Initializable {
         Funcionario f = new Funcionario();
         f.setID(cod);
         end.setEnderecoID(codEnd);
-        if(!txNome.getText().isEmpty())
-            if(!txCpf.getText().isEmpty())
-                if(!txCEP.getText().isEmpty())
-                {
-                    try 
-                    {
-                        cod = Integer.parseInt(txIdFunc.getText());
-                        codEnd = Integer.parseInt(txId.getText());
-                    } 
-                    catch (Exception e) 
-                    {
-                        cod = 0;
-                        codEnd = 0;
-                    }
-                    
-                    f.setNome(txNome.getText());
-                    f.setCpf(txCpf.getText());
-                    if(!txEmail.getText().isEmpty())
-                        f.setEmail(txEmail.getText());
-                    if(!txTelefone.getText().isEmpty())
-                        f.setFone(txTelefone.getText());
-                    if(!txRua.getText().isEmpty())                 
-                        end.setRua(txRua.getText());
-                    if(!txNumero.getText().isEmpty())
-                        end.setNumero(Integer.parseInt(txNumero.getText()));
+        
+        if(cod == 0)
+        {
+            if(!txNome.getText().isEmpty())
+                if(!txCpf.getText().isEmpty())
                     if(!txCEP.getText().isEmpty())
-                        end.setCEP(txCEP.getText());
-                    if(!txBairro.getText().isEmpty())
-                        end.setBairro(txBairro.getText());
-                    if(!txCidade.getText().isEmpty())
-                        end.setCidade(txCidade.getText());
-                    f.setEndereco(end);
+                    {
+
+                        f.setNome(txNome.getText());
+                        f.setCpf(txCpf.getText());
+                        if(!txEmail.getText().isEmpty())
+                            f.setEmail(txEmail.getText());
+                        if(!txTelefone.getText().isEmpty())
+                            f.setFone(txTelefone.getText());
+                        if(!txRua.getText().isEmpty())                 
+                            end.setRua(txRua.getText());
+                        if(!txNumero.getText().isEmpty())
+                            end.setNumero(Integer.parseInt(txNumero.getText()));
+                        if(!txCEP.getText().isEmpty())
+                            end.setCEP(txCEP.getText());
+                        if(!txBairro.getText().isEmpty())
+                            end.setBairro(txBairro.getText());
+                        if(!txCidade.getText().isEmpty())
+                            end.setCidade(txCidade.getText());
+                        f.setEndereco(end);
+
+                              try{
+
+                                   Banco.getCon().getConnect().setAutoCommit(false);
+
+
+                                   ok = dale.gravar(end); 
+                                    if(ok){
+
+                                        ok = dalf.gravar(f);                                 
+                                    }
+                                    else
+                                       ok = false;
+                              }
+                              catch(SQLException ex){System.out.println(ex.getMessage()); ok = false;}
+                                
+                              if(checkProf.isSelected())
+                              {
+                                  Professor p = new Professor(f);
+                                  ok = dalp.gravar(p);
+                              }
+                              
+                             try{
+
+                                 if(ok){
+
+                                   a = new Alert(Alert.AlertType.CONFIRMATION,"Funcionário salvo!!", ButtonType.OK);
+                                   Banco.getCon().getConnect().commit();
+                                } 
+                                else{
+                                      a = new Alert(Alert.AlertType.CONFIRMATION,"Problemas ao cadastrar funcionário!!", ButtonType.OK);
+                                      Banco.getCon().getConnect().rollback();
+                                }
+                             }catch(SQLException ex){}
+                             
+                             
+                        
+                    }else{
+                                a = new Alert(Alert.AlertType.ERROR,"CEP inválido ou inexistente",ButtonType.OK);
+                                txCEP.requestFocus();
+                                a.showAndWait();
+                    }
+                else
+                {
+                    a = new Alert(Alert.AlertType.ERROR,"CPF inválido ou inexistente",ButtonType.OK);
+                    txCpf.requestFocus();
+                    a.showAndWait();
                 }
+            else
+            {
+                a = new Alert(Alert.AlertType.WARNING,"Nome não informado",ButtonType.OK);
+                txNome.requestFocus();
+                a.showAndWait();
+            }
+        }else
+        {
             
-        if(checkProf.isArmed())
-        {
-            Professor p = new Professor();
-            p.setFunc(f);
-            try{
-
-                   Banco.getCon().getConnect().setAutoCommit(false);
-
-                   ok = dalf.gravar(f);
-
-                    if(ok){
-
-                       ok = dale.gravar(end);
-                       
-                       if(ok)
-                           ok = dalp.gravar(p);
-                       else ok = false;
-
-                    }
-                    else
-                       ok = false;
-              }
-              catch(SQLException ex){System.out.println(ex.getMessage()); ok = false;}
-
-             try{
-
-                 if(ok){
-
-                   a = new Alert(Alert.AlertType.CONFIRMATION,"Professor salvo!!", ButtonType.OK);
-                   Banco.getCon().getConnect().commit();
-                } 
-                else{
-                      a = new Alert(Alert.AlertType.CONFIRMATION,"Problemas ao gravar professor!!", ButtonType.OK);
-                      Banco.getCon().getConnect().rollback();
-                }
-             }
-             catch(SQLException ex){}
-        }
-        else
-        {
-                try{
-
-                   Banco.getCon().getConnect().setAutoCommit(false);
-
-                   ok = dalf.gravar(f);
-
-                    if(ok){
-
-                       ok = dale.gravar(end);
-                    }
-                    else
-                       ok = false;
-              }
-              catch(SQLException ex){System.out.println(ex.getMessage()); ok = false;}
-
-             try{
-
-                 if(ok){
-
-                   a = new Alert(Alert.AlertType.CONFIRMATION,"Funcionário excluído!!", ButtonType.OK);
-                   Banco.getCon().getConnect().commit();
-                } 
-                else{
-                      a = new Alert(Alert.AlertType.CONFIRMATION,"Problemas ao deletar funcionário!!", ButtonType.OK);
-                      Banco.getCon().getConnect().rollback();
-                }
-             }catch(SQLException ex){}
         }
         
+        
         a.showAndWait();
-        CarregaTabela("");
+        //CarregaTabela("");
         
     }
 

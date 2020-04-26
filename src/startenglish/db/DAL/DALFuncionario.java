@@ -11,11 +11,11 @@ public class DALFuncionario {
     public boolean gravar(Funcionario f){
         
         String sql = "insert into Endereco(Nome,CPF,RG,E-mail,Fone,EnderecoID) values('#1','#2','#3','#4','#5',#6)";
-        sql = sql.replaceAll("#1", f.getNome());
-        sql = sql.replaceAll("#2", f.getCpf());
-        sql = sql.replaceAll("#3", f.getRg());
-        sql = sql.replaceAll("#4", f.getEmail());
-        sql = sql.replaceAll("#5", f.getFone());
+        sql = sql.replaceAll("#1", ""+f.getNome());
+        sql = sql.replaceAll("#2", ""+f.getCpf());
+        sql = sql.replaceAll("#3", ""+f.getRg());
+        sql = sql.replaceAll("#4", ""+f.getEmail());
+        sql = sql.replaceAll("#5", ""+f.getFone());
         sql = sql.replaceAll("#6",""+f.getEndereco().getEnderecoID());
         
         return Banco.getCon().manipular(sql);
@@ -25,11 +25,11 @@ public class DALFuncionario {
     public boolean alterar(Funcionario f){
         
        String sql = "update Funcionario set Nome = '#1', CPF = '#2', RG='#3', E-mail= '#4', Fone='#5', EnderecoID=#6 where FuncID = "+f.getID();
-        sql = sql.replaceAll("#1", f.getNome());
-        sql = sql.replaceAll("#2", f.getCpf());
-        sql = sql.replaceAll("#3", f.getRg());
-        sql = sql.replaceAll("#4", f.getEmail());
-        sql = sql.replaceAll("#5", f.getFone());
+        sql = sql.replaceAll("#1", ""+f.getNome());
+        sql = sql.replaceAll("#2", ""+f.getCpf());
+        sql = sql.replaceAll("#3", ""+f.getRg());
+        sql = sql.replaceAll("#4", ""+f.getEmail());
+        sql = sql.replaceAll("#5", ""+f.getFone());
         sql = sql.replaceAll("#6",""+f.getEndereco().getEnderecoID());
         
         return Banco.getCon().manipular(sql);
@@ -63,7 +63,7 @@ public class DALFuncionario {
     
     public List<Funcionario> get(String filtro){
         
-       String sql="select *from Funcionario";
+       String sql="select * from Funcionario";
        
         if(!filtro.isEmpty())
             sql+=" where "+filtro;

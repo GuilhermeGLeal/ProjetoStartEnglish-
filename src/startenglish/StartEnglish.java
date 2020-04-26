@@ -23,7 +23,7 @@ public class StartEnglish extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLParametrização.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLParametrizacao.fxml"));
         
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);

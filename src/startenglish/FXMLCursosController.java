@@ -143,7 +143,9 @@ public class FXMLCursosController implements Initializable {
             txId.setText(""+c.getCursoID());
             txNomeCurso.setText(c.getNomeCurso());
             if(c.getAtivo()=='S')
-                checkAtivo.arm();
+                checkAtivo.setSelected(true);
+            else
+               checkAtivo.setSelected(false); 
             
             txDescricao.setText(c.getDescricao());
             txPreco.setText(""+c.getPreco());
@@ -196,6 +198,7 @@ public class FXMLCursosController implements Initializable {
              
         double preco = 0;
         int cod;
+        boolean ok = true;
         
         if(!txNomeCurso.getText().isEmpty()){
             
@@ -224,20 +227,67 @@ public class FXMLCursosController implements Initializable {
 
                  if(!txDescricao.getText().isEmpty())
                      c.setDescricao(txDescricao.getText());
+                 
+                 Alert a = null;
+                 try{
+                     
+                     Banco.getCon().getConnect().setAutoCommit(false);
+                     
+                     if(cod == 0){ // inserindo
+                         
+                        ok = dalc.gravar(c);
+                        
+                        if(ok)
+                            a = new Alert(Alert.AlertType.CONFIRMATION,"Curso inserido!!", ButtonType.OK); 
+                        else
+                            a = new Alert(Alert.AlertType.ERROR,"Problemas ao inserir o curso!!", ButtonType.OK);  
+                        
+                     }
+                     else{ // alterando
+                         
+                         ok = dalc.alterar(c);
+                                                       
+                        if(ok)
+                            a = new Alert(Alert.AlertType.CONFIRMATION,"Curso atualizado!!", ButtonType.OK); 
+                        else
+                            a = new Alert(Alert.AlertType.ERROR,"Problemas ao atualizar o curso!!", ButtonType.OK);  
+                         
+                     }
+                     
+                    
+                    a.showAndWait();
+                     if(ok){
+                         
+                        Banco.getCon().getConnect().commit();
+                        estadoOriginal();
+                        carregaTabela("");
+                     }
+                     else
+                        Banco.getCon().getConnect().rollback();
+                         
+                                         
+                     
+                 }catch(SQLException ex){System.out.println(ex.getMessage());}
+               }
+               else{
+                   
+                   Alert a = new Alert(Alert.AlertType.WARNING, "Preço igual a zero!!", ButtonType.CLOSE);
+                   txPreco.requestFocus();
+                   a.showAndWait();
                }
               
                
            }catch(NumberFormatException ex){
                
-                Alert a = new Alert(Alert.AlertType.WARNING, "Nome do curso obrigatório", ButtonType.CLOSE);
-                txNomeCurso.requestFocus();
+                Alert a = new Alert(Alert.AlertType.WARNING, "Preço obrigatório!!", ButtonType.CLOSE);
+                txPreco.requestFocus();
                 a.showAndWait();
            }
            
         }
         else{
             
-            Alert a = new Alert(Alert.AlertType.WARNING, "Nome do curso obrigatório", ButtonType.CLOSE);
+            Alert a = new Alert(Alert.AlertType.WARNING, "Nome do curso obrigatório!!", ButtonType.CLOSE);
             txNomeCurso.requestFocus();
             a.showAndWait();
         }

@@ -68,7 +68,7 @@ public class DALCurso {
         {
             while(rs.next())
             {
-                aux.add(new Cursos(rs.getString("ativo").charAt(0), rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco")));
+                aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("ativo").charAt(0), rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco")));
             }
         } 
         catch (SQLException ex) 

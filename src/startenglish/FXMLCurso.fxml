@@ -25,14 +25,14 @@
             </HBox>
             <AnchorPane fx:id="pndados" layoutY="61.0" prefHeight="219.0" prefWidth="674.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: orange;">
                <children>
-                  <Label alignment="CENTER" layoutX="19.0" layoutY="14.0" prefHeight="21.0" prefWidth="636.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Dados do curso" textAlignment="CENTER" />
+                  <Label alignment="CENTER" layoutX="26.0" layoutY="25.0" prefHeight="21.0" prefWidth="636.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Dados do curso" textAlignment="CENTER" />
+                  <JFXTextField fx:id="txPreco" alignment="CENTER" layoutX="223.0" layoutY="151.0" prefHeight="31.0" prefWidth="243.0" promptText="Preço" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txNomeCurso" alignment="CENTER" layoutX="168.0" layoutY="62.0" prefHeight="31.0" prefWidth="343.0" promptText="Nome do Curso" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txDescricao" alignment="CENTER" layoutX="29.0" layoutY="110.0" prefHeight="31.0" prefWidth="630.0" promptText="Descrição" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txId" alignment="CENTER" disable="true" editable="false" layoutX="26.0" layoutY="62.0" prefHeight="25.0" prefWidth="89.0" promptText="ID" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXCheckBox fx:id="checkAtivo" layoutX="571.0" layoutY="67.0" style="-fx-background-color: black;" text="Ativo" textFill="#bebebe" />
                </children>
             </AnchorPane>
-            <JFXTextField fx:id="txNomeCurso" alignment="CENTER" layoutX="141.0" layoutY="113.0" prefHeight="31.0" prefWidth="343.0" promptText="Nome do Curso" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txPreco" alignment="CENTER" layoutX="226.0" layoutY="193.0" prefHeight="31.0" prefWidth="243.0" promptText="Preço" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txDescricao" alignment="CENTER" layoutX="32.0" layoutY="153.0" prefHeight="31.0" prefWidth="630.0" promptText="Descrição" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-            <JFXTextField fx:id="txId" alignment="CENTER" disable="true" editable="false" layoutX="32.0" layoutY="113.0" prefHeight="25.0" prefWidth="89.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="ID" />
-            <JFXCheckBox fx:id="checkAtivo" layoutX="540.0" layoutY="118.0" style="-fx-background-color: black;" text="Ativo" textFill="#bebebe" />
          </children>
       </AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="235.0" prefWidth="674.0" style="-fx-background-color: black;">
@@ -49,9 +49,9 @@
             </AnchorPane>
             <TableView fx:id="tableview" layoutY="36.0" onMouseClicked="#clicktabela" prefHeight="185.0" prefWidth="674.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
-                  <TableColumn fx:id="tabelaNomeCurso" prefWidth="379.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Nome do Curso" />
-                  <TableColumn fx:id="tabelaPreco" minWidth="0.0" prefWidth="173.0" style="-fx-background-color: #FF7F27;" text="Preço" />
-                  <TableColumn fx:id="tabelaAtivo" prefWidth="116.0" style="-fx-background-color: #FF7F27;" text="Ativo" />
+                  <TableColumn fx:id="tabelaNomeCurso" prefWidth="291.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Nome do Curso" />
+                  <TableColumn fx:id="tabelaPreco" minWidth="0.0" prefWidth="232.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Preço" />
+                  <TableColumn fx:id="tabelaAtivo" prefWidth="145.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Ativo" />
                </columns>
             </TableView>
          </children>

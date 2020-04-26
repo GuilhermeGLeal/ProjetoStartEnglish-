@@ -77,7 +77,7 @@ public class FXMLCursosController implements Initializable {
         
         MaskFieldUtil.maxField(txNomeCurso, 20);
         MaskFieldUtil.maxField(txDescricao, 50);
-        MaskFieldUtil.monetaryField(txPreco);
+        MaskFieldUtil.numericField(txPreco);
         MaskFieldUtil.maxField(txPreco, 10);
                 
         estadoOriginal();
@@ -97,7 +97,7 @@ public class FXMLCursosController implements Initializable {
     
     private void estadoOriginal(){
      
-        pnpesquisa.setDisable(false);
+        pnpesquisa.setDisable(true);
         pndados.setDisable(true);
         btConfirmar.setDisable(true);
         btCancelar.setDisable(false);
@@ -119,7 +119,7 @@ public class FXMLCursosController implements Initializable {
     
     private void estadoedicao(){
         
-        pnpesquisa.setDisable(true);
+        pnpesquisa.setDisable(false);
         pndados.setDisable(false);
         btConfirmar.setDisable(false);
         btExcluir.setDisable(true);
@@ -177,7 +177,7 @@ public class FXMLCursosController implements Initializable {
                 if(ok){
                     
                      Banco.getCon().getConnect().commit();
-                    a =  new Alert(Alert.AlertType.ERROR, "Erro ao deletar curso, verificar em turmas e lista de espera", ButtonType.OK);
+                    a =  new Alert(Alert.AlertType.CONFIRMATION," Exclusão ocorrida com sucesso!!", ButtonType.OK);
                 }
                 else{
                     
@@ -219,6 +219,7 @@ public class FXMLCursosController implements Initializable {
 
                  c.setCursoID(cod);
                  c.setNomeCurso(txNomeCurso.getText());
+                 c.setPreco(preco);
 
                  if(checkAtivo.isSelected())
                      c.setAtivo('S');

@@ -27,9 +27,9 @@ public class DALParametrizacao {
         
     }
     
-    public boolean alterar(Parametrizacao p){
+    public boolean alterar(Parametrizacao p,String nome){
         
-        String sql = "update parametrizacao set nome = '#1', telefone = '#2', razaosocial='#3', email= '#4', enderecoid=#5 where nome = "+p.getNome();
+        String sql = "update parametrizacao set nome = '#1', telefone = '#2', razaosocial='#3', email= '#4', enderecoid=#5 where nome = '"+nome+"'";
         sql = sql.replaceAll("#1",p.getNome());
         sql = sql.replaceAll("#2",p.getTelefone());
         sql = sql.replaceAll("#3",p.getRazaoSocial());
@@ -41,7 +41,7 @@ public class DALParametrizacao {
     
     public boolean apagar(Parametrizacao p){
         
-        return Banco.getCon().manipular("delete from parametrizacao where nome="+p.getNome());
+        return Banco.getCon().manipular("delete from parametrizacao where nome = '"+p.getNome()+"'");
     }
     
     public Parametrizacao get(){

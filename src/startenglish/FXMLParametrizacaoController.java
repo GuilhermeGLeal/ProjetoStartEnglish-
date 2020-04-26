@@ -88,7 +88,9 @@ public class FXMLParametrizacaoController implements Initializable {
 
     private File arq;
     private Image aux;
-     
+    private String nome_antigo;
+    private boolean flag; 
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -114,6 +116,12 @@ public class FXMLParametrizacaoController implements Initializable {
         DALParametrizacao dalpar = new DALParametrizacao();
         List<Parametrizacao> para = new ArrayList();
         para.add(dalpar.get());
+        
+        if(para.get(0) == null)
+             btNovo.setDisable(false);
+        else
+             btNovo.setDisable(true);
+        
           ObservableList<Parametrizacao> modelo;
         modelo = FXCollections.observableArrayList(para);
         tabela.setItems(modelo);
@@ -121,6 +129,7 @@ public class FXMLParametrizacaoController implements Initializable {
     
     private void estadoOriginal(){
                
+        flag = false;
         pndados.setDisable(true);
         btConfirmar.setDisable(true);
         btCancelar.setDisable(false);
@@ -173,7 +182,7 @@ public class FXMLParametrizacaoController implements Initializable {
              txTelefone.setText(p.getTelefone());
              txRazao.setText(p.getRazaoSocial());
              txEmail.setText(p.getEmail());
-             
+             nome_antigo = txNome.getText();
              e = dale.get(p.getEndereco().getEnderecoID());
              
              txIDendereco.setText(""+e.getEnderecoID());
@@ -355,21 +364,26 @@ public class FXMLParametrizacaoController implements Initializable {
 
                                             if(ok){
                                             
-                                              ok = dalpar.alterar(par);
+                                              ok = dalpar.alterar(par,nome_antigo);
                                                           
                                                   if(ok){
                                                       
-                                                       try{
-                                                        ok = dalpar.gravarFoto(par.getNome(), arq);
+                                                      if(flag){
+                                                          try{
+                                                          ok = dalpar.gravarFoto(nome_antigo, arq);
 
-                                                        if(ok)
-                                                          b = new Alert(Alert.AlertType.CONFIRMATION,"Parametrizacao,imagem e endereço atualizados!!", ButtonType.OK);    
+                                                            if(ok)
+                                                              b = new Alert(Alert.AlertType.CONFIRMATION,"Parametrizacao,imagem e endereço atualizados!!", ButtonType.OK);    
 
-                                                        else
-                                                            b = new Alert(Alert.AlertType.ERROR,"Problemas ao atualizar a imagem!!", ButtonType.OK);  
+                                                            else
+                                                                b = new Alert(Alert.AlertType.ERROR,"Problemas ao atualizar a imagem!!", ButtonType.OK);  
 
 
-                                                     }catch(IOException e){System.out.println(e.getMessage());}
+                                                         }catch(IOException e){System.out.println(e.getMessage());}
+                                                      }
+                                                      else
+                                                         b = new Alert(Alert.AlertType.CONFIRMATION,"Parametrizacao,imagem e endereço atualizados!!", ButtonType.OK); 
+                                                       
                                                   }
                                                   else
                                                     b = new Alert(Alert.AlertType.ERROR,"Problemas ao atualizar Parametrizacao!!", ButtonType.OK);
@@ -467,6 +481,7 @@ public class FXMLParametrizacaoController implements Initializable {
         
         if(arq != null){
             
+            flag = true;
             aux=new Image(arq.toURI().toString());
             img.setImage(aux);
             img.setFitWidth(aux.getWidth());

@@ -10,7 +10,7 @@ import startenglish.db.util.Banco;
 public class DALProfessor {
      public boolean gravar(Professor p){
         
-        String sql = "insert into Professor(FuncID) values(#1)";
+        String sql = "insert into professor(funcid) values(#1)";
         sql = sql.replaceAll("#1", ""+p.getFunc().getID());
                 
         return Banco.getCon().manipular(sql);
@@ -19,13 +19,13 @@ public class DALProfessor {
        
     public boolean apagar(int p){
         
-        return Banco.getCon().manipular("delete from Professor where FuncID="+p);
+        return Banco.getCon().manipular("delete from professor where funcid="+p);
     }
     
     public Professor get(int cod){
      
         Professor prof = null;
-        ResultSet rs = Banco.getCon().consultar("select * from Professor where FuncID="+cod);
+        ResultSet rs = Banco.getCon().consultar("select * from professor where funcid="+cod);
         
         try{
             
@@ -34,7 +34,7 @@ public class DALProfessor {
                 
                         
                 DALFuncionario dale = new DALFuncionario();
-                prof = new Professor(dale.get(rs.getInt("FuncID")));
+                prof = new Professor(dale.get(rs.getInt("funcid")));
                  
              }
         }
@@ -45,7 +45,7 @@ public class DALProfessor {
     
     public List<Professor> get(String filtro){
         
-       String sql="select *from Professor";
+       String sql="select *from professor";
        
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
@@ -57,7 +57,7 @@ public class DALProfessor {
             while(rs.next())
             {
                 DALFuncionario dale = new DALFuncionario();
-                aux.add(new Professor(dale.get(rs.getInt("FuncID"))));
+                aux.add(new Professor(dale.get(rs.getInt("funcid"))));
             }
         } 
         catch (SQLException ex) 

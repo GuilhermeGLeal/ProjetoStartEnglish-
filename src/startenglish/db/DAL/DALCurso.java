@@ -12,7 +12,7 @@ public class DALCurso {
  
     public boolean gravar(Cursos c){
      
-        String sql = "insert into Curso(Ativo,NomeCurso,Descricao,Preço) values('#1','#2','#3',#4)";
+        String sql = "insert into curso(ativo,nomecurso,descricao,preco) values('#1','#2','#3',#4)";
         sql = sql.replaceAll("#1",""+c.getAtivo());
         sql = sql.replaceAll("#2",c.getNomeCurso());
         sql = sql.replaceAll("#3",c.getDescricao());
@@ -23,7 +23,7 @@ public class DALCurso {
     
      public boolean alterar(Cursos c){
         
-       String sql = "update Curso set Ativo = '#1', NomeCurso = '#2', Descricao='#3', Preço= #4 where CursoID = "+c.getCursoID();
+       String sql = "update curso set ativo = '#1', nomecurso = '#2', descricao='#3', preco= #4 where cursoid = "+c.getCursoID();
        sql = sql.replaceAll("#1",""+c.getAtivo());
        sql = sql.replaceAll("#2",c.getNomeCurso());
        sql = sql.replaceAll("#3",c.getDescricao());
@@ -34,19 +34,19 @@ public class DALCurso {
      
     public boolean apagar(int cod){
         
-        return Banco.getCon().manipular("delete from Curso where CursoID="+cod);
+        return Banco.getCon().manipular("delete from curso where cursoid="+cod);
     }
     
      public Cursos get(int cod){
      
         Cursos curso = null;
-        ResultSet rs = Banco.getCon().consultar("select * from Curso where CursoID="+cod);
+        ResultSet rs = Banco.getCon().consultar("select * from curso where cursoid="+cod);
         
         try{
             
             if(rs.next())
             {
-                curso = new Cursos(rs.getString("Ativo").charAt(0), rs.getString("NomeCurso"), rs.getString("Descricao"), rs.getDouble("Preço"));
+                curso = new Cursos(rs.getString("ativo").charAt(0), rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"));
                  
              }
         }
@@ -57,7 +57,7 @@ public class DALCurso {
     
     public List<Cursos> get(String filtro){
         
-       String sql="select *from Curso";
+       String sql="select *from curso";
        
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
@@ -68,7 +68,7 @@ public class DALCurso {
         {
             while(rs.next())
             {
-                aux.add(new Cursos(rs.getString("Ativo").charAt(0), rs.getString("NomeCurso"), rs.getString("Descricao"), rs.getDouble("Preço")));
+                aux.add(new Cursos(rs.getString("ativo").charAt(0), rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco")));
             }
         } 
         catch (SQLException ex) 

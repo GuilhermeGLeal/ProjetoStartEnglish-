@@ -20,6 +20,7 @@ public class Parametrizacao {
 
     public Parametrizacao(){
         
+        this.endereco = new Endereco();
     }
     
     public String getNome() {

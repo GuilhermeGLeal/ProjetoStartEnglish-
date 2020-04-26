@@ -55,10 +55,6 @@ public class FXMLParametrizacaoController implements Initializable {
     @FXML
     private JFXTextField txNome;
     @FXML
-    private JFXButton btEscolheArquivo;
-    @FXML
-    private JFXButton btLimparFoto;
-    @FXML
     private JFXTextField txTelefone;
     @FXML
     private JFXTextField txRazao;
@@ -90,10 +86,8 @@ public class FXMLParametrizacaoController implements Initializable {
     private ImageView img;
 
     private File arq;
-    private boolean flag;
     private Image aux;
-    private Parametrizacao atualizando;
-   
+     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -124,7 +118,6 @@ public class FXMLParametrizacaoController implements Initializable {
     
     private void estadoOriginal(){
                
-        flag = false;
         pndados.setDisable(true);
         btConfirmar.setDisable(true);
         btCancelar.setDisable(false);
@@ -170,8 +163,7 @@ public class FXMLParametrizacaoController implements Initializable {
              Endereco e;
              
              p = tabela.getSelectionModel().getSelectedItem();
-             atualizando = p;
-             
+        
              txNome.setText(p.getNome());
              txTelefone.setText(p.getTelefone());
              txRazao.setText(p.getRazaoSocial());
@@ -267,6 +259,8 @@ public class FXMLParametrizacaoController implements Initializable {
     @FXML
     private void evtConfirmar(ActionEvent event) {
         
+        boolean ok = true;
+        
         if(!txNome.getText().isEmpty()){
             
             if(!txTelefone.getText().isEmpty()){
@@ -277,6 +271,125 @@ public class FXMLParametrizacaoController implements Initializable {
                         
                         if(!txCEP.getText().isEmpty()){
                             
+                           if(img!=null){
+                               
+                                int cod;
+
+                                try{
+
+                                    cod = Integer.parseInt(txIDendereco.getText());
+                                }
+                                catch(NumberFormatException e ){cod = 0;}
+
+                                DALParametrizacao dalpar = new DALParametrizacao();
+                                Parametrizacao par = new Parametrizacao();
+                                DALEndereco dale = new DALEndereco();
+
+                               par.setNome(txNome.getText());
+                               par.setTelefone(txTelefone.getText());
+                               par.setRazaoSocial(txRazao.getText());
+                               par.setEmail(txEmail.getText());
+                               
+                               par.getEndereco().setEnderecoID(cod);
+                               par.getEndereco().setCEP(txCEP.getText());
+                               
+                               if(!txRua.getText().isEmpty())
+                                   par.getEndereco().setRua(txRua.getText());
+                               if(!txBairro.getText().isEmpty())
+                                   par.getEndereco().setBairro(txBairro.getText());
+                               if(!txNumero.getText().isEmpty())
+                                   par.getEndereco().setNumero(Integer.parseInt(txNumero.getText()));
+                               if(!txCidade.getText().isEmpty())
+                                   par.getEndereco().setCidade(txCidade.getText());
+                               
+                               Alert b = null;
+                               
+                               try{
+                                   
+                                    Banco.getCon().getConnect().setAutoCommit(false);
+                               
+                                  // inserindo
+                                  if(cod == 0){
+                                      
+                                      ok = dalpar.gravar(par);
+                                                                            
+                                      if(ok){
+                                          
+                                          try{
+                                               ok = dalpar.gravarFoto(par.getNome(), arq);
+                                               
+                                               if(ok){
+                                                   
+                                                   ok = dale.gravar(par.getEndereco());
+                                                   
+                                                   if(ok)
+                                                    b = new Alert(Alert.AlertType.CONFIRMATION,"Parametrizacao,imagem e endereço inseridos!!", ButtonType.OK);    
+                                                   else
+                                                    b = new Alert(Alert.AlertType.ERROR,"Problemas ao inserir o endereço!!", ButtonType.OK);  
+                                               }
+                                               else
+                                                   b = new Alert(Alert.AlertType.ERROR,"Problemas ao inserir a imagem!!", ButtonType.OK);  
+                                               
+                                               
+                                          }catch(IOException e){System.out.println(e.getMessage());}
+                                         
+                                      }
+                                      else
+                                         b = new Alert(Alert.AlertType.ERROR,"Problemas ao inserir Parametrizacao!!", ButtonType.OK);
+                                          
+                                      
+                                  }
+                                  else{ // alterando
+                                      
+                                      ok = dalpar.alterar(par);
+                                      
+                                      if(ok){
+                                          
+                                          try{
+                                              
+                                              ok = dalpar.gravarFoto(par.getNome(), arq);
+                                              
+                                              if(ok){
+                                               
+                                                  ok = dale.alterar(par.getEndereco());
+                                                  
+                                                  if(ok)
+                                                    b = new Alert(Alert.AlertType.CONFIRMATION,"Parametrizacao,imagem e endereço atualizados!!", ButtonType.OK);   
+                                                  else
+                                                     b = new Alert(Alert.AlertType.ERROR,"Problemas ao atualizar o endereço!!", ButtonType.OK);    
+                                              }
+                                              else
+                                                b = new Alert(Alert.AlertType.ERROR,"Problemas ao atualizar a imagem!!", ButtonType.OK);  
+                                                  
+                                          }catch(IOException ex){System.out.println(ex.getMessage());}
+                                          
+                                      }
+                                      else
+                                        b = new Alert(Alert.AlertType.ERROR,"Problemas ao atualizar Parametrizacao!!", ButtonType.OK);
+                                  }
+                                  
+                                  if(ok){
+                                      
+                                    Banco.getCon().getConnect().commit();
+                                    estadoOriginal();
+                                    carregarTabela("");
+                                  }
+                                  else
+                                      Banco.getCon().getConnect().rollback();
+                                  
+                                  b.showAndWait();
+                                 
+                               }
+                               catch(SQLException sql){System.out.println(sql.getMessage());}
+                              
+                           }
+                           else{
+                               
+                                Alert a = new Alert(Alert.AlertType.WARNING, "Imagem obrigatória", ButtonType.CLOSE);
+                                img.requestFocus();
+                                a.showAndWait();
+                               
+                           }
                             
                         }
                         else{
@@ -333,7 +446,6 @@ public class FXMLParametrizacaoController implements Initializable {
         
         if(arq != null){
             
-            flag = true;
             aux=new Image(arq.toURI().toString());
             img.setImage(aux);
             img.setFitWidth(aux.getWidth());

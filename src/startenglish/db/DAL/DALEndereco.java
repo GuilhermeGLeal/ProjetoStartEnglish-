@@ -12,7 +12,7 @@ public class DALEndereco {
  
      public boolean gravar(Endereco e){
         
-        String sql = "insert into Endereco(Rua,CEP,Bairro,Numero,Cidade) values('#1','#2','#3',#4,'#5')";
+        String sql = "insert into endereco(rua,cep,bairro,numero,cidade) values('#1','#2','#3',#4,'#5')";
         sql = sql.replaceAll("#1", ""+e.getRua());
         sql = sql.replaceAll("#2", ""+e.getCEP());
         sql = sql.replaceAll("#3", ""+e.getBairro());
@@ -25,7 +25,7 @@ public class DALEndereco {
     
     public boolean alterar(Endereco e){
         
-       String sql = "update Endereco set Rua = '#1', CEP = '#2', Bairro='#3', Numero= #4, Cidade='#5' where EnderecoID = "+e.getEnderecoID();
+       String sql = "update endereco set rua = '#1', cep = '#2', bairro='#3', numero= #4, cidade='#5' where enderecoid = "+e.getEnderecoID();
         sql = sql.replaceAll("#1", e.getRua());
         sql = sql.replaceAll("#2", e.getCEP());
         sql = sql.replaceAll("#3", e.getBairro());
@@ -37,20 +37,20 @@ public class DALEndereco {
       
    public boolean apagar(int cod){       
 
-        return Banco.getCon().manipular("delete from Endereco where EnderecoID="+cod);
+        return Banco.getCon().manipular("delete from endereco where enderecoid="+cod);
 
     }
     
     public Endereco get(int cod){
      
         Endereco ender = null;
-        ResultSet rs = Banco.getCon().consultar("select * from Endereco where EnderecoID="+cod);
+        ResultSet rs = Banco.getCon().consultar("select * from endereco where enderecoid="+cod);
         
         try{
             
             if(rs.next())
             {
-                ender = new Endereco(rs.getInt("EnderecoID"), rs.getString("Rua"), rs.getString("CEP"), rs.getString("Bairro"), rs.getInt("Numero"), rs.getString("Cidade"));
+                ender = new Endereco(rs.getInt("enderecoid"), rs.getString("rua"), rs.getString("cep"), rs.getString("bairro"), rs.getInt("numero"), rs.getString("cidade"));
                  
              }
         }
@@ -61,7 +61,7 @@ public class DALEndereco {
     
     public List<Endereco> get(String filtro){
         
-       String sql="select *from Endereco";
+       String sql="select *from endereco";
        
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
@@ -72,7 +72,7 @@ public class DALEndereco {
         {
             while(rs.next())
             {
-                aux.add(new Endereco(rs.getInt("EnderecoID"), rs.getString("Rua"), rs.getString("CEP"), rs.getString("Bairro"), rs.getInt("Numero"), rs.getString("Cidade")));
+                aux.add(new Endereco(rs.getInt("enderecoid"), rs.getString("rua"), rs.getString("cep"), rs.getString("bairro"), rs.getInt("numero"), rs.getString("cidade")));
             }
         } 
         catch (SQLException ex) 

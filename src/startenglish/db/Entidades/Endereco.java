@@ -28,6 +28,12 @@ public class Endereco {
     }
 
     public Endereco() {
+        
+        this.Rua = "";
+        this.CEP = "";
+        this.bairro = "";
+        this.numero = 0;
+        this.Cidade = "";
     }
 
     

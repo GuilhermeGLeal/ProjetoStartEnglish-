@@ -20,6 +20,10 @@ public class Parametrizacao {
 
     public Parametrizacao(){
         
+        this.nome = "";
+        this.telefone = "";
+        this.email = "";
+        this.RazaoSocial = "";
         this.endereco = new Endereco();
     }
     

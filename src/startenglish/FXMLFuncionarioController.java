@@ -107,6 +107,8 @@ public class FXMLFuncionarioController implements Initializable {
     private AnchorPane pnBusca;
     @FXML
     private AnchorPane pnDados;
+    
+    private Funcionario func_alterando;
 
     
     @Override
@@ -121,6 +123,12 @@ public class FXMLFuncionarioController implements Initializable {
         MaskFieldUtil.cepField(txCEP);
         MaskFieldUtil.cpfField(txCpf);
         MaskFieldUtil.foneField(txTelefone);
+        MaskFieldUtil.maxField(txEmail, 30);
+        MaskFieldUtil.maxField(txNome, 30);
+        MaskFieldUtil.maxField(txRua, 20);
+        MaskFieldUtil.maxField(txBairro, 30);
+        MaskFieldUtil.numericField(txNumero);
+        MaskFieldUtil.maxField(txCidade, 20);
         
         EstadoOriginal();
         
@@ -208,16 +216,24 @@ public class FXMLFuncionarioController implements Initializable {
             txBairro.setText(f.getEndereco().getBairro());
             txCidade.setText(f.getEndereco().getCidade());
            
+            
+            func_alterando = f;
             DALProfessor dale = new DALProfessor();
             Professor p = new Professor();
             
             p = dale.get(f.getID());
             
             if(p != null)
+            {
                 checkProf.arm();
+                func_alterando.setProfessor(Boolean.TRUE);
+            }                
             else
+            {
                 checkProf.disarm();
-            
+                func_alterando.setProfessor(Boolean.FALSE);
+            }
+                           
             EstadoEdicao();
         }
     }
@@ -381,17 +397,99 @@ public class FXMLFuncionarioController implements Initializable {
             }
         }else
         {
-            
+            if(!txNome.getText().isEmpty())
+                if(!txCpf.getText().isEmpty())
+                    if(!txCEP.getText().isEmpty())
+                    {
+
+                        f.setNome(txNome.getText());
+                        f.setCpf(txCpf.getText());
+                        if(!txEmail.getText().isEmpty())
+                            f.setEmail(txEmail.getText());
+                        if(!txTelefone.getText().isEmpty())
+                            f.setFone(txTelefone.getText());
+                        if(!txRua.getText().isEmpty())                 
+                            end.setRua(txRua.getText());
+                        if(!txNumero.getText().isEmpty())
+                            end.setNumero(Integer.parseInt(txNumero.getText()));
+                        if(!txCEP.getText().isEmpty())
+                            end.setCEP(txCEP.getText());
+                        if(!txBairro.getText().isEmpty())
+                            end.setBairro(txBairro.getText());
+                        if(!txCidade.getText().isEmpty())
+                            end.setCidade(txCidade.getText());
+                        f.setEndereco(end);
+
+                              try{
+
+                                   Banco.getCon().getConnect().setAutoCommit(false);
+
+
+                                   ok = dale.alterar(end); 
+                                    if(ok){
+                                       
+                                       ok = dalf.alterar(f);                                 
+                                    }
+                                    else
+                                       ok = false;
+                              }
+                              catch(SQLException ex){System.out.println(ex.getMessage()); ok = false;}
+                                
+                              
+                              if(func_alterando.getProfessor() && !checkProf.isSelected())
+                              {
+                                  ok = dalp.apagar(f.getID());
+                              }
+                              else if(!func_alterando.getProfessor() && checkProf.isSelected())
+                              {
+                                  Professor prof = new Professor(f);
+                                  ok = dalp.gravar(prof);
+                              }
+                              
+                             try{
+
+                                 if(ok){
+
+                                   a = new Alert(Alert.AlertType.CONFIRMATION,"Funcionário salvo!!", ButtonType.OK);
+                                   Banco.getCon().getConnect().commit();
+                                } 
+                                else{
+                                      a = new Alert(Alert.AlertType.CONFIRMATION,"Problemas ao cadastrar funcionário!!", ButtonType.OK);
+                                      Banco.getCon().getConnect().rollback();
+                                }
+                             }catch(SQLException ex){}
+                             
+                    }else{
+                                a = new Alert(Alert.AlertType.ERROR,"CEP inválido ou inexistente",ButtonType.OK);
+                                txCEP.requestFocus();
+                                a.showAndWait();
+                    }
+                else
+                {
+                    a = new Alert(Alert.AlertType.ERROR,"CPF inválido ou inexistente",ButtonType.OK);
+                    txCpf.requestFocus();
+                    a.showAndWait();
+                }
+            else
+            {
+                a = new Alert(Alert.AlertType.WARNING,"Nome não informado",ButtonType.OK);
+                txNome.requestFocus();
+                a.showAndWait();
+            }
         }
         
         
         a.showAndWait();
-        //CarregaTabela("");
+        CarregaTabela("");
         
     }
 
     @FXML
     private void evtCancelar(ActionEvent event) {
+        if (!pnDados.isDisabled())
+        {
+            EstadoOriginal();
+        }
     }
 
     @FXML

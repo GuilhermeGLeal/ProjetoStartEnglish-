@@ -8,9 +8,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -109,9 +112,11 @@ public class FXMLParametrizacaoController implements Initializable {
     private void carregarTabela(String filtro){
      
         DALParametrizacao dalpar = new DALParametrizacao();
-        Parametrizacao para = new Parametrizacao();
-        para = dalpar.get();
-        tabela.setItems((ObservableList<Parametrizacao>) para);
+        List<Parametrizacao> para = new ArrayList();
+        para.add(dalpar.get());
+          ObservableList<Parametrizacao> modelo;
+        modelo = FXCollections.observableArrayList(para);
+        tabela.setItems(modelo);
     }
     
     private void estadoOriginal(){
@@ -132,6 +137,8 @@ public class FXMLParametrizacaoController implements Initializable {
             if(n instanceof ComboBox)
                 ((ComboBox)n).getItems().clear();
         }
+        
+        carregarTabela("");
     }
     
     private void estadoedicao(){

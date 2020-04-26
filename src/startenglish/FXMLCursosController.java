@@ -97,7 +97,8 @@ public class FXMLCursosController implements Initializable {
     
     private void estadoOriginal(){
      
-        pnpesquisa.setDisable(true);
+        txPesquisa.setDisable(true);
+        btPesquisar.setDisable(true);
         pndados.setDisable(true);
         btConfirmar.setDisable(true);
         btCancelar.setDisable(false);
@@ -119,7 +120,8 @@ public class FXMLCursosController implements Initializable {
     
     private void estadoedicao(){
         
-        pnpesquisa.setDisable(false);
+        txPesquisa.setDisable(false);
+        btPesquisar.setDisable(false);
         pndados.setDisable(false);
         btConfirmar.setDisable(false);
         btExcluir.setDisable(true);
@@ -189,6 +191,7 @@ public class FXMLCursosController implements Initializable {
                 
             }catch(SQLException ex){System.out.println(ex.getMessage());}
             
+            estadoedicao();    
             carregaTabela("");
         }
     }

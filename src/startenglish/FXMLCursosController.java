@@ -203,11 +203,29 @@ public class FXMLCursosController implements Initializable {
                
                preco = Double.parseDouble(txPreco.getText());
                
-               try{
+               if(preco > 0){
                    
-                   cod = Integer.parseInt(txId.getText());
-                   
-               }catch(NumberFormatException ex){cod = 0;}
+                try{
+
+                    cod = Integer.parseInt(txId.getText());
+
+                }catch(NumberFormatException ex){cod = 0;}
+
+                 DALCurso dalc = new DALCurso();
+                 Cursos c = new Cursos();
+
+                 c.setCursoID(cod);
+                 c.setNomeCurso(txNomeCurso.getText());
+
+                 if(checkAtivo.isSelected())
+                     c.setAtivo('S');
+                 else
+                     c.setAtivo('N');
+
+                 if(!txDescricao.getText().isEmpty())
+                     c.setDescricao(txDescricao.getText());
+               }
+              
                
            }catch(NumberFormatException ex){
                

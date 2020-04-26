@@ -259,7 +259,7 @@ public class FXMLParametrizacaoController implements Initializable {
                 } 
                 else{
                      
-                    b = new Alert(Alert.AlertType.CONFIRMATION,"Problemas ao deletar a parametrizacao, verificar no banco!!", ButtonType.OK);
+                    b = new Alert(Alert.AlertType.ERROR,"Problemas ao deletar a parametrizacao, verificar no banco!!", ButtonType.OK);
                     b.showAndWait();
                     Banco.getCon().getConnect().rollback();
                 }

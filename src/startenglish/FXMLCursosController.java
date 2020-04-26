@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -13,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -22,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import startenglish.db.DAL.DALCurso;
 import startenglish.db.Entidades.Cursos;
+import startenglish.db.util.Banco;
 import startenglish.util.MaskFieldUtil;
 
 
@@ -151,12 +155,74 @@ public class FXMLCursosController implements Initializable {
 
     @FXML
     private void evtExcluir(ActionEvent event) {
+        
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Confirmar exclusão?", ButtonType.YES,ButtonType.NO);
+        boolean ok = true;
+        
+        if(a.showAndWait().get() == ButtonType.YES){
+            
+            Cursos c = new Cursos();
+            DALCurso dalc = new DALCurso();
+            
+            c = tableview.getSelectionModel().getSelectedItem();
+            
+            try{
+                
+                Banco.getCon().getConnect().setAutoCommit(false);
+                
+                ok = dalc.apagar(c.getCursoID());
+                
+                if(ok){
+                    
+                     Banco.getCon().getConnect().commit();
+                    a =  new Alert(Alert.AlertType.ERROR, "Erro ao deletar curso, verificar em turmas e lista de espera", ButtonType.OK);
+                }
+                else{
+                    
+                    Banco.getCon().getConnect().rollback();
+                    a =  new Alert(Alert.AlertType.ERROR, "Erro ao deletar curso, verificar em turmas e lista de espera", ButtonType.OK);
+                }
+                
+                a.showAndWait();
+                
+            }catch(SQLException ex){System.out.println(ex.getMessage());}
+            
+            carregaTabela("");
+        }
     }
 
     @FXML
     private void evtConfirmar(ActionEvent event) {
+             
+        double preco = 0;
+        int cod;
         
-        
+        if(!txNomeCurso.getText().isEmpty()){
+            
+           try{
+               
+               preco = Double.parseDouble(txPreco.getText());
+               
+               try{
+                   
+                   cod = Integer.parseInt(txId.getText());
+                   
+               }catch(NumberFormatException ex){cod = 0;}
+               
+           }catch(NumberFormatException ex){
+               
+                Alert a = new Alert(Alert.AlertType.WARNING, "Nome do curso obrigatório", ButtonType.CLOSE);
+                txNomeCurso.requestFocus();
+                a.showAndWait();
+           }
+           
+        }
+        else{
+            
+            Alert a = new Alert(Alert.AlertType.WARNING, "Nome do curso obrigatório", ButtonType.CLOSE);
+            txNomeCurso.requestFocus();
+            a.showAndWait();
+        }
     }
 
     @FXML

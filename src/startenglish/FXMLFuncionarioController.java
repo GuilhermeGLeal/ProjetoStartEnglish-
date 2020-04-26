@@ -330,7 +330,8 @@ public class FXMLFuncionarioController implements Initializable {
 
                                    ok = dale.gravar(end); 
                                     if(ok){
-
+                                        int aux = Banco.getCon().getMaxPK("endereco", "enderecoid");
+                                        f.getEndereco().setEnderecoID(aux);
                                         ok = dalf.gravar(f);                                 
                                     }
                                     else
@@ -340,6 +341,8 @@ public class FXMLFuncionarioController implements Initializable {
                                 
                               if(checkProf.isSelected())
                               {
+                                  cod = Banco.getCon().getMaxPK("funcionario", "funcid");
+                                  f.setID(cod);
                                   Professor p = new Professor(f);
                                   ok = dalp.gravar(p);
                               }

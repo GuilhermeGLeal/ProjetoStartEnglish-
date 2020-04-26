@@ -396,7 +396,7 @@ public class FXMLFuncionarioController implements Initializable {
 
     @FXML
     private void evtPesquisar(ActionEvent event) {
-        CarregaTabela("upper(gar_nome) like '%"+txPesquisa.getText().toUpperCase()+"%'");
+        CarregaTabela("upper(nome) like '%"+txPesquisa.getText().toUpperCase()+"%'");
     }
 
     @FXML

@@ -382,6 +382,7 @@ public class FXMLParametrizacaoController implements Initializable {
                                               Banco.getCon().getConnect().rollback();
 
                                           b.showAndWait();
+                                           evtLimpar(event);
 
                                        }
                                        catch(SQLException sql){System.out.println(sql.getMessage());}

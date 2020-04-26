@@ -16,7 +16,7 @@ public class DALParametrizacao {
     
     public boolean gravar(Parametrizacao p){
         
-        String sql = "insert into Parametrizacao(NomeEmpresa,Telefone,RazaoSocial,E-mail,EnderecoID) values('#1','#2','#3','#4',#5)";
+        String sql = "insert into parametrizacao(nome,telefone,razaosocial,email,enderecoid) values('#1','#2','#3','#4',#5)";
         sql = sql.replaceAll("#1",p.getNome());
         sql = sql.replaceAll("#2",p.getTelefone());
         sql = sql.replaceAll("#3",p.getRazaoSocial());
@@ -29,7 +29,7 @@ public class DALParametrizacao {
     
     public boolean alterar(Parametrizacao p){
         
-        String sql = "update Parametrizacao set NomeEmpresa = '#1', Telefone = '#2', RazaoSocial='#3', E-mail= '#4', EnderecoID=#5 where NomeEmpresa = "+p.getNome();
+        String sql = "update parametrizacao set nome = '#1', telefone = '#2', razaosocial='#3', email= '#4', enderecoid=#5 where nome = "+p.getNome();
         sql = sql.replaceAll("#1",p.getNome());
         sql = sql.replaceAll("#2",p.getTelefone());
         sql = sql.replaceAll("#3",p.getRazaoSocial());
@@ -41,13 +41,13 @@ public class DALParametrizacao {
     
     public boolean apagar(Parametrizacao p){
         
-        return Banco.getCon().manipular("delete from Parametrizacao where NomeEmpresa="+p.getNome());
+        return Banco.getCon().manipular("delete from parametrizacao where nome="+p.getNome());
     }
     
     public Parametrizacao get(){
         
         Parametrizacao paramet = null;
-        ResultSet rs = Banco.getCon().consultar("select NomeEmpresa,Telefone,RazaoSociala,E-mail,EnderecoID from Parametrizacao");
+        ResultSet rs = Banco.getCon().consultar("select nome,telefone,razaosocial,email,enderecoid from parametrizacao");
         
         DALEndereco dal = new DALEndereco();
         
@@ -55,7 +55,7 @@ public class DALParametrizacao {
             
             if(rs.next())
             {
-                paramet = new Parametrizacao(rs.getString("NomeEmpresa"),rs.getString("NomeEmpresa"),rs.getString("NomeEmpresa"),rs.getString("NomeEmpresa"),
+                paramet = new Parametrizacao(rs.getString("nome"),rs.getString("telefone"),rs.getString("razaosocial"),rs.getString("email"),
                         dal.get(rs.getInt("EnderecoID")));
                  
              }
@@ -75,7 +75,7 @@ public class DALParametrizacao {
             try
             {
                 PreparedStatement ps = Banco.getCon().getConnect().
-                prepareStatement("UPDATE Parametrizacao set Logotipo = ? where NomeEmpresa= ?");
+                prepareStatement("UPDATE parametrizacao set logotipo = ? where nome= ?");
                 ps.setBinaryStream(1, imagem);
                 ps.setString(2, nome);
                 ps.executeUpdate();
@@ -91,7 +91,7 @@ public class DALParametrizacao {
              try
             {
                 PreparedStatement ps = Banco.getCon().getConnect().
-                prepareStatement("UPDATE Parametrizacao set Logotipo = null where NomeEmpresa = ?");
+                prepareStatement("UPDATE parametrizacao set logotipo = null where nome = ?");
                 ps.setString(1, nome);
                 ps.executeUpdate();
                 ps.close();
@@ -114,14 +114,14 @@ public class DALParametrizacao {
         try
         {
             PreparedStatement ps = Banco.getCon().getConnect().
-            prepareStatement("SELECT Logotipo from Parametrizacao where NomeEmpresa=?");
+            prepareStatement("SELECT logotipo from parametrizacao where nome=?");
             ps.setString(1,nome);
             
             ResultSet rs=ps.executeQuery();
             
             if(rs.next())
             {
-                byte[] bytes=rs.getBytes("Logotipo");
+                byte[] bytes=rs.getBytes("logotipo");
                 is=new ByteArrayInputStream(bytes);
             }
             ps.close();

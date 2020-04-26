@@ -37,7 +37,7 @@
       </AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="235.0" prefWidth="674.0" style="-fx-background-color: black;">
          <children>
-            <AnchorPane layoutY="-1.0" prefHeight="45.0" prefWidth="674.0" style="-fx-background-color: #FF7F27;">
+            <AnchorPane fx:id="pnpesquisa" layoutY="-1.0" prefHeight="45.0" prefWidth="674.0" style="-fx-background-color: #FF7F27;">
                <children>
                   <AnchorPane fx:id="pnpesquisa" layoutX="4.0" prefHeight="42.0" prefWidth="674.0">
                      <children>
@@ -47,7 +47,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <TableView fx:id="tableview" layoutY="36.0" prefHeight="185.0" prefWidth="674.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+            <TableView fx:id="tableview" layoutY="36.0" onMouseClicked="#clicktabela" prefHeight="185.0" prefWidth="674.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
                   <TableColumn fx:id="tabelaNomeCurso" prefWidth="379.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Nome do Curso" />
                   <TableColumn fx:id="tabelaPreco" minWidth="0.0" prefWidth="173.0" style="-fx-background-color: #FF7F27;" text="Preço" />

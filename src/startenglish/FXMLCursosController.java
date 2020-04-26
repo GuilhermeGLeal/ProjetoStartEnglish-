@@ -4,15 +4,25 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
+import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputControl;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import startenglish.db.DAL.DALCurso;
 import startenglish.db.Entidades.Cursos;
+import startenglish.util.MaskFieldUtil;
 
 
 public class FXMLCursosController implements Initializable {
@@ -56,15 +66,87 @@ public class FXMLCursosController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        tabelaNomeCurso.setCellValueFactory(new PropertyValueFactory("nomeCurso"));
+        tabelaPreco.setCellValueFactory(new PropertyValueFactory("preco"));
+        tabelaAtivo.setCellValueFactory(new PropertyValueFactory("Ativo"));
+        
+        MaskFieldUtil.maxField(txNomeCurso, 20);
+        MaskFieldUtil.maxField(txDescricao, 50);
+        MaskFieldUtil.monetaryField(txPreco);
+        MaskFieldUtil.maxField(txPreco, 10);
+                
+        estadoOriginal();
     }    
 
+    private void carregaTabela(String filtro){
+        
+        DALCurso dalcurso = new DALCurso();
+        List<Cursos> cursos = new ArrayList();
+        cursos = dalcurso.get(filtro);
+        ObservableList<Cursos> modelo;
+        modelo = FXCollections.observableArrayList(cursos);
+        tableview.setItems(modelo);
+     
+        
+    }
+    
+    private void estadoOriginal(){
+     
+        pnpesquisa.setDisable(false);
+        pndados.setDisable(true);
+        btConfirmar.setDisable(true);
+        btCancelar.setDisable(false);
+        btAlterar.setDisable(true);
+        btExcluir.setDisable(true);
+        btNovo.setDisable(false);
+       
+        ObservableList <Node> componentes=pndados.getChildren(); 
+        for(Node n : componentes)
+        {
+            if (n instanceof TextInputControl) 
+                ((TextInputControl)n).setText("");
+            if(n instanceof ComboBox)
+                ((ComboBox)n).getItems().clear();
+        }
+      
+        carregaTabela("");
+    }
+    
+    private void estadoedicao(){
+        
+        pnpesquisa.setDisable(true);
+        pndados.setDisable(false);
+        btConfirmar.setDisable(false);
+        btExcluir.setDisable(true);
+        btExcluir.setDisable(true);
+        txNomeCurso.requestFocus();
+    }
+    
     @FXML
     private void evtNovo(ActionEvent event) {
+        
+        estadoedicao();
     }
 
     @FXML
     private void evtAlterar(ActionEvent event) {
+        
+        if(tableview.getSelectionModel().getSelectedItem() != null){
+        
+            Cursos c = tableview.getSelectionModel().getSelectedItem();
+            
+            txId.setText(""+c.getCursoID());
+            txNomeCurso.setText(c.getNomeCurso());
+            if(c.getAtivo()=='S')
+                checkAtivo.arm();
+            
+            txDescricao.setText(c.getDescricao());
+            txPreco.setText(""+c.getPreco());
+            
+            estadoedicao();
+        }
+        
     }
 
     @FXML
@@ -73,14 +155,34 @@ public class FXMLCursosController implements Initializable {
 
     @FXML
     private void evtConfirmar(ActionEvent event) {
+        
+        
     }
 
     @FXML
     private void evtCancelar(ActionEvent event) {
+        
+        if (!pndados.isDisabled())
+        {
+            estadoOriginal();
+        } 
+       
     }
 
     @FXML
     private void evtPesquisa(ActionEvent event) {
+        
+        carregaTabela("upper(nomecurso) like '%"+txPesquisa.getText().toUpperCase()+"%'");
+    }
+
+    @FXML
+    private void clicktabela(MouseEvent event) {
+        
+         if(tableview.getSelectionModel().getSelectedIndex()>=0)
+        {
+           btAlterar.setDisable(false);
+           btExcluir.setDisable(false);
+        }
     }
     
 }

@@ -144,6 +144,7 @@ public class FXMLFuncionarioController implements Initializable {
         pnBusca.setDisable(false);
         txPesquisa.clear();
         pnDados.setDisable(true);
+        checkProf.setSelected(false);
         
         
         ObservableList <Node> componentes=pnDados.getChildren(); //”limpa” os componentes
@@ -155,7 +156,7 @@ public class FXMLFuncionarioController implements Initializable {
                 ((ComboBox)n).getItems().clear();
         }
       
-        //CarregaTabela("");
+        CarregaTabela("");
     }
     
     private void EstadoEdicao()
@@ -225,12 +226,12 @@ public class FXMLFuncionarioController implements Initializable {
             
             if(p != null)
             {
-                checkProf.arm();
+                checkProf.setSelected(true);
                 func_alterando.setProfessor(Boolean.TRUE);
             }                
             else
             {
-                checkProf.disarm();
+                checkProf.setSelected(false);
                 func_alterando.setProfessor(Boolean.FALSE);
             }
                            
@@ -240,7 +241,7 @@ public class FXMLFuncionarioController implements Initializable {
 
     @FXML
     private void evtExcluir(ActionEvent event) {
-        boolean ok;
+        boolean ok = true;
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         a.setContentText("Confirma a exclusão");
         if (a.showAndWait().get() == ButtonType.OK) {
@@ -254,22 +255,22 @@ public class FXMLFuncionarioController implements Initializable {
 
                    Banco.getCon().getConnect().setAutoCommit(false);
 
-                   ok = dalf.apagar(f);
-
+                   if(f.getProfessor())
+                    {
+                          ok = dalp.apagar(f.getID());
+                    }
+                   
+                   if(ok)
+                    ok = dalf.apagar(f);
                     if(ok){
-
                        ok = dale.apagar(f.getEndereco().getEnderecoID());
-                       
-                       if(ok)
-                           ok = dalp.apagar(f.getID());
-                       else ok = false;
-
                     }
                     else
                        ok = false;
               }
               catch(SQLException ex){System.out.println(ex.getMessage()); ok = false;}
 
+                       
              try{
 
                  if(ok){
@@ -480,6 +481,7 @@ public class FXMLFuncionarioController implements Initializable {
         
         
         a.showAndWait();
+        EstadoOriginal();
         CarregaTabela("");
         
     }

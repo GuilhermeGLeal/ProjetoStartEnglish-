@@ -8,14 +8,16 @@ public class Parametrizacao {
     private String email;
     private String RazaoSocial;
     private Endereco endereco;
+    private String CNPJ;
 
-    public Parametrizacao(String nome, String telefone, String email, String RazaoSocial, Endereco endereco) {
+    public Parametrizacao(String nome, String telefone, String email, String RazaoSocial, Endereco endereco, String CNPJ) {
         
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
         this.RazaoSocial = RazaoSocial;
         this.endereco = endereco;
+        this.CNPJ = CNPJ;
     }
 
     public Parametrizacao(){
@@ -25,6 +27,7 @@ public class Parametrizacao {
         this.email = "";
         this.RazaoSocial = "";
         this.endereco = new Endereco();
+        this.CNPJ = "";
     }
     
     public String getNome() {
@@ -66,6 +69,15 @@ public class Parametrizacao {
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
     }
+
+    public String getCNPJ() {
+        return CNPJ;
+    }
+
+    public void setCNPJ(String CNPJ) {
+        this.CNPJ = CNPJ;
+    }
+    
     
     @Override
     public String toString(){

@@ -4,28 +4,38 @@ import java.util.Date;
 
 
 public class Agenda {
+    
     private int ID;
     private Professor professor;
+    private Aluno aluno;
     private Date dataProva;
     private String horario;
     private String local;
+    private char situacao_prova;
+    private double nota;
 
-    public Agenda() {
-    }
-
-    public Agenda(Professor professor, Date dataProva, String horario, String local) {
-        this.professor = professor;
-        this.dataProva = dataProva;
-        this.horario = horario;
-        this.local = local;
-    }
-
-    public Agenda(int ID, Professor professor, Date dataProva, String horario, String local) {
+    public Agenda(int ID, Professor professor, Aluno aluno, Date dataProva, String horario, String local, char situacao_prova, double nota) {
         this.ID = ID;
         this.professor = professor;
+        this.aluno = aluno;
         this.dataProva = dataProva;
         this.horario = horario;
         this.local = local;
+        this.situacao_prova = situacao_prova;
+        this.nota = nota;
+    }
+
+    public Agenda(Professor professor, Aluno aluno, Date dataProva, String horario, String local, char situacao_prova, double nota) {
+        this.professor = professor;
+        this.aluno = aluno;
+        this.dataProva = dataProva;
+        this.horario = horario;
+        this.local = local;
+        this.situacao_prova = situacao_prova;
+        this.nota = nota;
+    }
+
+    public Agenda() {
     }
 
     public int getID() {
@@ -42,6 +52,14 @@ public class Agenda {
 
     public void setProfessor(Professor professor) {
         this.professor = professor;
+    }
+
+    public Aluno getAluno() {
+        return aluno;
+    }
+
+    public void setAluno(Aluno aluno) {
+        this.aluno = aluno;
     }
 
     public Date getDataProva() {
@@ -67,4 +85,24 @@ public class Agenda {
     public void setLocal(String local) {
         this.local = local;
     }
+
+    public char getSituacao_prova() {
+        return situacao_prova;
+    }
+
+    public void setSituacao_prova(char situacao_prova) {
+        this.situacao_prova = situacao_prova;
+    }
+
+    public double getNota() {
+        return nota;
+    }
+
+    public void setNota(double nota) {
+        this.nota = nota;
+    }
+    
+    
+
+   
 }

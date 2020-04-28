@@ -16,25 +16,27 @@ public class DALParametrizacao {
     
     public boolean gravar(Parametrizacao p){
         
-        String sql = "insert into parametrizacao(nome,telefone,razaosocial,email,enderecoid) values('#1','#2','#3','#4',#5)";
+        String sql = "insert into parametrizacao(nome,telefone,razaosocial,email,enderecoid,cnpj) values('#1','#2','#3','#4',#5,#6)";
         sql = sql.replaceAll("#1",p.getNome());
         sql = sql.replaceAll("#2",p.getTelefone());
         sql = sql.replaceAll("#3",p.getRazaoSocial());
         sql = sql.replaceAll("#4",p.getEmail());
         sql = sql.replaceAll("#5",""+p.getEndereco().getEnderecoID());
-             
+        sql = sql.replaceAll("#6",p.getCNPJ());    
+        
         return Banco.getCon().manipular(sql);
         
     }
     
     public boolean alterar(Parametrizacao p,String nome){
         
-        String sql = "update parametrizacao set nome = '#1', telefone = '#2', razaosocial='#3', email= '#4', enderecoid=#5 where nome = '"+nome+"'";
+        String sql = "update parametrizacao set nome = '#1', telefone = '#2', razaosocial='#3', email= '#4', enderecoid=#5, cnpj='#6' where nome = '"+nome+"'";
         sql = sql.replaceAll("#1",p.getNome());
         sql = sql.replaceAll("#2",p.getTelefone());
         sql = sql.replaceAll("#3",p.getRazaoSocial());
         sql = sql.replaceAll("#4",p.getEmail());
         sql = sql.replaceAll("#5",""+p.getEndereco().getEnderecoID());
+        sql = sql.replaceAll("#6",p.getCNPJ());
         
         return Banco.getCon().manipular(sql);
     }
@@ -56,7 +58,7 @@ public class DALParametrizacao {
             if(rs.next())
             {
                 paramet = new Parametrizacao(rs.getString("nome"),rs.getString("telefone"),rs.getString("razaosocial"),rs.getString("email"),
-                        dal.get(rs.getInt("EnderecoID")));
+                        dal.get(rs.getInt("EnderecoID")),rs.getString("cnpj"));
                  
              }
         }

@@ -1,30 +1,63 @@
 package startenglish.db.Entidades;
 
+import java.util.Date;
+
 
 public class Cursos {
     
     private int CursoID;
-    private char Ativo;
+    private String etapa;
+    private Date data_lancamento;
+    private Date data_encerramento;
     private String nomeCurso;
     private String descricao;
     private double preco;
 
-    public Cursos(int CursoID, char Ativo, String nomeCurso, String descricao, double preco) {
+    public Cursos(int CursoID, String etapa, Date data_lancamento, Date data_encerramento, String nomeCurso, String descricao, double preco) {
         this.CursoID = CursoID;
-        this.Ativo = Ativo;
+        this.etapa = etapa;
+        this.data_lancamento = data_lancamento;
+        this.data_encerramento = data_encerramento;
         this.nomeCurso = nomeCurso;
         this.descricao = descricao;
         this.preco = preco;
     }
 
-    public Cursos(char Ativo, String nomeCurso, String descricao, double preco) {
-        this.Ativo = Ativo;
+    public Cursos(String etapa, Date data_lancamento, Date data_encerramento, String nomeCurso, String descricao, double preco) {
+        this.etapa = etapa;
+        this.data_lancamento = data_lancamento;
+        this.data_encerramento = data_encerramento;
         this.nomeCurso = nomeCurso;
         this.descricao = descricao;
         this.preco = preco;
     }
 
+   
     public Cursos() {
+    }
+
+    public String getEtapa() {
+        return etapa;
+    }
+
+    public void setEtapa(String etapa) {
+        this.etapa = etapa;
+    }
+
+    public Date getData_lancamento() {
+        return data_lancamento;
+    }
+
+    public void setData_lancamento(Date data_lancamento) {
+        this.data_lancamento = data_lancamento;
+    }
+
+    public Date getData_encerramento() {
+        return data_encerramento;
+    }
+
+    public void setData_encerramento(Date data_encerramento) {
+        this.data_encerramento = data_encerramento;
     }
 
     
@@ -35,14 +68,6 @@ public class Cursos {
 
     public void setCursoID(int CursoID) {
         this.CursoID = CursoID;
-    }
-
-    public char getAtivo() {
-        return Ativo;
-    }
-
-    public void setAtivo(char Ativo) {
-        this.Ativo = Ativo;
     }
 
     public String getNomeCurso() {

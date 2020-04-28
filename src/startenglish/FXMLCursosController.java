@@ -144,10 +144,12 @@ public class FXMLCursosController implements Initializable {
             
             txId.setText(""+c.getCursoID());
             txNomeCurso.setText(c.getNomeCurso());
+            
+            /*
             if(c.getAtivo()=='S')
                 checkAtivo.setSelected(true);
             else
-               checkAtivo.setSelected(false); 
+               checkAtivo.setSelected(false); */
             
             txDescricao.setText(c.getDescricao());
             txPreco.setText(""+c.getPreco());
@@ -224,10 +226,11 @@ public class FXMLCursosController implements Initializable {
                  c.setNomeCurso(txNomeCurso.getText());
                  c.setPreco(preco);
 
+                 /*
                  if(checkAtivo.isSelected())
                      c.setAtivo('S');
                  else
-                     c.setAtivo('N');
+                     c.setAtivo('N');*/
 
                  if(!txDescricao.getText().isEmpty())
                      c.setDescricao(txDescricao.getText());

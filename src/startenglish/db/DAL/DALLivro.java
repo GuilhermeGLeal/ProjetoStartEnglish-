@@ -12,19 +12,23 @@ public class DALLivro {
     
       public boolean gravar(Livro lv){
      
-        String sql = "insert into livro(nome,valor) values('#1',#2)";
+        String sql = "insert into livro(nome,valor,editora,volume) values('#1',#2,'#3','#4')";
         sql = sql.replaceAll("#1",lv.getNome());
         sql = sql.replaceAll("#2",""+lv.getValor());
-            
+        sql = sql.replaceAll("#3",lv.getEditora());
+        sql = sql.replaceAll("#4",lv.getVolume());
+        
         return Banco.getCon().manipular(sql);
     }
     
      public boolean alterar(Livro lv){
         
-       String sql = "update livro set nome = '#1', valor = #2 where livroid = "+lv.getLivroID();
+       String sql = "update livro set nome = '#1', valor = #2, editora = '#3', volume = '#4' where livroid = "+lv.getLivroID();
        sql = sql.replaceAll("#1",lv.getNome());
        sql = sql.replaceAll("#2",""+lv.getValor());
-        
+       sql = sql.replaceAll("#3",lv.getEditora());
+       sql = sql.replaceAll("#4",lv.getVolume()); 
+       
         return Banco.getCon().manipular(sql);
     }
      
@@ -42,7 +46,7 @@ public class DALLivro {
             
             if(rs.next())
             {
-                livro = new Livro(rs.getInt("livroid"),rs.getString("nome"),rs.getDouble("valor"));
+                livro = new Livro(rs.getInt("livroid"),rs.getString("nome"),rs.getDouble("valor"),rs.getString("editora"),rs.getString("volume"));
                  
              }
         }
@@ -64,7 +68,7 @@ public class DALLivro {
         {
             while(rs.next())
             {
-                aux.add(new Livro(rs.getInt("livroid"),rs.getString("nome"),rs.getDouble("valor")));
+                aux.add(new Livro(rs.getInt("livroid"),rs.getString("nome"),rs.getDouble("valor"),rs.getString("editora"),rs.getString("volume")));
             }
         } 
         catch (SQLException ex) 

@@ -12,22 +12,26 @@ public class DALCurso {
  
     public boolean gravar(Cursos c){
      
-        String sql = "insert into curso(ativo,nomecurso,descricao,preco) values('#1','#2','#3',#4)";
-        sql = sql.replaceAll("#1",""+c.getAtivo());
-        sql = sql.replaceAll("#2",c.getNomeCurso());
-        sql = sql.replaceAll("#3",c.getDescricao());
-        sql = sql.replaceAll("#4",""+c.getPreco());
+        String sql = "insert into curso(nomecurso,descricao,preco,etapa,datalancamento,dataencerramento) values('#1','#2',#3,'#4','#5','#6')";
+        sql = sql.replaceAll("#1",c.getNomeCurso());
+        sql = sql.replaceAll("#2",c.getDescricao());
+        sql = sql.replaceAll("#3",""+c.getPreco());
+        sql = sql.replaceAll("#4",c.getEtapa());
+        sql = sql.replaceAll("#5",""+c.getData_lancamento());
+        sql = sql.replaceAll("#6",""+c.getData_encerramento());
         
         return Banco.getCon().manipular(sql);
     }
     
      public boolean alterar(Cursos c){
         
-       String sql = "update curso set ativo = '#1', nomecurso = '#2', descricao='#3', preco= #4 where cursoid = "+c.getCursoID();
-       sql = sql.replaceAll("#1",""+c.getAtivo());
-       sql = sql.replaceAll("#2",c.getNomeCurso());
-       sql = sql.replaceAll("#3",c.getDescricao());
-       sql = sql.replaceAll("#4",""+c.getPreco());
+       String sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = '#5' where cursoid = "+c.getCursoID();
+       sql = sql.replaceAll("#1",c.getNomeCurso());
+       sql = sql.replaceAll("#2",c.getDescricao());
+       sql = sql.replaceAll("#3",""+c.getPreco());
+       sql = sql.replaceAll("#4",c.getEtapa());
+       sql = sql.replaceAll("#5",""+c.getData_lancamento());
+       sql = sql.replaceAll("#6",""+c.getData_encerramento());
         
         return Banco.getCon().manipular(sql);
     }
@@ -46,7 +50,8 @@ public class DALCurso {
             
             if(rs.next())
             {
-                curso = new Cursos(rs.getString("ativo").charAt(0), rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"));
+                curso = new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento"), rs.getDate("dataencerramento"), 
+                        rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"));
                  
              }
         }
@@ -68,7 +73,8 @@ public class DALCurso {
         {
             while(rs.next())
             {
-                aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("ativo").charAt(0), rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco")));
+                aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento"), rs.getDate("dataencerramento"), 
+                        rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco")));
             }
         } 
         catch (SQLException ex) 

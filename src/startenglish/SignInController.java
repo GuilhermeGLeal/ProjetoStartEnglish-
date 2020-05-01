@@ -10,7 +10,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -34,6 +37,15 @@ public class SignInController implements Initializable {
     @FXML
     private void evtLogin(MouseEvent event) {
         
+        try {
+            Parent aux = FXMLLoader.load(getClass().getResource("FXMLPrincipal.fxml"));
+            FXMLLoginController.APLogin.getChildren().removeAll();
+            FXMLLoginController.APLogin.getChildren().setAll(aux);
+            
+        } catch (Exception e) {
+            //System.out.println("Jorge");
+            System.out.println(e.getMessage());
+        }
     }
     
 }

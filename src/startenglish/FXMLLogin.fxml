@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="680.0" prefWidth="980.0" style="-fx-background-color: transparent;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLLoginController">
+<AnchorPane id="AnchorPane" fx:id="APLogin" prefHeight="680.0" prefWidth="980.0" style="-fx-background-color: transparent;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLLoginController">
    <children>
       <Pane layoutX="1.0" layoutY="140.0" prefHeight="400.0" prefWidth="980.0" styleClass="pane">
          <children>

@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javax.swing.plaf.ColorUIResource;
@@ -29,6 +30,8 @@ public class FXMLLoginController implements Initializable {
     private Parent fxml;
     @FXML
     private JFXButton btn_fechar;
+    @FXML
+    public static AnchorPane APLogin;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {

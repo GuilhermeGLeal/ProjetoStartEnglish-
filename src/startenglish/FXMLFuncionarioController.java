@@ -113,6 +113,8 @@ public class FXMLFuncionarioController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        
                 
         tabelaNome.setCellValueFactory(new PropertyValueFactory("Nome"));
         tabelaCPF.setCellValueFactory(new PropertyValueFactory("cpf"));

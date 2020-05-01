@@ -562,8 +562,9 @@ public class FXMLParametrizacaoController implements Initializable {
     @FXML
     private void evtConfirmar(ActionEvent event) {
         
-        boolean ok = true;
+        boolean ok = true,ok2 = false;
         int code;
+         Alert a  = null;
        
         if (validaNome(txNome.getText())) {
 
@@ -577,150 +578,152 @@ public class FXMLParametrizacaoController implements Initializable {
 
                             if (validaCEP(txCEP.getText())) {
 
-                                 Alert c = new Alert(Alert.AlertType.CONFIRMATION, "Deseja carregar do endereço?", ButtonType.YES,ButtonType.NO);
-              
-                                    if(c.showAndWait().get() == ButtonType.YES){
-
-                                        txBairro.setText("aguarde...");
-                                        txRua.setText("aguarde...");
-                                        txCidade.setText("aguarde...");
-                                          insereCampos();
-                                    }                    
+                                ok2 = insereCampos();
+                             
+                                if(ok2){
                                     
-                                if (img.getImage() != null) {
+                                    a = new Alert(Alert.AlertType.CONFIRMATION, "CEP encontrado!! Deseja verificar Campos?", ButtonType.YES,ButtonType.NO);
+                                    
+                                    if(a.showAndWait().get() == ButtonType.NO){
+                                        
+                                        if (img.getImage() != null) {
 
-                                    int cod;
+                                            int cod;
 
-                                    try {
+                                            try {
 
-                                        cod = Integer.parseInt(txIDendereco.getText());
-                                    } catch (NumberFormatException e) {
-                                        cod = 0;
-                                    }
+                                                cod = Integer.parseInt(txIDendereco.getText());
+                                            } catch (NumberFormatException e) {
+                                                cod = 0;
+                                            }
 
-                                    DALParametrizacao dalpar = new DALParametrizacao();
-                                    Parametrizacao par = new Parametrizacao();
-                                    DALEndereco dale = new DALEndereco();
+                                            DALParametrizacao dalpar = new DALParametrizacao();
+                                            Parametrizacao par = new Parametrizacao();
+                                            DALEndereco dale = new DALEndereco();
 
-                                    par.setNome(txNome.getText());
-                                    par.setCNPJ(txCNPJ.getText());
-                                    par.setTelefone(txTelefone.getText());
-                                    par.setRazaoSocial(txRazao.getText());
-                                    par.setEmail(txEmail.getText());
+                                            par.setNome(txNome.getText());
+                                            par.setCNPJ(txCNPJ.getText());
+                                            par.setTelefone(txTelefone.getText());
+                                            par.setRazaoSocial(txRazao.getText());
+                                            par.setEmail(txEmail.getText());
 
-                                    par.getEndereco().setEnderecoID(cod);
-                                    par.getEndereco().setCEP(txCEP.getText());
+                                            par.getEndereco().setEnderecoID(cod);
+                                            par.getEndereco().setCEP(txCEP.getText());
 
-                                    if (!txRua.getText().isEmpty()) {
-                                        par.getEndereco().setRua(txRua.getText());
-                                    }
-                                    if (!txBairro.getText().isEmpty()) {
-                                        par.getEndereco().setBairro(txBairro.getText());
-                                    }
-                                    if (!txNumero.getText().isEmpty()) {
-                                        par.getEndereco().setNumero(Integer.parseInt(txNumero.getText()));
-                                    }
-                                    if (!txCidade.getText().isEmpty()) {
-                                        par.getEndereco().setCidade(txCidade.getText());
-                                    }
+                                            if (!txRua.getText().isEmpty()) {
+                                                par.getEndereco().setRua(txRua.getText());
+                                            }
+                                            if (!txBairro.getText().isEmpty()) {
+                                                par.getEndereco().setBairro(txBairro.getText());
+                                            }
+                                            if (!txNumero.getText().isEmpty()) {
+                                                par.getEndereco().setNumero(Integer.parseInt(txNumero.getText()));
+                                            }
+                                            if (!txCidade.getText().isEmpty()) {
+                                                par.getEndereco().setCidade(txCidade.getText());
+                                            }
 
-                                    Alert b = null;
+                                            Alert b = null;
 
-                                    try {
+                                            try {
 
-                                        Banco.getCon().getConnect().setAutoCommit(false);
+                                                Banco.getCon().getConnect().setAutoCommit(false);
 
-                                        // inserindo
-                                        if (cod == 0) {
+                                                // inserindo
+                                                if (cod == 0) {
 
-                                            ok = dale.gravar(par.getEndereco());
+                                                    ok = dale.gravar(par.getEndereco());
 
-                                            if (ok) {
+                                                    if (ok) {
 
-                                                code = Banco.getCon().getMaxPK("Endereco", "EnderecoID");
-                                                par.getEndereco().setEnderecoID(code);
-                                                ok = dalpar.gravar(par);
-
-                                                if (ok) {
-
-                                                    try {
-                                                        ok = dalpar.gravarFoto(par.getNome(), arq);
+                                                        code = Banco.getCon().getMaxPK("Endereco", "EnderecoID");
+                                                        par.getEndereco().setEnderecoID(code);
+                                                        ok = dalpar.gravar(par);
 
                                                         if (ok) {
-                                                            b = new Alert(Alert.AlertType.CONFIRMATION, "Parametrizacao,imagem e endereço inseridos!!", ButtonType.OK);
+
+                                                            try {
+                                                                ok = dalpar.gravarFoto(par.getNome(), arq);
+
+                                                                if (ok) {
+                                                                    b = new Alert(Alert.AlertType.CONFIRMATION, "Parametrizacao,imagem e endereço inseridos!!", ButtonType.OK);
+                                                                } else {
+                                                                    b = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir a imagem!!", ButtonType.OK);
+                                                                }
+
+                                                            } catch (IOException e) {
+                                                                System.out.println(e.getMessage());
+                                                            }
                                                         } else {
-                                                            b = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir a imagem!!", ButtonType.OK);
+                                                            b = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir Parametrizacao!!", ButtonType.OK);
                                                         }
-
-                                                    } catch (IOException e) {
-                                                        System.out.println(e.getMessage());
+                                                    } else {
+                                                        b = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir Endereço!!", ButtonType.OK);
                                                     }
-                                                } else {
-                                                    b = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir Parametrizacao!!", ButtonType.OK);
+
+                                                } else { // alterando
+
+                                                    ok = dale.alterar(par.getEndereco());
+
+                                                    if (ok) {
+
+                                                        ok = dalpar.alterar(par, nome_antigo);
+
+                                                        if (ok) {
+
+                                                            if (flag) {
+                                                                try {
+                                                                    ok = dalpar.gravarFoto(nome_antigo, arq);
+
+                                                                    if (ok) {
+                                                                        b = new Alert(Alert.AlertType.CONFIRMATION, "Parametrizacao,imagem e endereço atualizados!!", ButtonType.OK);
+                                                                    } else {
+                                                                        b = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar a imagem!!", ButtonType.OK);
+                                                                    }
+
+                                                                } catch (IOException e) {
+                                                                    System.out.println(e.getMessage());
+                                                                }
+                                                            } else {
+                                                                b = new Alert(Alert.AlertType.CONFIRMATION, "Parametrizacao,imagem e endereço atualizados!!", ButtonType.OK);
+                                                            }
+
+                                                        } else {
+                                                            b = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar Parametrizacao!!", ButtonType.OK);
+                                                        }
+                                                    } else {
+                                                        b = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar Endereço!!", ButtonType.OK);
+                                                    }
+
                                                 }
-                                            } else {
-                                                b = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir Endereço!!", ButtonType.OK);
-                                            }
-
-                                        } else { // alterando
-
-                                            ok = dale.alterar(par.getEndereco());
-
-                                            if (ok) {
-
-                                                ok = dalpar.alterar(par, nome_antigo);
 
                                                 if (ok) {
 
-                                                    if (flag) {
-                                                        try {
-                                                            ok = dalpar.gravarFoto(nome_antigo, arq);
-
-                                                            if (ok) {
-                                                                b = new Alert(Alert.AlertType.CONFIRMATION, "Parametrizacao,imagem e endereço atualizados!!", ButtonType.OK);
-                                                            } else {
-                                                                b = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar a imagem!!", ButtonType.OK);
-                                                            }
-
-                                                        } catch (IOException e) {
-                                                            System.out.println(e.getMessage());
-                                                        }
-                                                    } else {
-                                                        b = new Alert(Alert.AlertType.CONFIRMATION, "Parametrizacao,imagem e endereço atualizados!!", ButtonType.OK);
-                                                    }
-
+                                                    Banco.getCon().getConnect().commit();
+                                                    estadoOriginal();
+                                                    carregarTabela();
                                                 } else {
-                                                    b = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar Parametrizacao!!", ButtonType.OK);
+                                                    Banco.getCon().getConnect().rollback();
                                                 }
-                                            } else {
-                                                b = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar Endereço!!", ButtonType.OK);
+
+                                                b.showAndWait();
+                                                evtLimpar(event);
+
+                                            } catch (SQLException sql) {
+                                                System.out.println(sql.getMessage());
                                             }
 
-                                        }
-
-                                        if (ok) {
-
-                                            Banco.getCon().getConnect().commit();
-                                            estadoOriginal();
-                                            carregarTabela();
                                         } else {
-                                            Banco.getCon().getConnect().rollback();
+
+                                            a = new Alert(Alert.AlertType.WARNING, "Imagem obrigatória", ButtonType.CLOSE);
+                                            btEscolher.requestFocus();
+                                            a.showAndWait();
+
                                         }
-
-                                        b.showAndWait();
-                                        evtLimpar(event);
-
-                                    } catch (SQLException sql) {
-                                        System.out.println(sql.getMessage());
                                     }
-
-                                } else {
-
-                                    Alert a = new Alert(Alert.AlertType.WARNING, "Imagem obrigatória", ButtonType.CLOSE);
-                                    btEscolher.requestFocus();
-                                    a.showAndWait();
-
+                              
                                 }
+                              
 
                             } 
                         } 
@@ -778,7 +781,7 @@ public class FXMLParametrizacaoController implements Initializable {
     }
     
     
-    private void insereCampos() 
+    private boolean insereCampos() 
     {
         String sjson=ConsultaAPI.consultaCep(txCEP.getText(),"json");
         json=new JSONObject(sjson);
@@ -788,6 +791,8 @@ public class FXMLParametrizacaoController implements Initializable {
              Alert a = new Alert(Alert.AlertType.WARNING, "CEP não encontrado", ButtonType.CLOSE);
             a.showAndWait();
             txCEP.requestFocus();
+            
+            return false;
         
         }
         else{
@@ -798,7 +803,7 @@ public class FXMLParametrizacaoController implements Initializable {
             
         }
        
-        
+        return true;
     }
 
     @FXML
@@ -815,7 +820,7 @@ public class FXMLParametrizacaoController implements Initializable {
                 txBairro.setText("aguarde...");
                 txRua.setText("aguarde...");
                 txCidade.setText("aguarde...");
-                  insereCampos();
+                insereCampos();
             }
               
                 

@@ -27,7 +27,13 @@ public class DALCurso {
     
      public boolean alterar(Cursos c){
         
-       String sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = '#6' where cursoid = "+c.getCursoID();
+           String sql;
+        if(c.getData_encerramento() == null)
+              sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = #6 where cursoid = "+c.getCursoID();
+        else
+            sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = '#6' where cursoid = "+c.getCursoID();
+
+            
        sql = sql.replaceAll("#1",c.getNomeCurso());
        sql = sql.replaceAll("#2",c.getDescricao());
        sql = sql.replaceAll("#3",""+c.getPreco());

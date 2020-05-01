@@ -80,9 +80,9 @@ public class FXMLCursosController implements Initializable {
     @FXML
     private TableColumn<Cursos, String> tabelaEtapa;
     @FXML
-    private TableColumn<Cursos, Date> tabelaData;
+    private TableColumn<Cursos, LocalDate> tabelaData;
     @FXML
-    private TableColumn<Cursos, Date> tabelaEncerramento;
+    private TableColumn<Cursos, LocalDate> tabelaEncerramento;
     @FXML
     private JFXDatePicker dtFiltro;
     @FXML
@@ -137,7 +137,7 @@ public class FXMLCursosController implements Initializable {
                 ((ComboBox)n).getItems().clear();
         }
       
-        dtpDataEnc.setValue(LocalDate.now());
+        dtpDataEnc.setValue(null);
         dtpDataLanc.setValue(LocalDate.now());
         carregaTabela("");
     }
@@ -173,6 +173,12 @@ public class FXMLCursosController implements Initializable {
             txEtapa.setText(c.getEtapa());
             dtpDataEnc.setValue(c.getData_encerramento());
             dtpDataLanc.setValue(c.getData_lancamento());
+            
+            if(c.getData_encerramento() != null){
+                
+                dtpDataEnc.setDisable(false);
+                cEncerrar.setSelected(true);
+            }
             
             estadoedicao();
         }
@@ -400,6 +406,9 @@ public class FXMLCursosController implements Initializable {
                             if(encerrado)
                                 c.setData_encerramento(dtpDataEnc.getValue());
                             
+                            if(!encerrado && dtpDataEnc.getValue() != null)
+                                c.setData_encerramento(null);
+                            
                             if (!txDescricao.getText().isEmpty()) {
                                 c.setDescricao(txDescricao.getText());
                             }
@@ -482,6 +491,11 @@ public class FXMLCursosController implements Initializable {
 
     @FXML
     private void evtEncerrar(MouseEvent event) {
+        
+        if(cEncerrar.isSelected())
+            dtpDataEnc.setDisable(false);
+        else
+            dtpDataEnc.setDisable(true);
     }
 
     @FXML

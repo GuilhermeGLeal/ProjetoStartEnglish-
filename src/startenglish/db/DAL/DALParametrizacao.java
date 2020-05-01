@@ -16,7 +16,7 @@ public class DALParametrizacao {
     
     public boolean gravar(Parametrizacao p){
         
-        String sql = "insert into parametrizacao(nome,telefone,razaosocial,email,enderecoid,cnpj) values('#1','#2','#3','#4',#5,#6)";
+        String sql = "insert into parametrizacao(nome,telefone,razaosocial,email,enderecoid,cnpj) values('#1','#2','#3','#4',#5,'#6')";
         sql = sql.replaceAll("#1",p.getNome());
         sql = sql.replaceAll("#2",p.getTelefone());
         sql = sql.replaceAll("#3",p.getRazaoSocial());
@@ -49,7 +49,7 @@ public class DALParametrizacao {
     public Parametrizacao get(){
         
         Parametrizacao paramet = null;
-        ResultSet rs = Banco.getCon().consultar("select nome,telefone,razaosocial,email,enderecoid from parametrizacao");
+        ResultSet rs = Banco.getCon().consultar("select nome,telefone,razaosocial,email,enderecoid,cnpj from parametrizacao");
         
         DALEndereco dal = new DALEndereco();
         
@@ -57,7 +57,7 @@ public class DALParametrizacao {
             
             if(rs.next())
             {
-                paramet = new Parametrizacao(rs.getString("nome"),rs.getString("telefone"),rs.getString("razaosocial"),rs.getString("email"),
+                paramet = new Parametrizacao(rs.getString("nome"),rs.getString("telefone"),rs.getString("email"),rs.getString("razaosocial"),
                         dal.get(rs.getInt("EnderecoID")),rs.getString("cnpj"));
                  
              }

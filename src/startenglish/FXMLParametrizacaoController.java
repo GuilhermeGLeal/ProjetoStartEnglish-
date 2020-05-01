@@ -17,6 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,10 +32,12 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
+import org.json.JSONObject;
 import startenglish.db.DAL.DALEndereco;
 import startenglish.db.DAL.DALParametrizacao;
 import startenglish.db.Entidades.Endereco;
@@ -78,6 +81,8 @@ public class FXMLParametrizacaoController implements Initializable {
     private JFXTextField txCidade;
     @FXML
     private JFXTextField txCNPJ;
+    @FXML
+    private JFXButton btEscolher;
     
     // tabela
     @FXML
@@ -101,6 +106,7 @@ public class FXMLParametrizacaoController implements Initializable {
     private Image aux;
     private String nome_antigo;
     private boolean flag; 
+    
       
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -114,11 +120,12 @@ public class FXMLParametrizacaoController implements Initializable {
         MaskFieldUtil.foneField(txTelefone);
         MaskFieldUtil.maxField(txRazao, 20);
         MaskFieldUtil.maxField(txEmail, 30);
-        MaskFieldUtil.maxField(txRua, 20);
+        MaskFieldUtil.maxField(txRua, 30);
         MaskFieldUtil.cepField(txCEP);
-        MaskFieldUtil.maxField(txBairro, 30);
+        MaskFieldUtil.maxField(txBairro, 50);
         MaskFieldUtil.numericField(txNumero);
-        MaskFieldUtil.maxField(txCidade, 20);
+        MaskFieldUtil.maxField(txNumero, 10);
+        MaskFieldUtil.maxField(txCidade, 30);
         MaskFieldUtil.cnpjField(txCNPJ);
         
         estadoOriginal();
@@ -128,14 +135,15 @@ public class FXMLParametrizacaoController implements Initializable {
      
         DALParametrizacao dalpar = new DALParametrizacao();
         List<Parametrizacao> para = new ArrayList();
-        para.add(dalpar.get());
+        Parametrizacao p = dalpar.get();
+        para.add(p);
         
         if(para.get(0) == null)
              btNovo.setDisable(false);
         else
              btNovo.setDisable(true);
         
-          ObservableList<Parametrizacao> modelo;
+        ObservableList<Parametrizacao> modelo;
         modelo = FXCollections.observableArrayList(para);
         tabela.setItems(modelo);
     }
@@ -192,6 +200,7 @@ public class FXMLParametrizacaoController implements Initializable {
              p = tabela.getSelectionModel().getSelectedItem();
         
              txNome.setText(p.getNome());
+             txCNPJ.setText(p.getCNPJ());
              txTelefone.setText(p.getTelefone());
              txRazao.setText(p.getRazaoSocial());
              txEmail.setText(p.getEmail());
@@ -319,6 +328,60 @@ public class FXMLParametrizacaoController implements Initializable {
     }
     
     
+    private boolean isCNPJvalid(String CNPJ){
+        
+        char dig13,dig14;
+        int soma,resto,digito,peso;
+        
+        soma = 0; peso = 2;
+        
+        for (int i = 15; i >= 0; i--) {
+            
+            if(CNPJ.charAt(i) != '.' && CNPJ.charAt(i) != '-' && CNPJ.charAt(i) != '/'){
+                
+                digito = CNPJ.charAt(i) - 48;
+                soma += (digito * peso);
+                peso++;
+
+                if(peso == 10)
+                    peso = 2;
+            }
+        }
+        
+        resto = soma % 11;
+        if(resto == 0 || resto == 1)
+            dig13 = '0';
+        else
+            dig13 = (char)((11-resto) + 48);
+        
+        soma = 0; peso = 2;
+        
+        for (int i = 16; i >= 0; i--) {
+            
+            if(CNPJ.charAt(i) != '.' && CNPJ.charAt(i) != '-' && CNPJ.charAt(i) != '/'){
+                
+                digito = CNPJ.charAt(i) - 48;
+                soma += (digito * peso);
+                peso++;
+
+                if(peso == 10)
+                    peso = 2;
+            }
+           
+        }
+        
+        resto = soma % 11;
+        if(resto == 0 || resto == 1)
+            dig14 = '0';
+        else
+            dig14 = (char)((11-resto) + 48);
+        
+        
+        if(CNPJ.charAt(16) == dig13 & CNPJ.charAt(17) == dig14)
+            return true;
+        return false;
+    }
+    
     private boolean validaCNPJ(String CNPJ){
     
         boolean ok = true;
@@ -342,6 +405,15 @@ public class FXMLParametrizacaoController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "CNPJ da empresa imcompleto!", ButtonType.CLOSE);
             txCNPJ.requestFocus();
          
+        }
+        else if(!CNPJ.isEmpty() && !isCNPJvalid(CNPJ)){
+            
+            ok = false;
+            setTextFieldErro(txCNPJ);
+            
+            a = new Alert(Alert.AlertType.WARNING, "CNPJ não existe!!", ButtonType.CLOSE);
+            txCNPJ.requestFocus();
+            
         }
         else
             setTextFieldnormal(txCNPJ);
@@ -452,6 +524,40 @@ public class FXMLParametrizacaoController implements Initializable {
         return ok;
     }
      
+    
+      private boolean validaCEP(String CEP){
+    
+        boolean ok = true;
+        
+        Alert a = null;
+        
+        if(CEP.isEmpty()){
+                      
+            ok = false;
+            setTextFieldErro(txCEP);
+            
+            a = new Alert(Alert.AlertType.WARNING, "CEP não pode estar vazio!", ButtonType.CLOSE);
+            txCEP.requestFocus();
+                
+        }
+        else if(!CEP.isEmpty() && CEP.length()!= 9){
+            
+            ok = false;
+            setTextFieldErro(txCEP);
+            
+            a = new Alert(Alert.AlertType.WARNING, "CEP está imcompleto!", ButtonType.CLOSE);
+            txCEP.requestFocus();
+         
+        }
+        else
+            setTextFieldnormal(txCEP);
+         
+        if(a != null)
+            a.showAndWait();      
+        
+        return ok;
+    }
+      
     @FXML
     private void evtConfirmar(ActionEvent event) {
         
@@ -468,7 +574,7 @@ public class FXMLParametrizacaoController implements Initializable {
 
                         if (validaEmail(txEmail.getText())) {
 
-                            if (!txCEP.getText().isEmpty() && txCEP.getText().length() == 9) {
+                            if (validaCEP(txCEP.getText())) {
 
                                 if (img.getImage() != null) {
 
@@ -486,6 +592,7 @@ public class FXMLParametrizacaoController implements Initializable {
                                     DALEndereco dale = new DALEndereco();
 
                                     par.setNome(txNome.getText());
+                                    par.setCNPJ(txCNPJ.getText());
                                     par.setTelefone(txTelefone.getText());
                                     par.setRazaoSocial(txRazao.getText());
                                     par.setEmail(txEmail.getText());
@@ -599,17 +706,12 @@ public class FXMLParametrizacaoController implements Initializable {
                                 } else {
 
                                     Alert a = new Alert(Alert.AlertType.WARNING, "Imagem obrigatória", ButtonType.CLOSE);
-                                    img.requestFocus();
+                                    btEscolher.requestFocus();
                                     a.showAndWait();
 
                                 }
 
-                            } else {
-
-                                Alert a = new Alert(Alert.AlertType.WARNING, "CEP vazio ou imcompleto", ButtonType.CLOSE);
-                                txCEP.requestFocus();
-                                a.showAndWait();
-                            }
+                            } 
                         } 
                     }
 
@@ -663,6 +765,29 @@ public class FXMLParametrizacaoController implements Initializable {
             btApagar.setDisable(false);
         }
     }
+    
+    /*
+    private void clkDigitaCEP(KeyEvent event) 
+    {
+     
+        if(txCEP.getText().length()==8)
+        {
+            Task task = new Task()
+            {
+                @Override
+                protected Object call() throws Exception{
+                    
+                    String sjson=ConsultaAPI.consultaCep(txCEP.getText(),"json");
+                    json=new JSONObject(sjson);
+                    txRua.setText(json.getString("logradouro"));
+                    txCity.setText(json.getString("localidade"));
+                    txNumero.setDisable(false);
+                    return null;
+                }
+            };
+            new Thread(task).start();
+        }
+    }*/
     
 
 }

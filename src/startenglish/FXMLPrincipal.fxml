@@ -23,7 +23,7 @@
    <left>
       <VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1080.0" minWidth="200.0" prefHeight="473.0" prefWidth="187.0" style="-fx-background-color: black; -fx-border-width: 0 10 0 0; -fx-border-color: black  #FF7F27 black black;" BorderPane.alignment="CENTER">
          <children>
-            <MenuButton maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Cadastro" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+            <MenuButton fx:id="btCadastro" maxHeight="1000.0" mnemonicParsing="false" onMouseClicked="#evtCadastro" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Cadastro" textAlignment="CENTER" VBox.vgrow="ALWAYS">
               <items>
                 <MenuItem mnemonicParsing="false" text="Action 1" />
                 <MenuItem mnemonicParsing="false" text="Action 2" />
@@ -65,6 +65,9 @@
          </padding></VBox>
    </left>
    <center>
-      <Pane maxHeight="1080.0" maxWidth="1820.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER" />
+      <Pane maxHeight="1080.0" maxWidth="1820.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane fx:id="pnMudanca" layoutX="1.0" layoutY="1.0" prefHeight="469.0" prefWidth="800.0" />
+         </children></Pane>
    </center>
 </BorderPane>

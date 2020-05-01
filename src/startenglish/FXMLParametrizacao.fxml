@@ -157,10 +157,10 @@
                <children>
                   <TableView fx:id="tabela" maxHeight="400.0" maxWidth="1080.0" minHeight="340.0" minWidth="981.0" onMouseClicked="#clickTabela" prefHeight="348.0" prefWidth="981.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                     <columns>
-                      <TableColumn fx:id="colunaNome" prefWidth="277.0" style="-fx-background-color: #FF7F27;" text="Nome" />
-                        <TableColumn fx:id="colunaCNPJ" prefWidth="193.0" style="-fx-background-color: #FF7F27;" text="CNPJ" />
-                      <TableColumn fx:id="colunaRazaoSocial" minWidth="0.0" prefWidth="262.0" style="-fx-background-color: #FF7F27;" text="Razão Social" />
-                        <TableColumn fx:id="colunaTelefone" prefWidth="239.0" style="-fx-background-color: #FF7F27;" text="Telefone" />
+                      <TableColumn fx:id="colunaNome" prefWidth="277.0" style="-fx-background-color: #BEBEBE; -fx-font-align: center;" text="Nome" />
+                        <TableColumn fx:id="colunaCNPJ" prefWidth="193.0" style="-fx-background-color: #BEBEBE; -fx-font-align: center;" text="CNPJ" />
+                      <TableColumn fx:id="colunaRazaoSocial" minWidth="0.0" prefWidth="262.0" style="-fx-background-color: #BEBEBE; -fx-font-align: center;" text="Razão Social" />
+                        <TableColumn fx:id="colunaTelefone" prefWidth="239.0" style="-fx-background-color: #BEBEBE; -fx-font-align: center;" text="Telefone" />
                     </columns>
                   </TableView>
                </children>

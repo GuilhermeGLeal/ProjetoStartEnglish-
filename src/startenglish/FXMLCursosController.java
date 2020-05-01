@@ -2,10 +2,14 @@ package startenglish;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -46,13 +50,9 @@ public class FXMLCursosController implements Initializable {
     @FXML
     private JFXTextField txDescricao;
     @FXML
-    private JFXCheckBox checkAtivo;
-    @FXML
     private TableColumn<Cursos, String> tabelaNomeCurso;
     @FXML
     private TableColumn<Cursos, Double> tabelaPreco;
-    @FXML
-    private TableColumn<Cursos, Character> tabelaAtivo;
     @FXML
     private TableView<Cursos> tableview;
     @FXML
@@ -67,18 +67,40 @@ public class FXMLCursosController implements Initializable {
     private AnchorPane pndados;
     @FXML
     private AnchorPane pnpesquisa;
+    @FXML
+    private JFXDatePicker dtpDataLanc;
+    @FXML
+    private JFXDatePicker dtpDataEnc;
+    @FXML
+    private JFXCheckBox cEncerrar;
+    @FXML
+    private JFXTextField txEtapa;
+    @FXML
+    private JFXCheckBox cPesquisar;
+    @FXML
+    private TableColumn<Cursos, String> tabelaEtapa;
+    @FXML
+    private TableColumn<Cursos, Date> tabelaData;
+    @FXML
+    private TableColumn<Cursos, Date> tabelaEncerramento;
+    @FXML
+    private JFXDatePicker dtFiltro;
+    @FXML
+    private JFXComboBox<String> comboBox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         tabelaNomeCurso.setCellValueFactory(new PropertyValueFactory("nomeCurso"));
         tabelaPreco.setCellValueFactory(new PropertyValueFactory("preco"));
-        tabelaAtivo.setCellValueFactory(new PropertyValueFactory("Ativo"));
+        tabelaEtapa.setCellValueFactory(new PropertyValueFactory("etapa"));
+        tabelaData.setCellValueFactory(new PropertyValueFactory("data_lancamento"));
+        tabelaEncerramento.setCellValueFactory(new PropertyValueFactory("data_encerramento"));
         
         MaskFieldUtil.maxField(txNomeCurso, 20);
         MaskFieldUtil.maxField(txDescricao, 50);
-        MaskFieldUtil.numericField(txPreco);
         MaskFieldUtil.maxField(txPreco, 10);
+        MaskFieldUtil.maxField(txEtapa,10);
                 
         estadoOriginal();
     }    
@@ -144,15 +166,11 @@ public class FXMLCursosController implements Initializable {
             
             txId.setText(""+c.getCursoID());
             txNomeCurso.setText(c.getNomeCurso());
-            
-            /*
-            if(c.getAtivo()=='S')
-                checkAtivo.setSelected(true);
-            else
-               checkAtivo.setSelected(false); */
-            
             txDescricao.setText(c.getDescricao());
             txPreco.setText(""+c.getPreco());
+            txEtapa.setText(c.getEtapa());
+            
+            //dtpDataEnc.setValue();
             
             estadoedicao();
         }
@@ -198,6 +216,49 @@ public class FXMLCursosController implements Initializable {
         }
     }
 
+     private void setTextFieldErro(JFXTextField nome){
+        
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+    }
+    
+    private void setTextFieldnormal(JFXTextField nome){
+    
+        nome.setStyle("-fx-border-width: 0;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+        
+    }
+    
+    private boolean validarPreco(String preco){
+        
+        return false;
+    }
+    
+    private boolean validarNome(String nome){
+        
+        boolean ok = true;
+        
+        if(nome.isEmpty()){
+          
+            ok = false;
+            setTextFieldErro(txNomeCurso);
+            Alert a = new Alert(Alert.AlertType.WARNING, "Nome do curso obrigatório!!", ButtonType.CLOSE);
+            txNomeCurso.requestFocus();
+            a.showAndWait();
+        }
+        else
+            setTextFieldnormal(txNomeCurso);
+        
+        return ok;
+    }
+    
+    private boolean validaPreco(String preco){
+        
+        return false;
+    }
+    
     @FXML
     private void evtConfirmar(ActionEvent event) {
              
@@ -205,99 +266,78 @@ public class FXMLCursosController implements Initializable {
         int cod;
         boolean ok = true;
         
-        if(!txNomeCurso.getText().isEmpty()){
-            
-           try{
-               
-               preco = Double.parseDouble(txPreco.getText());
-               
-               if(preco > 0){
-                   
-                try{
+        if (validarNome(txNomeCurso.getText())) {
+
+            if (validaPreco(txPreco.getText())) {
+
+                try {
 
                     cod = Integer.parseInt(txId.getText());
 
-                }catch(NumberFormatException ex){cod = 0;}
+                } catch (NumberFormatException ex) {
+                    cod = 0;
+                }
 
-                 DALCurso dalc = new DALCurso();
-                 Cursos c = new Cursos();
+                DALCurso dalc = new DALCurso();
+                Cursos c = new Cursos();
 
-                 c.setCursoID(cod);
-                 c.setNomeCurso(txNomeCurso.getText());
-                 c.setPreco(preco);
+                c.setCursoID(cod);
+                c.setNomeCurso(txNomeCurso.getText());
+                c.setPreco(preco);
 
-                 /*
-                 if(checkAtivo.isSelected())
-                     c.setAtivo('S');
-                 else
-                     c.setAtivo('N');*/
+                /*
+                     if(checkAtivo.isSelected())
+                         c.setAtivo('S');
+                     else
+                         c.setAtivo('N');*/
+                if (!txDescricao.getText().isEmpty()) {
+                    c.setDescricao(txDescricao.getText());
+                }
 
-                 if(!txDescricao.getText().isEmpty())
-                     c.setDescricao(txDescricao.getText());
-                 
-                 Alert a = null;
-                 try{
-                     
-                     Banco.getCon().getConnect().setAutoCommit(false);
-                     
-                     if(cod == 0){ // inserindo
-                         
+                Alert a = null;
+                try {
+
+                    Banco.getCon().getConnect().setAutoCommit(false);
+
+                    if (cod == 0) { // inserindo
+
                         ok = dalc.gravar(c);
-                        
-                        if(ok)
-                            a = new Alert(Alert.AlertType.CONFIRMATION,"Curso inserido!!", ButtonType.OK); 
-                        else
-                            a = new Alert(Alert.AlertType.ERROR,"Problemas ao inserir o curso!!", ButtonType.OK);  
-                        
-                     }
-                     else{ // alterando
-                         
-                         ok = dalc.alterar(c);
-                                                       
-                        if(ok)
-                            a = new Alert(Alert.AlertType.CONFIRMATION,"Curso atualizado!!", ButtonType.OK); 
-                        else
-                            a = new Alert(Alert.AlertType.ERROR,"Problemas ao atualizar o curso!!", ButtonType.OK);  
-                         
-                     }
-                     
-                    
+
+                        if (ok) {
+                            a = new Alert(Alert.AlertType.CONFIRMATION, "Curso inserido!!", ButtonType.OK);
+                        } else {
+                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir o curso!!", ButtonType.OK);
+                        }
+
+                    } else { // alterando
+
+                        ok = dalc.alterar(c);
+
+                        if (ok) {
+                            a = new Alert(Alert.AlertType.CONFIRMATION, "Curso atualizado!!", ButtonType.OK);
+                        } else {
+                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar o curso!!", ButtonType.OK);
+                        }
+
+                    }
+
                     a.showAndWait();
-                     if(ok){
-                         
+                    if (ok) {
+
                         Banco.getCon().getConnect().commit();
                         estadoOriginal();
                         carregaTabela("");
-                     }
-                     else
+                    } else {
                         Banco.getCon().getConnect().rollback();
-                         
-                                         
-                     
-                 }catch(SQLException ex){System.out.println(ex.getMessage());}
-               }
-               else{
-                   
-                   Alert a = new Alert(Alert.AlertType.WARNING, "Preço igual a zero!!", ButtonType.CLOSE);
-                   txPreco.requestFocus();
-                   a.showAndWait();
-               }
-              
-               
-           }catch(NumberFormatException ex){
-               
-                Alert a = new Alert(Alert.AlertType.WARNING, "Preço obrigatório!!", ButtonType.CLOSE);
-                txPreco.requestFocus();
-                a.showAndWait();
-           }
-           
+                    }
+
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+
         }
-        else{
-            
-            Alert a = new Alert(Alert.AlertType.WARNING, "Nome do curso obrigatório!!", ButtonType.CLOSE);
-            txNomeCurso.requestFocus();
-            a.showAndWait();
-        }
+
     }
 
     @FXML
@@ -324,6 +364,18 @@ public class FXMLCursosController implements Initializable {
            btAlterar.setDisable(false);
            btExcluir.setDisable(false);
         }
+    }
+
+    @FXML
+    private void evtEncerrar(MouseEvent event) {
+    }
+
+    @FXML
+    private void evtComboBox(MouseEvent event) {
+    }
+
+    @FXML
+    private void evtEncerrados(MouseEvent event) {
     }
     
 }

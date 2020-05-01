@@ -24,14 +24,14 @@ public class StartEnglish extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLLogin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLCurso.fxml"));
         
         Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
+      
         
         stage.setScene(scene);
-        stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setMaximized(true);
+      
+        //stage.setMaximized(true);
         stage.show();
         
     }

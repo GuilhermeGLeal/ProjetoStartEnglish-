@@ -577,6 +577,16 @@ public class FXMLParametrizacaoController implements Initializable {
 
                             if (validaCEP(txCEP.getText())) {
 
+                                 Alert c = new Alert(Alert.AlertType.CONFIRMATION, "Deseja carregar do endereço?", ButtonType.YES,ButtonType.NO);
+              
+                                    if(c.showAndWait().get() == ButtonType.YES){
+
+                                        txBairro.setText("aguarde...");
+                                        txRua.setText("aguarde...");
+                                        txCidade.setText("aguarde...");
+                                          insereCampos();
+                                    }                    
+                                    
                                 if (img.getImage() != null) {
 
                                     int cod;
@@ -770,21 +780,24 @@ public class FXMLParametrizacaoController implements Initializable {
     
     private void insereCampos() 
     {
-     
-        Task task = new Task()
-            {
-                @Override
-                protected Object call() throws Exception{
-                    
-                    String sjson=ConsultaAPI.consultaCep(txCEP.getText(),"json");
-                    json=new JSONObject(sjson);
-                    txRua.setText(json.getString("logradouro"));
-                    txCidade.setText(json.getString("localidade"));
-                    txBairro.setText(json.getString("bairro"));
-                    return null;
-                }
-            };
-            new Thread(task).start();
+        String sjson=ConsultaAPI.consultaCep(txCEP.getText(),"json");
+        json=new JSONObject(sjson);
+        
+        if(json.has("erro")){
+            
+             Alert a = new Alert(Alert.AlertType.WARNING, "CEP não encontrado", ButtonType.CLOSE);
+            a.showAndWait();
+            txCEP.requestFocus();
+        
+        }
+        else{
+            
+             txRua.setText(json.getString("logradouro"));
+            txCidade.setText(json.getString("localidade"));
+            txBairro.setText(json.getString("bairro"));
+            
+        }
+       
         
     }
 
@@ -795,10 +808,16 @@ public class FXMLParametrizacaoController implements Initializable {
                 
         if(ok){
             
-              Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja carregar do endereço?", ButtonType.YES,ButtonType.NO),b;
+            Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja carregar do endereço?", ButtonType.YES,ButtonType.NO);
               
-            if(a.showAndWait().get() == ButtonType.YES)
-                insereCampos();
+            if(a.showAndWait().get() == ButtonType.YES){
+                   
+                txBairro.setText("aguarde...");
+                txRua.setText("aguarde...");
+                txCidade.setText("aguarde...");
+                  insereCampos();
+            }
+              
                 
         }
     }

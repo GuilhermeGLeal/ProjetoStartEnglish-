@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<SplitPane dividerPositions="0.5620542082738944" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="703.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLFuncionarioController">
+<SplitPane fx:id="SPPrincipal" dividerPositions="0.6359143327841845" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="609.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLFuncionarioController">
    <items>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="426.0" prefWidth="736.0" style="-fx-background-color: black;">
          <children>
@@ -52,7 +52,7 @@
                   <JFXTextField fx:id="txPesquisa" layoutX="5.0" layoutY="7.0" prefHeight="25.0" prefWidth="582.0" />
                </children>
             </AnchorPane>
-            <TableView fx:id="tabela" layoutY="36.0" onMouseClicked="#evtClicarTabela" prefHeight="273.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+            <TableView fx:id="tabela" layoutY="36.0" onMouseClicked="#evtClicarTabela" prefHeight="183.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
                   <TableColumn fx:id="tabelaNome" prefWidth="176.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Nome" />
                   <TableColumn fx:id="tabelaCPF" minWidth="0.0" prefWidth="161.0" style="-fx-background-color: #FF7F27;" text="CPF" />

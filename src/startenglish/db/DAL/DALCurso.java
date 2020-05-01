@@ -2,7 +2,9 @@ package startenglish.db.DAL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import startenglish.db.Entidades.Cursos;
 import startenglish.db.util.Banco;
@@ -25,7 +27,7 @@ public class DALCurso {
     
      public boolean alterar(Cursos c){
         
-       String sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = '#5' where cursoid = "+c.getCursoID();
+       String sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = '#6' where cursoid = "+c.getCursoID();
        sql = sql.replaceAll("#1",c.getNomeCurso());
        sql = sql.replaceAll("#2",c.getDescricao());
        sql = sql.replaceAll("#3",""+c.getPreco());
@@ -50,7 +52,7 @@ public class DALCurso {
             
             if(rs.next())
             {
-                curso = new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento"), rs.getDate("dataencerramento"), 
+                curso = new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento").toLocalDate(), rs.getDate("dataencerramento").toLocalDate(), 
                         rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"));
                  
              }
@@ -63,7 +65,7 @@ public class DALCurso {
     public List<Cursos> get(String filtro){
         
        String sql="select *from curso";
-       
+            
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
         
@@ -73,8 +75,13 @@ public class DALCurso {
         {
             while(rs.next())
             {
-                aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento"), rs.getDate("dataencerramento"), 
+           
+                if(rs.getDate("dataencerramento") == null)
+                    aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("etapa"),rs.getDate("datalancamento").toLocalDate() ,null, 
                         rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco")));
+                else
+                    aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("etapa"),rs.getDate("datalancamento").toLocalDate() ,rs.getDate("dataencerramento").toLocalDate(), 
+                        rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"))); 
             }
         } 
         catch (SQLException ex) 

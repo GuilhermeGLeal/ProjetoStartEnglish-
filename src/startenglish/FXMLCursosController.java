@@ -137,6 +137,8 @@ public class FXMLCursosController implements Initializable {
                 ((ComboBox)n).getItems().clear();
         }
       
+        dtpDataEnc.setValue(LocalDate.now());
+        dtpDataLanc.setValue(LocalDate.now());
         carregaTabela("");
     }
     
@@ -169,8 +171,8 @@ public class FXMLCursosController implements Initializable {
             txDescricao.setText(c.getDescricao());
             txPreco.setText(""+c.getPreco());
             txEtapa.setText(c.getEtapa());
-            
-            //dtpDataEnc.setValue();
+            dtpDataEnc.setValue(c.getData_encerramento());
+            dtpDataLanc.setValue(c.getData_lancamento());
             
             estadoedicao();
         }
@@ -231,11 +233,7 @@ public class FXMLCursosController implements Initializable {
         
     }
     
-    private boolean validarPreco(String preco){
-        
-        return false;
-    }
-    
+     
     private boolean validarNome(String nome){
         
         boolean ok = true;
@@ -256,84 +254,200 @@ public class FXMLCursosController implements Initializable {
     
     private boolean validaPreco(String preco){
         
-        return false;
+        double preco_inserido = 0;
+        Alert a = null;
+        boolean ok = true,problema = false;
+        
+        try{
+            
+            preco_inserido = Double.parseDouble(preco);
+            
+        }catch(NumberFormatException ex){problema = true;}
+        
+        if(preco.isEmpty()){
+            
+            ok = false;
+            setTextFieldErro(txPreco);
+            a = new Alert(Alert.AlertType.WARNING, "Preço obrigatório!!", ButtonType.CLOSE);
+            txPreco.requestFocus();
+            
+        }
+        else if(!preco.isEmpty() && problema){
+            
+            ok = false;
+            setTextFieldErro(txPreco);
+            a = new Alert(Alert.AlertType.WARNING, "Preço inválido!", ButtonType.CLOSE);
+            txPreco.requestFocus();
+        }
+        else if(!preco.isEmpty() && preco_inserido <=0){
+            
+            ok = false;
+            setTextFieldErro(txPreco);
+            a = new Alert(Alert.AlertType.WARNING, "Preço igual ou menor que 0!", ButtonType.CLOSE);
+            txPreco.requestFocus();
+        }
+        else
+            setTextFieldnormal(txNomeCurso);
+        
+        if(a != null)
+               a.showAndWait();
+        return ok;
     }
+    
+    private boolean validaEtapa(String etapa){
+        
+        boolean ok = true;
+        
+        if(etapa.isEmpty()){
+          
+            ok = false;
+            setTextFieldErro(txEtapa);
+            Alert a = new Alert(Alert.AlertType.WARNING, "Etapa obrigatória!!", ButtonType.CLOSE);
+            txEtapa.requestFocus();
+            a.showAndWait();
+        }
+        else
+            setTextFieldnormal(txEtapa);
+        
+        return ok;
+    }
+    
+    private boolean validaDataLanc(LocalDate date_lanc){
+        
+        boolean ok = true;
+         
+        if(date_lanc == null){
+            
+            ok = false;
+       
+            Alert a = new Alert(Alert.AlertType.WARNING, "Data do lançamento do curso obrigatório!!", ButtonType.CLOSE);
+            dtpDataLanc.requestFocus();
+            a.showAndWait();
+        }
+        
+        return ok;
+    }
+    
+    private boolean validaDataEncerrameento(LocalDate date_ence){
+        
+        boolean ok = true;
+        
+        if(date_ence == null){
+                          
+            ok = false;
+            Alert a = new Alert(Alert.AlertType.WARNING, "Data do encerramento do curso obrigatório!!", ButtonType.CLOSE);
+            dtpDataEnc.requestFocus();
+            a.showAndWait();
+        }
+        else if(date_ence.isBefore(dtpDataLanc.getValue())){
+            
+            ok = false;
+            Alert a = new Alert(Alert.AlertType.WARNING, "Data do encerramento está antes da data de lançamento!!", ButtonType.CLOSE);
+            dtpDataEnc.requestFocus();
+            a.showAndWait();
+        }
+        
+         
+        return ok;
+    }
+    
     
     @FXML
     private void evtConfirmar(ActionEvent event) {
              
         double preco = 0;
         int cod;
-        boolean ok = true;
+        boolean ok = true,encerrado = false,validado = false;
+        
         
         if (validarNome(txNomeCurso.getText())) {
 
             if (validaPreco(txPreco.getText())) {
 
-                try {
+                if (validaDataLanc(dtpDataLanc.getValue())) {
 
-                    cod = Integer.parseInt(txId.getText());
-
-                } catch (NumberFormatException ex) {
-                    cod = 0;
-                }
-
-                DALCurso dalc = new DALCurso();
-                Cursos c = new Cursos();
-
-                c.setCursoID(cod);
-                c.setNomeCurso(txNomeCurso.getText());
-                c.setPreco(preco);
-
-                /*
-                     if(checkAtivo.isSelected())
-                         c.setAtivo('S');
-                     else
-                         c.setAtivo('N');*/
-                if (!txDescricao.getText().isEmpty()) {
-                    c.setDescricao(txDescricao.getText());
-                }
-
-                Alert a = null;
-                try {
-
-                    Banco.getCon().getConnect().setAutoCommit(false);
-
-                    if (cod == 0) { // inserindo
-
-                        ok = dalc.gravar(c);
-
-                        if (ok) {
-                            a = new Alert(Alert.AlertType.CONFIRMATION, "Curso inserido!!", ButtonType.OK);
-                        } else {
-                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir o curso!!", ButtonType.OK);
-                        }
-
-                    } else { // alterando
-
-                        ok = dalc.alterar(c);
-
-                        if (ok) {
-                            a = new Alert(Alert.AlertType.CONFIRMATION, "Curso atualizado!!", ButtonType.OK);
-                        } else {
-                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar o curso!!", ButtonType.OK);
-                        }
-
+                    if (cEncerrar.isSelected()) {
+                        encerrado = true;
                     }
 
-                    a.showAndWait();
-                    if (ok) {
-
-                        Banco.getCon().getConnect().commit();
-                        estadoOriginal();
-                        carregaTabela("");
-                    } else {
-                        Banco.getCon().getConnect().rollback();
+                    if (encerrado) {
+                        validado = validaDataEncerrameento(dtpDataEnc.getValue());
                     }
 
-                } catch (SQLException ex) {
-                    System.out.println(ex.getMessage());
+                    if (!encerrado || validado) {
+
+                        if (validaEtapa(txEtapa.getText())) {
+
+                            try {
+
+                                preco = Double.parseDouble(txPreco.getText());
+                                cod = Integer.parseInt(txId.getText());
+                                    
+                                
+                            } catch (NumberFormatException ex) {
+                                cod = 0;
+                            }
+
+                            DALCurso dalc = new DALCurso();
+                            Cursos c = new Cursos();
+
+                            c.setCursoID(cod);
+                            c.setNomeCurso(txNomeCurso.getText());
+                            c.setPreco(preco);
+                            c.setEtapa(txEtapa.getText());
+                            c.setData_lancamento(dtpDataLanc.getValue());
+
+                            if(encerrado)
+                                c.setData_encerramento(dtpDataEnc.getValue());
+                            
+                            if (!txDescricao.getText().isEmpty()) {
+                                c.setDescricao(txDescricao.getText());
+                            }
+
+                            Alert a = null;
+                            try {
+
+                                Banco.getCon().getConnect().setAutoCommit(false);
+
+                                if (cod == 0) { // inserindo
+
+                                    ok = dalc.gravar(c);
+
+                                    if (ok) {
+                                        a = new Alert(Alert.AlertType.CONFIRMATION, "Curso inserido!!", ButtonType.OK);
+                                    } else {
+                                        a = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir o curso!!", ButtonType.OK);
+                                    }
+
+                                } else { // alterando
+
+                                    ok = dalc.alterar(c);
+
+                                    if (ok) {
+                                        a = new Alert(Alert.AlertType.CONFIRMATION, "Curso atualizado!!", ButtonType.OK);
+                                    } else {
+                                        a = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar o curso!!", ButtonType.OK);
+                                    }
+
+                                }
+
+                                a.showAndWait();
+                                if (ok) {
+
+                                    Banco.getCon().getConnect().commit();
+                                    estadoOriginal();
+                                    carregaTabela("");
+                                } else {
+                                    Banco.getCon().getConnect().rollback();
+                                }
+
+                            } catch (SQLException ex) {
+                                System.out.println(ex.getMessage());
+                            }
+                        }
+                    }
                 }
+
             }
 
         }

@@ -32,7 +32,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -43,6 +42,7 @@ import startenglish.db.DAL.DALParametrizacao;
 import startenglish.db.Entidades.Endereco;
 import startenglish.db.Entidades.Parametrizacao;
 import startenglish.db.util.Banco;
+import startenglish.util.ConsultaAPI;
 import startenglish.util.MaskFieldUtil;
 
 
@@ -106,6 +106,7 @@ public class FXMLParametrizacaoController implements Initializable {
     private Image aux;
     private String nome_antigo;
     private boolean flag; 
+    private JSONObject json;
     
       
     @Override
@@ -766,13 +767,11 @@ public class FXMLParametrizacaoController implements Initializable {
         }
     }
     
-    /*
-    private void clkDigitaCEP(KeyEvent event) 
+    
+    private void insereCampos() 
     {
      
-        if(txCEP.getText().length()==8)
-        {
-            Task task = new Task()
+        Task task = new Task()
             {
                 @Override
                 protected Object call() throws Exception{
@@ -780,14 +779,29 @@ public class FXMLParametrizacaoController implements Initializable {
                     String sjson=ConsultaAPI.consultaCep(txCEP.getText(),"json");
                     json=new JSONObject(sjson);
                     txRua.setText(json.getString("logradouro"));
-                    txCity.setText(json.getString("localidade"));
-                    txNumero.setDisable(false);
+                    txCidade.setText(json.getString("localidade"));
+                    txBairro.setText(json.getString("bairro"));
                     return null;
                 }
             };
             new Thread(task).start();
+        
+    }
+
+    @FXML
+    private void chamaCEP(MouseEvent event) {
+        
+        boolean ok = validaCEP(txCEP.getText());
+                
+        if(ok){
+            
+              Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja carregar do endereço?", ButtonType.YES,ButtonType.NO),b;
+              
+            if(a.showAndWait().get() == ButtonType.YES)
+                insereCampos();
+                
         }
-    }*/
+    }
     
 
 }

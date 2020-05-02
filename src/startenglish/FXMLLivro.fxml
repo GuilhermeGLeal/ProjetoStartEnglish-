@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.43023255813953487" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="613.0" prefWidth="671.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLLivroController">
+<SplitPane dividerPositions="0.5132275132275133" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="569.0" prefWidth="671.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLLivroController">
    <items>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="298.0" prefWidth="669.0">
          <children>
@@ -24,7 +24,7 @@
                   <JFXButton style="-fx-font-weight: bold;" text="Cancelar" />
                </children>
             </HBox>
-            <AnchorPane layoutX="-2.0" layoutY="60.0" prefHeight="219.0" prefWidth="671.0" style="-fx-background-color: black; -fx-border-color: #FF7F27; -fx-border-width: 5;">
+            <AnchorPane layoutX="-2.0" layoutY="60.0" prefHeight="234.0" prefWidth="671.0" style="-fx-background-color: black; -fx-border-color: #FF7F27; -fx-border-width: 5;">
                <children>
                   <Label alignment="CENTER" layoutX="21.0" layoutY="14.0" prefHeight="17.0" prefWidth="627.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Dados do Livro" textAlignment="CENTER" />
                   <JFXTextField fx:id="txNome" alignment="CENTER" layoutX="125.0" layoutY="103.0" prefHeight="25.0" prefWidth="338.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Nome do Livro" />
@@ -91,16 +91,16 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="669.0" style="-fx-background-color: black;">
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="253.0" prefWidth="669.0" style="-fx-background-color: black;">
          <children>
-            <AnchorPane layoutX="-1.0" layoutY="-7.0" prefHeight="43.0" prefWidth="671.0" style="-fx-background-color: #FF7F27;">
+            <AnchorPane layoutX="-1.0" prefHeight="43.0" prefWidth="671.0" style="-fx-background-color: #FF7F27;">
                <children>
                   <JFXButton fx:id="btPesquisar" layoutX="587.0" layoutY="17.0" style="-fx-font-weight: bold;" text="Pesquisar" />
                   <JFXTextField fx:id="txPesquisa" layoutX="5.0" layoutY="7.0" prefHeight="25.0" prefWidth="318.0" />
                   <JFXComboBox fx:id="cbFiltro" labelFloat="true" layoutX="354.0" layoutY="17.0" prefHeight="25.0" prefWidth="166.0" />
                </children>
             </AnchorPane>
-            <TableView fx:id="tabela" layoutY="35.0" prefHeight="315.0" prefWidth="669.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+            <TableView fx:id="tabela" layoutY="42.0" prefHeight="234.0" prefWidth="669.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
                   <TableColumn fx:id="tabelaNome" prefWidth="502.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Nome" />
                   <TableColumn fx:id="tabelaValor" prefWidth="155.0" style="-fx-background-color: #FF7F27;" text="Valor" />

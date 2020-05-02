@@ -20,8 +20,8 @@ import startenglish.db.util.Banco;
  *
  * @author guilh
  */
-public class StartEnglish extends Application {
-    
+public class StartEnglish extends Application
+{   
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLParametrizacao.fxml"));

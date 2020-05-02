@@ -6,6 +6,8 @@
 package startenglish;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -28,27 +30,35 @@ public class SignInController implements Initializable {
 
     @FXML
     private JFXButton btLogin;
+    @FXML
+    private JFXTextField txtUsuario;
+    @FXML
+    private JFXPasswordField txtPassword;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        txtUsuario.setStyle("-fx-text-fill: white;");
+        txtPassword.setStyle("-fx-text-fill: white;");
     }    
 
     @FXML
     private void evtLogin(MouseEvent event) {
         
-        try {
-            Parent aux = FXMLLoader.load(getClass().getResource("FXMLFuncionario.fxml"));
-            FXMLLoginController.BPprincipal.setCenter(aux);
-                                
-                                
-        } catch (Exception e) {
-            //System.out.println("Jorge");
-            System.out.println(e.getMessage());
-        }
+        
+        
+        
+//        try {
+//            Parent aux = FXMLLoader.load(getClass().getResource("FXMLFuncionario.fxml"));
+//            FXMLLoginController.BPprincipal.setCenter(aux);
+//                                
+//                                
+//        } catch (Exception e) {
+//            //System.out.println("Jorge");
+//            System.out.println(e.getMessage());
+//        }
     }
     
 }

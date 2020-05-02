@@ -6,6 +6,7 @@
 package startenglish;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -22,6 +23,8 @@ public class SignUpController implements Initializable {
 
     @FXML
     private JFXButton btLogin;
+    @FXML
+    private JFXTextField txtUser;
 
     /**
      * Initializes the controller class.

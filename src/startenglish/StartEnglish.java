@@ -28,12 +28,11 @@ public class StartEnglish extends Application {
         
         Scene scene = new Scene(root);
         scene.setFill(Color.TRANSPARENT);
-        
-        stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
         
-        
-        stage.setResizable(false);
+        stage.setScene(scene);
+      
+        //stage.setMaximized(true);
         stage.show();
         
     }

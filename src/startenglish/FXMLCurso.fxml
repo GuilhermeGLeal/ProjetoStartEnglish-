@@ -124,19 +124,20 @@
          <children>
             <AnchorPane fx:id="pnpesquisa" layoutY="-1.0" prefHeight="61.0" prefWidth="842.0" style="-fx-background-color: #FF7F27;">
                <children>
-                  <AnchorPane layoutX="4.0" prefHeight="85.0" prefWidth="838.0">
+                  <AnchorPane layoutX="4.0" prefHeight="89.0" prefWidth="841.0">
                      <children>
                         <JFXTextField fx:id="txPesquisa" alignment="CENTER" layoutY="47.0" prefHeight="31.0" prefWidth="213.0" promptText="Insira aqui o filtro" />
                         <JFXCheckBox fx:id="cPesquisar" layoutX="653.0" layoutY="6.0" text="Pesquisar encerrados?" />
                         <JFXDatePicker fx:id="dtpdataini" layoutX="232.0" layoutY="47.0" prefHeight="31.0" prefWidth="127.0" style="-fx-background-color: #BEBEBE;" />
                         <JFXComboBox fx:id="comboBox" layoutX="522.0" layoutY="47.0" onAction="#evtComboBox" prefHeight="31.0" prefWidth="192.0" />
-                        <Label layoutY="16.0" text="Filtro texto" textFill="#171717" />
+                        <Label layoutY="27.0" text="Filtro texto" textFill="#171717" />
                         <Label layoutX="244.0" layoutY="23.0" text="A partir de" textFill="#171717" />
                         <Label layoutX="522.0" layoutY="27.0" text="Opções de filtro" textFill="#171717" />
-                        <JFXButton fx:id="btPesquisar" layoutX="732.0" layoutY="33.0" onAction="#evtPesquisa" prefHeight="31.0" prefWidth="92.0" style="-fx-font-weight: bold;" text="Pesquisar" />
+                        <JFXButton fx:id="btPesquisar" layoutX="740.0" layoutY="39.0" onAction="#evtPesquisa" prefHeight="25.0" prefWidth="92.0" style="-fx-font-weight: bold;" text="Pesquisar" />
                         <JFXDatePicker fx:id="dtpdatafim" layoutX="369.0" layoutY="47.0" prefHeight="31.0" prefWidth="127.0" style="-fx-background-color: #BEBEBE;" />
                         <Label layoutX="419.0" layoutY="27.0" text="Até" textFill="#171717" />
                         <Label layoutX="325.0" layoutY="6.0" text="Filtro Data" textFill="#171717" />
+                        <JFXButton layoutX="86.0" layoutY="1.0" onAction="#evtLimparFiltros" prefHeight="31.0" prefWidth="127.0" style="-fx-font-weight: bold;" text="Limpar Filtros" />
                      </children>
                   </AnchorPane>
                </children>

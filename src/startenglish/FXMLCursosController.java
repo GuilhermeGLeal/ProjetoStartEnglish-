@@ -94,7 +94,7 @@ public class FXMLCursosController implements Initializable {
         
         seta_tabela();
         seta_maskaras();        
-        seta_pesquisa();
+        seta_combobox();
         estadoOriginal();
     }    
 
@@ -115,8 +115,8 @@ public class FXMLCursosController implements Initializable {
         MaskFieldUtil.maxField(txEtapa,10);
     }
     
-    private void seta_pesquisa(){
-    
+    private void seta_combobox(){
+        
         List<String> combo = new ArrayList();
         combo.add("Nome");
         combo.add("Etapa");
@@ -126,9 +126,16 @@ public class FXMLCursosController implements Initializable {
         ObservableList<String> modelo = FXCollections.observableArrayList(combo);;
         comboBox.setItems(modelo);
         comboBox.setValue("Nome");
+        
+        seta_pesquisa();
+    }
+    
+    private void seta_pesquisa(){
+    
+        txPesquisa.clear();
         dtpdataini.setDisable(true);
         dtpdatafim.setDisable(true);
-        
+        comboBox.setValue("Nome");
         dtpdataini.setValue(LocalDate.now());
         dtpdatafim.setValue(LocalDate.now().plusDays(365));
     }
@@ -514,14 +521,14 @@ public class FXMLCursosController implements Initializable {
             
             if(filtro.contains("Data")){
                 
-               // filtragem = dtFiltro.getValue();
+                dataini = dtpdataini.getValue();
+                datafim = dtpdatafim.getValue();
                 
-                if(filtro.equals("Data encerramento")){
-                    
-                }
-                else{
-                    
-                }
+                if(filtro.equals("Data encerramento"))
+                   sql +=" dataencerramento BETWEEN '"+dataini+"' AND '"+datafim+"'";                 
+                else
+                  sql +=" datalancamento BETWEEN '"+dataini+"' AND '"+datafim+"'";
+                
             }
             else{
                 
@@ -542,7 +549,7 @@ public class FXMLCursosController implements Initializable {
                 dataini = dtpdataini.getValue();
                 datafim = dtpdatafim.getValue();
                 
-                sql +=" datalancamento BETWEEN "+dataini+" AND "+datafim;
+                sql +=" datalancamento BETWEEN '"+dataini+"' AND '"+datafim+"'";
             }
             else{
                 
@@ -608,6 +615,12 @@ public class FXMLCursosController implements Initializable {
             dtpdatafim.setDisable(true);
             dtpdataini.setDisable(true);
         }
+    }
+
+    @FXML
+    private void evtLimparFiltros(ActionEvent event) {
+        
+        seta_pesquisa();
     }
     
 }

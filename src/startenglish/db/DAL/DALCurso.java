@@ -2,9 +2,7 @@ package startenglish.db.DAL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import startenglish.db.Entidades.Cursos;
 import startenglish.db.util.Banco;
@@ -14,7 +12,13 @@ public class DALCurso {
  
     public boolean gravar(Cursos c){
      
-        String sql = "insert into curso(nomecurso,descricao,preco,etapa,datalancamento,dataencerramento) values('#1','#2',#3,'#4','#5','#6')";
+        String sql;
+        
+        if(c.getData_encerramento() == null)
+         sql = "insert into curso(nomecurso,descricao,preco,etapa,datalancamento,dataencerramento) values('#1','#2',#3,'#4','#5',#6)";
+        else
+          sql = "insert into curso(nomecurso,descricao,preco,etapa,datalancamento,dataencerramento) values('#1','#2',#3,'#4','#5','#6')"; 
+            
         sql = sql.replaceAll("#1",c.getNomeCurso());
         sql = sql.replaceAll("#2",c.getDescricao());
         sql = sql.replaceAll("#3",""+c.getPreco());

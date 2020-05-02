@@ -9,7 +9,6 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -84,27 +83,56 @@ public class FXMLCursosController implements Initializable {
     @FXML
     private TableColumn<Cursos, LocalDate> tabelaEncerramento;
     @FXML
-    private JFXDatePicker dtFiltro;
-    @FXML
     private JFXComboBox<String> comboBox;
+    @FXML
+    private JFXDatePicker dtpdataini;
+    @FXML
+    private JFXDatePicker dtpdatafim;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        seta_tabela();
+        seta_maskaras();        
+        seta_pesquisa();
+        estadoOriginal();
+    }    
+
+    private void seta_tabela(){
         
         tabelaNomeCurso.setCellValueFactory(new PropertyValueFactory("nomeCurso"));
         tabelaPreco.setCellValueFactory(new PropertyValueFactory("preco"));
         tabelaEtapa.setCellValueFactory(new PropertyValueFactory("etapa"));
         tabelaData.setCellValueFactory(new PropertyValueFactory("data_lancamento"));
         tabelaEncerramento.setCellValueFactory(new PropertyValueFactory("data_encerramento"));
+    }
+    
+    private void seta_maskaras(){
         
         MaskFieldUtil.maxField(txNomeCurso, 20);
         MaskFieldUtil.maxField(txDescricao, 50);
         MaskFieldUtil.maxField(txPreco, 10);
         MaskFieldUtil.maxField(txEtapa,10);
-                
-        estadoOriginal();
-    }    
-
+    }
+    
+    private void seta_pesquisa(){
+    
+        List<String> combo = new ArrayList();
+        combo.add("Nome");
+        combo.add("Etapa");
+        combo.add("Data Lançamento");
+        combo.add("Data encerramento");
+        
+        ObservableList<String> modelo = FXCollections.observableArrayList(combo);;
+        comboBox.setItems(modelo);
+        comboBox.setValue("Nome");
+        dtpdataini.setDisable(true);
+        dtpdatafim.setDisable(true);
+        
+        dtpdataini.setValue(LocalDate.now());
+        dtpdatafim.setValue(LocalDate.now().plusDays(365));
+    }
+    
     private void carregaTabela(String filtro){
         
         DALCurso dalcurso = new DALCurso();
@@ -119,15 +147,14 @@ public class FXMLCursosController implements Initializable {
     
     private void estadoOriginal(){
      
-        txPesquisa.setDisable(true);
-        btPesquisar.setDisable(true);
         pndados.setDisable(true);
         btConfirmar.setDisable(true);
         btCancelar.setDisable(false);
         btAlterar.setDisable(true);
         btExcluir.setDisable(true);
         btNovo.setDisable(false);
-       
+        pnpesquisa.setDisable(true);
+        
         ObservableList <Node> componentes=pndados.getChildren(); 
         for(Node n : componentes)
         {
@@ -144,13 +171,12 @@ public class FXMLCursosController implements Initializable {
     
     private void estadoedicao(){
         
-        txPesquisa.setDisable(false);
-        btPesquisar.setDisable(false);
         pndados.setDisable(false);
         btConfirmar.setDisable(false);
         btExcluir.setDisable(true);
         btExcluir.setDisable(true);
         txNomeCurso.requestFocus();
+        pnpesquisa.setDisable(false);
     }
     
     @FXML
@@ -293,7 +319,7 @@ public class FXMLCursosController implements Initializable {
             txPreco.requestFocus();
         }
         else
-            setTextFieldnormal(txNomeCurso);
+            setTextFieldnormal(txPreco);
         
         if(a != null)
                a.showAndWait();
@@ -337,23 +363,25 @@ public class FXMLCursosController implements Initializable {
     private boolean validaDataEncerrameento(LocalDate date_ence){
         
         boolean ok = true;
+        Alert a = null;
         
         if(date_ence == null){
                           
             ok = false;
-            Alert a = new Alert(Alert.AlertType.WARNING, "Data do encerramento do curso obrigatório!!", ButtonType.CLOSE);
+            a= new Alert(Alert.AlertType.WARNING, "Data do encerramento do curso obrigatório!!", ButtonType.CLOSE);
             dtpDataEnc.requestFocus();
-            a.showAndWait();
+          
         }
         else if(date_ence.isBefore(dtpDataLanc.getValue())){
             
             ok = false;
-            Alert a = new Alert(Alert.AlertType.WARNING, "Data do encerramento está antes da data de lançamento!!", ButtonType.CLOSE);
+            a = new Alert(Alert.AlertType.WARNING, "Data do encerramento está antes da data de lançamento!!", ButtonType.CLOSE);
             dtpDataEnc.requestFocus();
-            a.showAndWait();
+            
         }
         
-         
+        if(a != null)
+            a.showAndWait();
         return ok;
     }
     
@@ -476,7 +504,60 @@ public class FXMLCursosController implements Initializable {
     @FXML
     private void evtPesquisa(ActionEvent event) {
         
-        carregaTabela("upper(nomecurso) like '%"+txPesquisa.getText().toUpperCase()+"%'");
+        String filtro = comboBox.getSelectionModel().getSelectedItem(),texto;
+        String sql = "";
+        LocalDate dataini = null,datafim = null;
+        
+        if(cPesquisar.isSelected()){
+        
+            sql = "dataencerramento is not null AND";
+            
+            if(filtro.contains("Data")){
+                
+               // filtragem = dtFiltro.getValue();
+                
+                if(filtro.equals("Data encerramento")){
+                    
+                }
+                else{
+                    
+                }
+            }
+            else{
+                
+                texto = txPesquisa.getText();
+                
+                if(filtro.equals("Nome"))
+                    sql +=" upper(nomecurso) like '%"+texto.toUpperCase()+"%'";
+                else
+                    sql += " upper(etapa) like '%" + texto.toUpperCase() + "%'";
+
+            }
+        } else {
+            
+            sql = "dataencerramento is null AND";
+            
+            if(filtro.contains("Data")){
+                
+                dataini = dtpdataini.getValue();
+                datafim = dtpdatafim.getValue();
+                
+                sql +=" datalancamento BETWEEN "+dataini+" AND "+datafim;
+            }
+            else{
+                
+                texto = txPesquisa.getText();
+                
+                if(filtro.equals("Nome"))
+                    sql +=" upper(nomecurso) like '%"+texto.toUpperCase()+"%'";
+                else
+                    sql += " upper(etapa) like '%" + texto.toUpperCase() + "%'";
+                
+            }
+        }
+        
+      carregaTabela(sql);
+        
     }
 
     @FXML
@@ -499,11 +580,34 @@ public class FXMLCursosController implements Initializable {
     }
 
     @FXML
-    private void evtComboBox(MouseEvent event) {
-    }
-
-    @FXML
-    private void evtEncerrados(MouseEvent event) {
+    private void evtComboBox(ActionEvent event) {
+        
+         String filtro = comboBox.getSelectionModel().getSelectedItem();
+        
+        if(filtro.contains("Data")){
+            
+            txPesquisa.setDisable(true);
+            dtpdataini.setDisable(false);
+            dtpdatafim.setDisable(false);
+            
+            if(filtro.equals("Data encerramento")){
+                
+                cPesquisar.setSelected(true);
+                cPesquisar.setDisable(true);
+            }
+            else{
+                
+                cPesquisar.setSelected(false);
+                cPesquisar.setDisable(false);
+            }
+           
+        }
+        else{
+            
+            txPesquisa.setDisable(false);
+            dtpdatafim.setDisable(true);
+            dtpdataini.setDisable(true);
+        }
     }
     
 }

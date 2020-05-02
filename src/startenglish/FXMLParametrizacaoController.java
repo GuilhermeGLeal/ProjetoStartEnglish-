@@ -111,11 +111,21 @@ public class FXMLParametrizacaoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        seta_tabela();
+        seta_mascaras();
+        estadoOriginal();
+    }    
+
+    private void seta_tabela(){
+        
         colunaNome.setCellValueFactory(new PropertyValueFactory("nome"));
         colunaCNPJ.setCellValueFactory(new PropertyValueFactory("CNPJ"));
         colunaRazaoSocial.setCellValueFactory(new PropertyValueFactory("RazaoSocial"));
         colunaTelefone.setCellValueFactory(new PropertyValueFactory("telefone"));
-        
+    }
+    
+    private void seta_mascaras(){
+     
         MaskFieldUtil.maxField(txNome, 30);
         MaskFieldUtil.foneField(txTelefone);
         MaskFieldUtil.maxField(txRazao, 20);
@@ -127,10 +137,8 @@ public class FXMLParametrizacaoController implements Initializable {
         MaskFieldUtil.maxField(txNumero, 10);
         MaskFieldUtil.maxField(txCidade, 30);
         MaskFieldUtil.cnpjField(txCNPJ);
-        
-        estadoOriginal();
-    }    
-
+    }
+    
     private void carregarTabela(){
      
         DALParametrizacao dalpar = new DALParametrizacao();

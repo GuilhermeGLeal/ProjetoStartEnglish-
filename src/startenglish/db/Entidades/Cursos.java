@@ -34,6 +34,8 @@ public class Cursos {
 
    
     public Cursos() {
+        
+        this.descricao = "";
     }
 
     public String getEtapa() {

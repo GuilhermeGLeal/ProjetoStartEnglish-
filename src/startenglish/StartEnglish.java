@@ -31,10 +31,13 @@ public class StartEnglish extends Application {
         
         stage.setScene(scene);
         stage.initStyle(StageStyle.TRANSPARENT);
+        
+        
         stage.setResizable(false);
         stage.show();
         
     }
+    
 
     /**
      * @param args the command line arguments

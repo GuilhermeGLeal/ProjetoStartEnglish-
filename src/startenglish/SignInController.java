@@ -15,6 +15,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -38,10 +41,10 @@ public class SignInController implements Initializable {
     private void evtLogin(MouseEvent event) {
         
         try {
-            Parent aux = FXMLLoader.load(getClass().getResource("FXMLPrincipal.fxml"));
-            FXMLLoginController.APLogin.getChildren().removeAll();
-            FXMLLoginController.APLogin.getChildren().setAll(aux);
-            
+            Parent aux = FXMLLoader.load(getClass().getResource("FXMLFuncionario.fxml"));
+            FXMLLoginController.BPprincipal.setCenter(aux);
+                                
+                                
         } catch (Exception e) {
             //System.out.println("Jorge");
             System.out.println(e.getMessage());

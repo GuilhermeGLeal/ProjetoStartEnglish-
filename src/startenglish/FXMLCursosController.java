@@ -111,7 +111,7 @@ public class FXMLCursosController implements Initializable {
         
         MaskFieldUtil.maxField(txNomeCurso, 20);
         MaskFieldUtil.maxField(txDescricao, 50);
-        MaskFieldUtil.maxField(txPreco, 10);
+        MaskFieldUtil.maxField(txPreco, 7);
         MaskFieldUtil.maxField(txEtapa,10);
     }
     
@@ -165,8 +165,11 @@ public class FXMLCursosController implements Initializable {
         ObservableList <Node> componentes=pndados.getChildren(); 
         for(Node n : componentes)
         {
-            if (n instanceof TextInputControl) 
-                ((TextInputControl)n).setText("");
+            if (n instanceof TextInputControl){
+                 ((TextInputControl)n).setText("");
+                  setTextFieldnormal((JFXTextField)(TextInputControl)n);
+            }
+               
             if(n instanceof ComboBox)
                 ((ComboBox)n).getItems().clear();
         }
@@ -291,15 +294,30 @@ public class FXMLCursosController implements Initializable {
         return ok;
     }
     
+    private boolean validaPrecoTam(String preco){
+        
+        boolean ok = false;
+        int i;
+        
+        for (i = 0;  i<preco.length() && preco.charAt(i) != '.' ; i++){}
+            
+        
+        if(i <=4 )
+            ok = true;
+        
+        return ok;
+    }
+    
     private boolean validaPreco(String preco){
         
         double preco_inserido = 0;
         Alert a = null;
-        boolean ok = true,problema = false;
+        boolean ok = true,problema = false,tamanho = true;
         
         try{
             
             preco_inserido = Double.parseDouble(preco);
+            tamanho = validaPrecoTam(preco);
             
         }catch(NumberFormatException ex){problema = true;}
         
@@ -324,6 +342,14 @@ public class FXMLCursosController implements Initializable {
             setTextFieldErro(txPreco);
             a = new Alert(Alert.AlertType.WARNING, "Preço igual ou menor que 0!", ButtonType.CLOSE);
             txPreco.requestFocus();
+        }
+        else if(!tamanho){
+            
+            ok = false;
+            setTextFieldErro(txPreco);
+            a = new Alert(Alert.AlertType.WARNING, "É permitido apenas 4 digitos antes da casa decimal!", ButtonType.CLOSE);
+            txPreco.requestFocus();
+            
         }
         else
             setTextFieldnormal(txPreco);

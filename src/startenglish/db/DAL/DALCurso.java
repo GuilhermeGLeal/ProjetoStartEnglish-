@@ -75,7 +75,7 @@ public class DALCurso {
     public List<Cursos> get(String filtro){
         
        String sql="select *from curso";
-            
+             
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
         
@@ -85,7 +85,7 @@ public class DALCurso {
         {
             while(rs.next())
             {
-           
+                           
                 if(rs.getDate("dataencerramento") == null)
                     aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("etapa"),rs.getDate("datalancamento").toLocalDate() ,null, 
                         rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco")));

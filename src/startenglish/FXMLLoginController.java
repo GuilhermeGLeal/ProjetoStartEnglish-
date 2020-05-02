@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javax.swing.plaf.ColorUIResource;
@@ -25,6 +26,8 @@ import javax.swing.plaf.ColorUIResource;
  */
 public class FXMLLoginController implements Initializable {
     
+    public static BorderPane BPprincipal;
+    
     @FXML 
     private VBox vbox;
     private Parent fxml;
@@ -32,9 +35,13 @@ public class FXMLLoginController implements Initializable {
     private JFXButton btn_fechar;
     @FXML
     public static AnchorPane APLogin;
+    @FXML
+    private BorderPane telaPrincipal;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        BPprincipal = telaPrincipal;
+        
         TranslateTransition t = new TranslateTransition(Duration.seconds(1), vbox);
         
         

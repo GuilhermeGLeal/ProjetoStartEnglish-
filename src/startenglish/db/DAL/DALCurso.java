@@ -12,7 +12,13 @@ public class DALCurso {
  
     public boolean gravar(Cursos c){
      
-        String sql = "insert into curso(nomecurso,descricao,preco,etapa,datalancamento,dataencerramento) values('#1','#2',#3,'#4','#5','#6')";
+        String sql;
+        
+        if(c.getData_encerramento() == null)
+         sql = "insert into curso(nomecurso,descricao,preco,etapa,datalancamento,dataencerramento) values('#1','#2',#3,'#4','#5',#6)";
+        else
+          sql = "insert into curso(nomecurso,descricao,preco,etapa,datalancamento,dataencerramento) values('#1','#2',#3,'#4','#5','#6')"; 
+            
         sql = sql.replaceAll("#1",c.getNomeCurso());
         sql = sql.replaceAll("#2",c.getDescricao());
         sql = sql.replaceAll("#3",""+c.getPreco());
@@ -25,7 +31,13 @@ public class DALCurso {
     
      public boolean alterar(Cursos c){
         
-       String sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = '#5' where cursoid = "+c.getCursoID();
+           String sql;
+        if(c.getData_encerramento() == null)
+              sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = #6 where cursoid = "+c.getCursoID();
+        else
+            sql = "update curso set nomecurso = '#1', descricao='#2', preco = #3, etapa = '#4', datalancamento = '#5', dataencerramento = '#6' where cursoid = "+c.getCursoID();
+
+            
        sql = sql.replaceAll("#1",c.getNomeCurso());
        sql = sql.replaceAll("#2",c.getDescricao());
        sql = sql.replaceAll("#3",""+c.getPreco());
@@ -50,7 +62,7 @@ public class DALCurso {
             
             if(rs.next())
             {
-                curso = new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento"), rs.getDate("dataencerramento"), 
+                curso = new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento").toLocalDate(), rs.getDate("dataencerramento").toLocalDate(), 
                         rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"));
                  
              }
@@ -63,7 +75,7 @@ public class DALCurso {
     public List<Cursos> get(String filtro){
         
        String sql="select *from curso";
-       
+             
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
         
@@ -73,8 +85,13 @@ public class DALCurso {
         {
             while(rs.next())
             {
-                aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento"), rs.getDate("dataencerramento"), 
+                           
+                if(rs.getDate("dataencerramento") == null)
+                    aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("etapa"),rs.getDate("datalancamento").toLocalDate() ,null, 
                         rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco")));
+                else
+                    aux.add(new Cursos(rs.getInt("cursoid"),rs.getString("etapa"),rs.getDate("datalancamento").toLocalDate() ,rs.getDate("dataencerramento").toLocalDate(), 
+                        rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"))); 
             }
         } 
         catch (SQLException ex) 

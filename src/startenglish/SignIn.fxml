@@ -5,13 +5,14 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" styleClass="orangepane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.SignInController">
+<VBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="480.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" styleClass="orangepane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.SignInController">
    <children>
-      <Label text="Login" textFill="#ff7f27">
+      <Label text="Entrar" textFill="#ff7f27">
          <font>
             <Font size="20.0" />
          </font>
@@ -24,7 +25,7 @@
       </Label>
       <HBox prefHeight="40.0" prefWidth="200.0" styleClass="tf_box">
          <children>
-            <JFXTextField focusColor="#f78a1b" promptText="User/Email" styleClass="tf_box" unFocusColor="WHITE" HBox.hgrow="ALWAYS" />
+            <JFXTextField fx:id="txtUsuario" focusColor="#f78a1b" labelFloat="true" promptText="Usuário" styleClass="tf_box" unFocusColor="WHITE" HBox.hgrow="ALWAYS" />
          </children>
          <VBox.margin>
             <Insets left="15.0" right="15.0" top="15.0" />
@@ -32,13 +33,13 @@
       </HBox>
       <HBox prefHeight="40.0" prefWidth="200.0" styleClass="tf_box">
          <children>
-            <JFXPasswordField focusColor="#f78a1b" promptText="Password" unFocusColor="WHITE" HBox.hgrow="ALWAYS" />
+            <JFXPasswordField fx:id="txtPassword" focusColor="#f78a1b" labelFloat="true" promptText="Senha" unFocusColor="WHITE" HBox.hgrow="ALWAYS" />
          </children>
          <VBox.margin>
             <Insets left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
       </HBox>
-      <JFXButton fx:id="btLogin" onMouseClicked="#evtLogin" prefHeight="38.0" prefWidth="442.0" styleClass="orange-btn" text="Sign In" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+      <JFXButton fx:id="btLogin" onMouseClicked="#evtLogin" prefHeight="38.0" prefWidth="442.0" styleClass="orange-btn" text="Login" textAlignment="CENTER" VBox.vgrow="ALWAYS">
          <font>
             <Font size="17.0" />
          </font>
@@ -47,4 +48,7 @@
          </VBox.margin>
       </JFXButton>
    </children>
+   <effect>
+      <DropShadow />
+   </effect>
 </VBox>

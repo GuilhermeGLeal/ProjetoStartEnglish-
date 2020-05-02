@@ -5,26 +5,16 @@
  */
 package startenglish;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
  *
  * @author azeve
  */
-public class SignUpController implements Initializable {
-
-    @FXML
-    private JFXButton btLogin;
-    @FXML
-    private JFXTextField txtUser;
+public class FXMLMenuController implements Initializable {
 
     /**
      * Initializes the controller class.
@@ -33,10 +23,5 @@ public class SignUpController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-
-    @FXML
-    private void evtLogin(MouseEvent event) {
-        
-    }
     
 }

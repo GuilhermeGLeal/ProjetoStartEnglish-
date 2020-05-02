@@ -24,17 +24,18 @@ public class StartEnglish extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLLogin.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLParametrizacao.fxml"));
         
         Scene scene = new Scene(root);
-        scene.setFill(Color.TRANSPARENT);
+      
         
         stage.setScene(scene);
-        stage.initStyle(StageStyle.TRANSPARENT);
-        stage.setResizable(false);
+      
+        //stage.setMaximized(true);
         stage.show();
         
     }
+    
 
     /**
      * @param args the command line arguments

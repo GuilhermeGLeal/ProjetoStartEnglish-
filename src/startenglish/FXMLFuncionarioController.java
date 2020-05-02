@@ -109,6 +109,10 @@ public class FXMLFuncionarioController implements Initializable {
     private AnchorPane pnDados;
     
     private Funcionario func_alterando;
+    @FXML
+    private JFXButton btMinimize;
+    @FXML
+    private JFXButton btClose;
 
     
     @Override
@@ -326,6 +330,8 @@ public class FXMLFuncionarioController implements Initializable {
 
                         f.setNome(txNome.getText());
                         f.setCpf(txCpf.getText());
+                        if(!txRg.getText().isEmpty())
+                            f.setRg(txRg.getText());
                         if(!txEmail.getText().isEmpty())
                             f.setEmail(txEmail.getText());
                         if(!txTelefone.getText().isEmpty())
@@ -407,6 +413,8 @@ public class FXMLFuncionarioController implements Initializable {
 
                         f.setNome(txNome.getText());
                         f.setCpf(txCpf.getText());
+                        if(!txRg.getText().isEmpty())
+                            f.setRg(txRg.getText());
                         if(!txEmail.getText().isEmpty())
                             f.setEmail(txEmail.getText());
                         if(!txTelefone.getText().isEmpty())
@@ -508,6 +516,16 @@ public class FXMLFuncionarioController implements Initializable {
             btAlterar.setDisable(false);
             btExcluir.setDisable(false);
         }
+    }
+
+    @FXML
+    private void evtMinimizar(MouseEvent event) {
+        
+    }
+
+    @FXML
+    private void evtFechar(MouseEvent event) {
+        System.exit(0);
     }
     
 }

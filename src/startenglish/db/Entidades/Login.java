@@ -7,6 +7,11 @@ public class Login {
     private int nivel;
     private Funcionario func;
 
+    public Login()
+    {
+        
+    }
+    
     public Login(String user, String senha, char status, int nivel, Funcionario func) {
         this.user = user;
         this.senha = senha;

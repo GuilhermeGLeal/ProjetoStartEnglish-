@@ -1,5 +1,7 @@
 package startenglish.db.DAL;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import startenglish.db.Entidades.Login;
 import startenglish.db.util.Banco;
 
@@ -33,5 +35,24 @@ public class DALLogin {
     public boolean apagar(Login l){
         
         return Banco.getCon().manipular("delete from login where usuario="+l.getUser());
+    }
+    
+    public Login get(String usuario){
+     
+        Login log = null;
+        ResultSet rs = Banco.getCon().consultar("select * from login where usuario= '"+usuario+"'");
+        
+        try{
+            
+            if(rs.next())
+            {
+                DALFuncionario dalf = new DALFuncionario();
+                log = new Login(rs.getString("usuario"), rs.getString("senha"), rs.getString("Status").charAt(0), rs.getInt("nivel"), dalf.get(rs.getInt("funcid")));
+                 
+             }
+        }
+        catch(SQLException e ){System.out.println(e.getMessage());}
+        
+        return log;
     }
 }

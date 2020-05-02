@@ -16,10 +16,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import startenglish.db.DAL.DALLogin;
+import startenglish.db.Entidades.Login;
 
 /**
  * FXML Controller class
@@ -27,7 +31,7 @@ import javafx.stage.StageStyle;
  * @author azeve
  */
 public class SignInController implements Initializable {
-
+    
     @FXML
     private JFXButton btLogin;
     @FXML
@@ -47,18 +51,50 @@ public class SignInController implements Initializable {
     @FXML
     private void evtLogin(MouseEvent event) {
         
+           DALLogin dale = new DALLogin();
+           Login log = new Login();
+           Alert a = new Alert(Alert.AlertType.CONFIRMATION);
+           if(!txtUsuario.getText().isEmpty() && !txtPassword.getText().isEmpty())
+           {
+               log = dale.get(txtUsuario.getText());
+           
+                if(log == null)
+                {
+                    a = new Alert(Alert.AlertType.ERROR,"Usuário incorreto ou inexistente!!", ButtonType.OK);
+                    txtUsuario.requestFocus();
+                    a.showAndWait();
+                }
+                else{
+                    if(txtPassword.getText().equals(log.getSenha()))
+                    {
+                        try {
+                             Parent aux = FXMLLoader.load(getClass().getResource("FXMLFuncionario.fxml"));
+                             FXMLLoginController.BPprincipal.setCenter(aux);
+
+
+                         } catch (Exception e) {
+                             //System.out.println("Jorge");
+                             System.out.println(e.getMessage());
+                         }
+                    }
+                    else
+                    {
+                        a = new Alert(Alert.AlertType.ERROR,"Senha incorreta!!", ButtonType.OK);
+                        txtPassword.requestFocus();
+                        a.showAndWait();
+                    }
+                }
+           }
+           else
+           {
+               a = new Alert(Alert.AlertType.ERROR,"Digite o usuário e senha!", ButtonType.OK);
+               txtUsuario.requestFocus();
+               a.showAndWait();
+           }
+           
         
         
         
-//        try {
-//            Parent aux = FXMLLoader.load(getClass().getResource("FXMLFuncionario.fxml"));
-//            FXMLLoginController.BPprincipal.setCenter(aux);
-//                                
-//                                
-//        } catch (Exception e) {
-//            //System.out.println("Jorge");
-//            System.out.println(e.getMessage());
-//        }
     }
     
 }

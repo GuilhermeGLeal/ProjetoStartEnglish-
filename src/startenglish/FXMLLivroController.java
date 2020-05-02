@@ -2,6 +2,7 @@
 package startenglish;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,6 +32,12 @@ public class FXMLLivroController implements Initializable {
     private JFXTextField txID;
     @FXML
     private TableColumn<Livro, Double> tabelaValor;
+    @FXML
+    private JFXTextField txEditora;
+    @FXML
+    private JFXTextField txVolume;
+    @FXML
+    private JFXComboBox<?> cbFiltro;
 
     /**
      * Initializes the controller class.

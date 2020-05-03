@@ -48,7 +48,7 @@ public class FXMLPrincipalController implements Initializable {
     public static MenuButton btConsultas;
     public static MenuButton btCadastros;
     public static ImageView img;
-    public static BorderPane snprincpial = null;
+    public static BorderPane snprincipal = null;
     public static Label nome = null;
     
        
@@ -56,7 +56,7 @@ public class FXMLPrincipalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     
        
-        snprincpial = pnMudanca;
+        snprincipal = pnMudanca;
         nome = labelNome;
         btRelatorios =btRelatorio;
         btFinanceiros =btFinanceiro;
@@ -170,6 +170,32 @@ public class FXMLPrincipalController implements Initializable {
             btFinanceiros.setDisable(false);
             btRelatorios.setDisable(false);
         }
+    }
+
+    @FXML
+    private void evtAluno(ActionEvent event) 
+    {
+        try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLAluno.fxml"));
+            pnMudanca.setRight(aux);
+            labelNome.setText("Gerenciamento dos Alunos");
+            
+        } catch (Exception e) {
+          
+        }
+    }
+
+    @FXML
+    private void evtLivro(ActionEvent event)
+    {
+       try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLLivro.fxml"));
+            pnMudanca.setRight(aux);
+            labelNome.setText("Gerenciamento dos Livros");
+            
+        } catch (Exception e) {
+          
+        } 
     }
     
     

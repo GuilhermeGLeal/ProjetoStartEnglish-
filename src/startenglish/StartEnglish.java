@@ -28,8 +28,8 @@ public class StartEnglish extends Application
       
         
         stage.setScene(scene);
-      
-        stage.setMaximized(true);
+
+        stage.setResizable(false);
         stage.show();
         
     }

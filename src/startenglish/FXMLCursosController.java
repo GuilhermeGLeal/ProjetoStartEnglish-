@@ -535,7 +535,7 @@ public class FXMLCursosController implements Initializable {
         } 
         else{
             
-            FXMLPrincipalController.snprincpial.setRight(null);
+            FXMLPrincipalController.snprincipal.setRight(null);
             FXMLPrincipalController.nome.setText("");
            
         }

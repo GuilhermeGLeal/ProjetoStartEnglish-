@@ -20,8 +20,10 @@ import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -292,6 +294,8 @@ public class FXMLParametrizacaoController implements Initializable {
                    b = new Alert(Alert.AlertType.CONFIRMATION,"Parametrizacao Excluído!!", ButtonType.OK);
                    b.showAndWait();
                    Banco.getCon().getConnect().commit();
+                   FXMLPrincipalController.desabilita_parametri(true);
+                   FXMLPrincipalController.chamaimagem();
                 } 
                 else{
                      
@@ -753,7 +757,7 @@ public class FXMLParametrizacaoController implements Initializable {
     }
 
     @FXML
-    private void evtCancelar(ActionEvent event) {
+    private void evtCancelar(ActionEvent event) throws IOException {
         
         if (!pndados.isDisabled())
         {
@@ -762,15 +766,22 @@ public class FXMLParametrizacaoController implements Initializable {
         } 
         else{
             
+                       
             if(tabela.getItems().get(0) == null){
+                            
                 
                 Alert a = new Alert(Alert.AlertType.WARNING, "Não pode-se sair da parametrização sem antes inserir os dados!", ButtonType.CLOSE);
                 txNome.requestFocus();
                 a.showAndWait();
+                
+                
             }
             else{
-                 FXMLPrincipalController.snprincpial.setRight(null);
-                 FXMLPrincipalController.nome.setText("");
+                
+                FXMLPrincipalController.desabilita_parametri(false);
+                FXMLPrincipalController.chamaimagem();
+                FXMLPrincipalController.snprincpial.setRight(null);
+                FXMLPrincipalController.nome.setText("");
             }
             
         }

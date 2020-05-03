@@ -50,7 +50,7 @@ public class DALFuncionario {
             if(rs.next())
             {
                 
-                        
+                                       
                 DALEndereco dale = new DALEndereco();
                 func = new Funcionario(rs.getInt("funcid"), rs.getString("nome"), rs.getString("cpf"), rs.getString("rg"), rs.getString("email"), rs.getString("fone"), dale.get(rs.getInt("enderecoid")));
                  

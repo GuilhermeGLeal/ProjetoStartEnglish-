@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -89,7 +90,8 @@ public class FXMLControleLoginController implements Initializable {
           
         try {
            DALFuncionario dale = new DALFuncionario();
-           ObservableList<Funcionario> modelo = FXCollections.observableArrayList(dale.get(""));
+           List<Funcionario> lista = dale.get("");
+           ObservableList<Funcionario> modelo = FXCollections.observableArrayList(lista);
            
            cbFuncionario.setItems(modelo);
            

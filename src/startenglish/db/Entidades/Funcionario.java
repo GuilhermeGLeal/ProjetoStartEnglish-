@@ -31,6 +31,12 @@ public class Funcionario {
         this.fone = fone;
         this.endereco = endereco;
     }
+    
+    @Override
+    public String toString()
+    {
+        return this.Nome;
+    }
 
     public Funcionario() {
     } 

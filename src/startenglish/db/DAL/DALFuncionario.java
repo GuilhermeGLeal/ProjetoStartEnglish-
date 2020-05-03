@@ -66,7 +66,7 @@ public class DALFuncionario {
        String sql="select * from funcionario";
        
         if(!filtro.isEmpty())
-            sql+=" where "+filtro;
+            sql+=" where nome ='"+filtro+"'";
         
         List <Funcionario> aux = new ArrayList();
         ResultSet rs = Banco.getCon().consultar(sql);

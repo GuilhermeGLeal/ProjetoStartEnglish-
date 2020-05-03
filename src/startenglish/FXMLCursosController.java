@@ -160,7 +160,7 @@ public class FXMLCursosController implements Initializable {
         btAlterar.setDisable(true);
         btExcluir.setDisable(true);
         btNovo.setDisable(false);
-        pnpesquisa.setDisable(true);
+        pnpesquisa.setDisable(false);
         
         ObservableList <Node> componentes=pndados.getChildren(); 
         for(Node n : componentes)

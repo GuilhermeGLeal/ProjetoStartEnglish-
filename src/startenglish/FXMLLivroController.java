@@ -22,13 +22,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import startenglish.db.DAL.DALFuncionario;
+import startenglish.db.DAL.DALCurso;
 import startenglish.db.DAL.DALLivro;
-import startenglish.db.DAL.DALProfessor;
-import startenglish.db.Entidades.Funcionario;
 import startenglish.db.Entidades.Livro;
-import startenglish.db.Entidades.Professor;
 import startenglish.db.util.Banco;
 import startenglish.util.MaskFieldUtil;
 
@@ -120,7 +118,6 @@ public class FXMLLivroController implements Initializable {
     }
     private void EstadoEdicao()
     {
-        pnbusca.setDisable(true);
         pndados.setDisable(false);
         btConfirmar.setDisable(false);
         btExcluir.setDisable(true);
@@ -291,13 +288,57 @@ public class FXMLLivroController implements Initializable {
     @FXML
     private void evtAlterar(ActionEvent event)
     {
-        
+        if(tabela.getSelectionModel().getSelectedItem() != null)
+        {     
+            Livro l = tabela.getSelectionModel().getSelectedItem();
+            
+            txID.setText(""+l.getLivroID());
+            txNome.setText(l.getNome());
+            txEditora.setText(l.getEditora());
+            txValor.setText(""+l.getValor());
+            txVolume.setText(l.getVolume());
+            
+            EstadoEdicao();
+        }
     }
 
     @FXML
     private void evtExcluir(ActionEvent event) 
     {
+       Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Confirmar exclusão?", ButtonType.YES,ButtonType.NO);
+        boolean ok = true;
         
+        if(a.showAndWait().get() == ButtonType.YES)
+        {           
+            Livro l = new Livro();
+            DALLivro dal = new DALLivro();
+            
+            l = tabela.getSelectionModel().getSelectedItem();
+            
+            try{
+                
+                Banco.getCon().getConnect().setAutoCommit(false);
+                
+                ok = dal.apagar(l.getLivroID());
+                
+                if(ok)
+                {                   
+                     Banco.getCon().getConnect().commit();
+                    a =  new Alert(Alert.AlertType.CONFIRMATION," Exclusão ocorrida com sucesso!!", ButtonType.OK);
+                }
+                else
+                {                  
+                    Banco.getCon().getConnect().rollback();
+                    a =  new Alert(Alert.AlertType.ERROR, "Erro ao deletar livro!", ButtonType.OK);
+                }
+                
+                a.showAndWait();
+                
+            }catch(SQLException ex){System.out.println(ex.getMessage());}
+            
+            EstadoOriginal();    
+            CarregaTabela("");
+        } 
     }
 
     @FXML
@@ -383,6 +424,37 @@ public class FXMLLivroController implements Initializable {
     }
 
     @FXML
-    private void evtCancelar(ActionEvent event) {
+    private void evtCancelar(ActionEvent event) 
+    {
+        if (!pndados.isDisabled())
+        {
+            EstadoOriginal();
+        } 
+        else{
+            
+            FXMLPrincipalController.snprincipal.setCenter(null);
+            FXMLPrincipalController.nome.setText("");
+           
+        }
+    }
+
+    @FXML
+    private void evtPesquisar(ActionEvent event) 
+    {
+        if(cbFiltro.getSelectionModel().getSelectedItem().equals("Nome"))
+            CarregaTabela("livro.nome like '%"+txPesquisa.getText()+"%'");
+        else
+            CarregaTabela("livro.editora like '%"+txPesquisa.getText()+"%'");
+
+    }
+
+    @FXML
+    private void clickTabela(MouseEvent event) 
+    {
+        if(tabela.getSelectionModel().getSelectedIndex()>=0)
+        {
+           btAlterar.setDisable(false);
+           btExcluir.setDisable(false);
+        }
     }
 }

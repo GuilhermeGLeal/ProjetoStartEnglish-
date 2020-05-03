@@ -95,7 +95,7 @@
          <children>
             <AnchorPane fx:id="pnbusca" layoutX="-1.0" prefHeight="75.0" prefWidth="671.0" style="-fx-background-color: #FF7F27;">
                <children>
-                  <JFXButton fx:id="btPesquisar" layoutX="587.0" layoutY="38.0" style="-fx-font-weight: bold;" text="Pesquisar" />
+                  <JFXButton fx:id="btPesquisar" layoutX="587.0" layoutY="38.0" onAction="#evtPesquisar" style="-fx-font-weight: bold;" text="Pesquisar" />
                   <JFXTextField fx:id="txPesquisa" layoutX="6.0" layoutY="38.0" prefHeight="25.0" prefWidth="312.0" />
                   <JFXComboBox fx:id="cbFiltro" labelFloat="true" layoutX="354.0" layoutY="38.0" prefHeight="25.0" prefWidth="166.0" />
                   <Label layoutX="6.0" layoutY="14.0" text="Filtro Texto">
@@ -110,7 +110,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <TableView fx:id="tabela" layoutY="75.0" prefHeight="224.0" prefWidth="669.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+            <TableView fx:id="tabela" layoutY="75.0" onMouseClicked="#clickTabela" prefHeight="224.0" prefWidth="669.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
                   <TableColumn fx:id="tabelaNome" minWidth="0.0" prefWidth="276.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Nome" />
                   <TableColumn fx:id="tabelaEditora" prefWidth="185.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Editora" />

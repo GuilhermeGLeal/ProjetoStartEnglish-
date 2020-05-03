@@ -104,7 +104,7 @@ public class FXMLCursosController implements Initializable {
         tabelaPreco.setCellValueFactory(new PropertyValueFactory("preco"));
         tabelaEtapa.setCellValueFactory(new PropertyValueFactory("etapa"));
         tabelaData.setCellValueFactory(new PropertyValueFactory("data_lancamento"));
-        tabelaEncerramento.setCellValueFactory(new PropertyValueFactory("data_encerramento"));
+        tabelaEncerramento.setCellValueFactory(new PropertyValueFactory("data_encerramento"));        
     }
     
     private void seta_maskaras(){

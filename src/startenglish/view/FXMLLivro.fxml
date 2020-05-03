@@ -18,10 +18,10 @@
             <HBox alignment="CENTER" prefHeight="61.0" prefWidth="671.0" spacing="50.0" style="-fx-background-color: #FF7F27; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <children>
                   <JFXButton fx:id="btNovo" onAction="#evtNovo" style="-fx-font-weight: bold;" text="Novo" />
-                  <JFXButton fx:id="btAlterar" style="-fx-font-weight: bold;" text="Alterar" />
-                  <JFXButton fx:id="btExcluir" style="-fx-font-weight: bold;" text="Excluir" />
-                  <JFXButton fx:id="btConfirmar" style="-fx-font-weight: bold;" text="Confirmar" />
-                  <JFXButton fx:id="btCancelar" style="-fx-font-weight: bold;" text="Cancelar" />
+                  <JFXButton fx:id="btAlterar" onAction="#evtAlterar" style="-fx-font-weight: bold;" text="Alterar" />
+                  <JFXButton fx:id="btExcluir" onAction="#evtExcluir" style="-fx-font-weight: bold;" text="Excluir" />
+                  <JFXButton fx:id="btConfirmar" onAction="#evtConfirmar" style="-fx-font-weight: bold;" text="Confirmar" />
+                  <JFXButton fx:id="btCancelar" onAction="#evtCancelar" style="-fx-font-weight: bold;" text="Cancelar" />
                </children>
             </HBox>
             <AnchorPane fx:id="pndados" layoutX="-2.0" layoutY="60.0" prefHeight="234.0" prefWidth="671.0" style="-fx-background-color: black; -fx-border-color: #FF7F27; -fx-border-width: 5;">

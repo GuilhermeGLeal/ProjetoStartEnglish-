@@ -193,6 +193,8 @@ public class FXMLCursosController implements Initializable {
     private void evtNovo(ActionEvent event) {
         
         estadoedicao();
+        cEncerrar.setSelected(false);
+        dtpDataEnc.setDisable(true);
     }
 
     @FXML
@@ -647,6 +649,7 @@ public class FXMLCursosController implements Initializable {
     private void evtLimparFiltros(ActionEvent event) {
         
         seta_pesquisa();
+        carregaTabela("");
     }
     
 }

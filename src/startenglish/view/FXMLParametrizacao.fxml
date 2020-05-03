@@ -29,7 +29,7 @@
                <children>
                   <Label alignment="CENTER" layoutX="28.0" layoutY="15.0" prefHeight="21.0" prefWidth="908.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Dados da empresa" />
                   <JFXTextField fx:id="txRua" alignment="CENTER" layoutX="511.0" layoutY="439.0" prefHeight="31.0" prefWidth="430.0" promptText="Rua" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
-                  <JFXTextField fx:id="txCEP" alignment="CENTER" layoutX="200.0" layoutY="439.0" onKeyTyped="#evtChamaCEP" onMouseExited="#evtValidaCEP" prefHeight="31.0" prefWidth="279.0" promptText="CEP" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txCEP" alignment="CENTER" layoutX="200.0" layoutY="439.0" onMouseExited="#evtValidaCEP" prefHeight="31.0" prefWidth="279.0" promptText="CEP" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
                   <JFXTextField fx:id="txNome" alignment="CENTER" layoutX="26.0" layoutY="85.0" prefHeight="31.0" prefWidth="456.0" promptText="Nome" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" unFocusColor="BLACK" />
                   <ImageView fx:id="img" fitHeight="254.0" fitWidth="315.0" layoutX="630.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true" />
                   <JFXButton fx:id="btEscolher" layoutX="637.0" layoutY="346.0" onAction="#evtEscolher" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Escolher Arquivo" />

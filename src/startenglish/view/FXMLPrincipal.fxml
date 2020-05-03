@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.ImageView?>
@@ -11,9 +12,10 @@
 
 <BorderPane maxHeight="600.0" maxWidth="1920.0" minHeight="0.0" minWidth="1005.0" prefHeight="594.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLPrincipalController">
    <top>
-      <AnchorPane maxWidth="1920.0" prefHeight="90.0" prefWidth="987.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER">
+      <AnchorPane maxWidth="1920.0" prefHeight="109.0" prefWidth="1005.0" style="-fx-background-color: #FF7F27;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="86.0" fitWidth="106.0" layoutX="14.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imglogo" fitHeight="104.0" fitWidth="130.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="labelNome" layoutX="394.0" layoutY="37.0" prefHeight="36.0" prefWidth="556.0" style="-fx-font-family: arial; -fx-font-size: 30;" textFill="WHITE" />
          </children>
       </AnchorPane>
    </top>
@@ -23,10 +25,12 @@
    <left>
       <VBox alignment="TOP_CENTER" maxHeight="1080.0" maxWidth="1080.0" minWidth="200.0" prefHeight="473.0" prefWidth="187.0" style="-fx-background-color: black; -fx-border-width: 0 10 0 0; -fx-border-color: black  #FF7F27 black black;" BorderPane.alignment="CENTER">
          <children>
-            <MenuButton fx:id="btCadastro" maxHeight="1000.0" mnemonicParsing="false" onMouseClicked="#evtCadastro" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Cadastro" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+            <MenuButton maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Cadastro" textAlignment="CENTER" VBox.vgrow="ALWAYS">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
+                <MenuItem mnemonicParsing="false" text="Aluno" />
+                  <MenuItem mnemonicParsing="false" onAction="#evtCurso" text="Curso" />
+                  <MenuItem mnemonicParsing="false" onAction="#evtFunc" text="Funcionário" />
+                <MenuItem mnemonicParsing="false" onAction="#evtParametriz" text="Parametrização" />
               </items>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -67,7 +71,10 @@
    <center>
       <Pane maxHeight="1080.0" maxWidth="1820.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: black;" BorderPane.alignment="CENTER">
          <children>
-            <BorderPane fx:id="pnMudanca" layoutX="1.0" layoutY="1.0" prefHeight="469.0" prefWidth="800.0" />
+            <BorderPane fx:id="pnMudanca" layoutX="1.0" layoutY="1.0" prefHeight="469.0" prefWidth="800.0">
+               <padding>
+                  <Insets bottom="50.0" left="450.0" top="50.0" />
+               </padding></BorderPane>
          </children></Pane>
    </center>
 </BorderPane>

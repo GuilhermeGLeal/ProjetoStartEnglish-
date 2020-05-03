@@ -31,7 +31,6 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -761,6 +760,21 @@ public class FXMLParametrizacaoController implements Initializable {
             img.setImage(null);
             estadoOriginal();
         } 
+        else{
+            
+            if(tabela.getItems().get(0) == null){
+                
+                Alert a = new Alert(Alert.AlertType.WARNING, "Não pode-se sair da parametrização sem antes inserir os dados!", ButtonType.CLOSE);
+                txNome.requestFocus();
+                a.showAndWait();
+            }
+            else{
+                 FXMLPrincipalController.snprincpial.setRight(null);
+                 FXMLPrincipalController.nome.setText("");
+            }
+            
+        }
+           
     }
 
     @FXML

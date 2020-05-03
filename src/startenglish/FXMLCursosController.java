@@ -533,7 +533,13 @@ public class FXMLCursosController implements Initializable {
         {
             estadoOriginal();
         } 
-       
+        else{
+            
+            FXMLPrincipalController.snprincpial.setRight(null);
+            FXMLPrincipalController.nome.setText("");
+           
+        }
+          
     }
 
     @FXML

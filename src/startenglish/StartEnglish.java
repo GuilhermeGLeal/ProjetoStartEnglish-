@@ -22,7 +22,7 @@ public class StartEnglish extends Application
 {   
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("view/FXMLPrincipal.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/FXMLControleLogin.fxml"));
         
         Scene scene = new Scene(root);
       

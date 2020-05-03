@@ -109,10 +109,6 @@ public class FXMLFuncionarioController implements Initializable {
     private AnchorPane pnDados;
     
     private Funcionario func_alterando;
-    @FXML
-    private JFXButton btMinimize;
-    @FXML
-    private JFXButton btClose;
 
     
     @Override
@@ -518,12 +514,7 @@ public class FXMLFuncionarioController implements Initializable {
         }
     }
 
-    @FXML
-    private void evtMinimizar(MouseEvent event) {
-        
-    }
 
-    @FXML
     private void evtFechar(MouseEvent event) {
         System.exit(0);
     }

@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -13,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -20,6 +23,7 @@ import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import startenglish.db.DAL.DALFuncionario;
+import startenglish.db.DAL.DALLivro;
 import startenglish.db.DAL.DALProfessor;
 import startenglish.db.Entidades.Funcionario;
 import startenglish.db.Entidades.Livro;
@@ -73,14 +77,22 @@ public class FXMLLivroController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) 
     {
         tabelaNome.setCellValueFactory(new PropertyValueFactory("Nome"));
-        tabelaValor.setCellValueFactory(new PropertyValueFactory("Valor"));
-        tabelaEditora.setCellValueFactory(new PropertyValueFactory("Editora"));
-        tabelaVolume.setCellValueFactory(new PropertyValueFactory("Volume"));
+        tabelaValor.setCellValueFactory(new PropertyValueFactory("valor"));
+        tabelaEditora.setCellValueFactory(new PropertyValueFactory("editora"));
+        tabelaVolume.setCellValueFactory(new PropertyValueFactory("volume"));
         
         MaskFieldUtil.maxField(txEditora, 25);
         MaskFieldUtil.maxField(txVolume, 5);
         MaskFieldUtil.maxField(txNome, 30);
         MaskFieldUtil.numericField(txValor);    
+        
+        List<String> combo = new ArrayList();
+        combo.add("Nome");
+        combo.add("Editora");
+        
+        ObservableList<String> modelo = FXCollections.observableArrayList(combo);
+        cbFiltro.setItems(modelo);
+        cbFiltro.setValue("Nome");
         
         EstadoOriginal();
     }    
@@ -102,7 +114,7 @@ public class FXMLLivroController implements Initializable {
                 ((ComboBox)n).getItems().clear();
         }
       
-        //CarregaTabela("");
+        CarregaTabela("");
     }
     private void EstadoEdicao()
     {
@@ -118,29 +130,98 @@ public class FXMLLivroController implements Initializable {
     
     private void CarregaTabela(String filtro)
     {
-        DALFuncionario dalF = new DALFuncionario();
-        DALProfessor dalP = new DALProfessor();
-        Professor prof = new Professor();
-        
-        List <Funcionario> listaFunc = dalF.get(filtro);
-        
-        for (int i = 0; i < listaFunc.size() ; i++) {
-            prof = dalP.get(listaFunc.get(i).getID());
-            if(prof != null)
-                listaFunc.get(i).setProfessor(Boolean.TRUE);
-            else
-                listaFunc.get(i).setProfessor(Boolean.FALSE);
-            
-        }
-        ObservableList <Funcionario> modelo;
-        modelo = FXCollections.observableArrayList(listaFunc);
-        
-        //tabela.setItems(modelo);
+        DALLivro dalL = new DALLivro();       
+        List <Livro> listaLivro = dalL.get(filtro);
+        listaLivro = dalL.get(filtro);           
+        ObservableList <Livro> modelo;
+        modelo = FXCollections.observableArrayList(listaLivro);       
+        tabela.setItems(modelo);
     }
 
+    private boolean validaPrecoTam(String preco)
+    {      
+        boolean ok = false;
+        int i;
+        
+        for (i = 0;  i<preco.length() && preco.charAt(i) != '.' ; i++){}
+            
+        
+        if(i <=4 )
+            ok = true;
+        
+        return ok;
+    }
+    
+    /*private boolean validaPreco(String preco)
+    {       
+        double preco_inserido = 0;
+        Alert a = null;
+        boolean ok = true,problema = false,tamanho = true;
+        
+        try{
+            
+            preco_inserido = Double.parseDouble(preco);
+            tamanho = validaPrecoTam(preco);
+            
+        }catch(NumberFormatException ex){problema = true;}
+        
+        if(preco.isEmpty())
+        {           
+            ok = false;
+            setTextFieldErro(txValor);
+            a = new Alert(Alert.AlertType.WARNING, "Preço obrigatório!!", ButtonType.CLOSE);
+            txPreco.requestFocus();
+            
+        }
+        else if(!preco.isEmpty() && problema){
+            
+            ok = false;
+            setTextFieldErro(txPreco);
+            a = new Alert(Alert.AlertType.WARNING, "Preço inválido!", ButtonType.CLOSE);
+            txPreco.requestFocus();
+        }
+        else if(!preco.isEmpty() && preco_inserido <=0){
+            
+            ok = false;
+            setTextFieldErro(txPreco);
+            a = new Alert(Alert.AlertType.WARNING, "Preço igual ou menor que 0!", ButtonType.CLOSE);
+            txPreco.requestFocus();
+        }
+        else if(!tamanho){
+            
+            ok = false;
+            setTextFieldErro(txPreco);
+            a = new Alert(Alert.AlertType.WARNING, "É permitido apenas 4 digitos antes da casa decimal!", ButtonType.CLOSE);
+            txPreco.requestFocus();
+            
+        }
+        else
+            setTextFieldnormal(txPreco);
+        
+        if(a != null)
+               a.showAndWait();
+        return ok;
+    }*/
+    
     @FXML
     private void evtNovo(ActionEvent event) 
     {
         EstadoEdicao();
+    }
+
+    @FXML
+    private void evtAlterar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtExcluir(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtConfirmar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtCancelar(ActionEvent event) {
     }
 }

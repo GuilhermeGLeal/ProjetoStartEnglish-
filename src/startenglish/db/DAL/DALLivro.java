@@ -57,7 +57,7 @@ public class DALLivro {
     
     public List<Livro> get(String filtro){
         
-       String sql="select *from livro";
+       String sql="select * from livro";
        
         if(!filtro.isEmpty())
             sql+=" where "+filtro;

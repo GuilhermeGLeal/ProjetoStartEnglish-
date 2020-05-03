@@ -55,8 +55,7 @@ public class FXMLAlunoController implements Initializable {
     private JFXTextField txID;
     @FXML
     private JFXComboBox<?> cbFiltro;
-
-    
+  
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {

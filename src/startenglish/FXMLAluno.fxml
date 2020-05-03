@@ -145,14 +145,24 @@
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="177.0" prefWidth="736.0" style="-fx-background-color: black;">
          <children>
-            <AnchorPane layoutY="-1.0" prefHeight="43.0" prefWidth="736.0" style="-fx-background-color: #FF7F27;">
+            <AnchorPane layoutY="-1.0" prefHeight="82.0" prefWidth="736.0" style="-fx-background-color: #FF7F27;">
                <children>
-                  <JFXButton fx:id="btPesquisar" layoutX="623.0" layoutY="12.0" style="-fx-font-weight: bold;" text="Pesquisar" />
-                  <JFXTextField fx:id="txPesquisa" layoutX="5.0" layoutY="7.0" prefHeight="25.0" prefWidth="390.0" />
-                  <JFXComboBox fx:id="cbFiltro" layoutX="457.0" layoutY="9.0" prefHeight="25.0" prefWidth="120.0" />
+                  <JFXButton fx:id="btPesquisar" layoutX="632.0" layoutY="46.0" style="-fx-font-weight: bold;" text="Pesquisar" />
+                  <JFXTextField fx:id="txPesquisa" layoutX="14.0" layoutY="41.0" prefHeight="25.0" prefWidth="390.0" />
+                  <JFXComboBox fx:id="cbFiltro" layoutX="466.0" layoutY="43.0" prefHeight="25.0" prefWidth="120.0" />
+                  <Label layoutX="16.0" layoutY="14.0" text="Filtro Texto">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="466.0" layoutY="14.0" text="Opções de Filtro">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
-            <TableView fx:id="tabela" layoutY="36.0" prefHeight="324.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+            <TableView fx:id="tabela" layoutY="79.0" prefHeight="281.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
               <columns>
                 <TableColumn fx:id="tabelaNome" prefWidth="223.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Nome" />
                 <TableColumn fx:id="tabelaCPF" minWidth="0.0" prefWidth="142.0" style="-fx-background-color: #FF7F27;" text="CPF" />

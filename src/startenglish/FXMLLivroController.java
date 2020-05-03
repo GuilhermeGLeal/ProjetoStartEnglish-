@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ import startenglish.db.DAL.DALProfessor;
 import startenglish.db.Entidades.Funcionario;
 import startenglish.db.Entidades.Livro;
 import startenglish.db.Entidades.Professor;
+import startenglish.db.util.Banco;
 import startenglish.util.MaskFieldUtil;
 
 public class FXMLLivroController implements Initializable {
@@ -84,7 +86,7 @@ public class FXMLLivroController implements Initializable {
         MaskFieldUtil.maxField(txEditora, 25);
         MaskFieldUtil.maxField(txVolume, 5);
         MaskFieldUtil.maxField(txNome, 30);
-        MaskFieldUtil.numericField(txValor);    
+        MaskFieldUtil.maxField(txValor,10);    
         
         List<String> combo = new ArrayList();
         combo.add("Nome");
@@ -152,7 +154,7 @@ public class FXMLLivroController implements Initializable {
         return ok;
     }
     
-    /*private boolean validaPreco(String preco)
+    private boolean validaPreco(String preco)
     {       
         double preco_inserido = 0;
         Alert a = null;
@@ -168,40 +170,117 @@ public class FXMLLivroController implements Initializable {
         if(preco.isEmpty())
         {           
             ok = false;
-            setTextFieldErro(txValor);
-            a = new Alert(Alert.AlertType.WARNING, "Preço obrigatório!!", ButtonType.CLOSE);
-            txPreco.requestFocus();
-            
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            a = new Alert(Alert.AlertType.WARNING, "Valor obrigatório!!", ButtonType.CLOSE);
+            txValor.requestFocus();           
         }
-        else if(!preco.isEmpty() && problema){
-            
+        else if(!preco.isEmpty() && problema)
+        {           
             ok = false;
-            setTextFieldErro(txPreco);
-            a = new Alert(Alert.AlertType.WARNING, "Preço inválido!", ButtonType.CLOSE);
-            txPreco.requestFocus();
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            a = new Alert(Alert.AlertType.WARNING, "Valor inválido!", ButtonType.CLOSE);
+            txValor.requestFocus();
         }
-        else if(!preco.isEmpty() && preco_inserido <=0){
-            
+        else if(!preco.isEmpty() && preco_inserido <=0)
+        {            
             ok = false;
-            setTextFieldErro(txPreco);
-            a = new Alert(Alert.AlertType.WARNING, "Preço igual ou menor que 0!", ButtonType.CLOSE);
-            txPreco.requestFocus();
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            a = new Alert(Alert.AlertType.WARNING, "Valor igual ou menor que 0!", ButtonType.CLOSE);
+            txValor.requestFocus();
         }
-        else if(!tamanho){
-            
+        else if(!tamanho)
+        {           
             ok = false;
-            setTextFieldErro(txPreco);
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
             a = new Alert(Alert.AlertType.WARNING, "É permitido apenas 4 digitos antes da casa decimal!", ButtonType.CLOSE);
-            txPreco.requestFocus();
+            txValor.requestFocus();           
+        }
+        else
+            txValor.setStyle("-fx-border-width: 0;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+        
+        if(a != null)
+            a.showAndWait();
+        return ok;
+    }
+    
+    private boolean validaChars(String nome,String volume,String editora)
+    {        
+        boolean ok = true;
+        Alert a=null;
+        if(nome.isEmpty())
+        {        
+            ok = false;
+            txNome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            
+            if(a==null)
+            {
+                txNome.requestFocus();
+                a = new Alert(Alert.AlertType.WARNING, "Nome do livro obrigatório!!", ButtonType.CLOSE);            
+                a.showAndWait();
+            }
             
         }
         else
-            setTextFieldnormal(txPreco);
+        {
+            txNome.setStyle("-fx-border-width: 0;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+        }
+        if(volume.isEmpty())
+        {
+           ok = false;
+            txVolume.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            
+            if(a==null)
+            {
+                txVolume.requestFocus();
+                a = new Alert(Alert.AlertType.WARNING, "Volume obrigatório!!", ButtonType.CLOSE);           
+                a.showAndWait(); 
+            }
+        }
+        else
+        {
+          txVolume.setStyle("-fx-border-width: 0;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");  
+        }
+        if(editora.isEmpty())
+        {
+          ok = false;
+            txEditora.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            
+            if(a==null)
+            {
+                txEditora.requestFocus();
+                a = new Alert(Alert.AlertType.WARNING, "Nome da editora obrigatório!!", ButtonType.CLOSE);
+                a.showAndWait(); 
+            }
+        }
+        else
+        {
+           txEditora.setStyle("-fx-border-width: 0;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");                    
+        }
         
-        if(a != null)
-               a.showAndWait();
         return ok;
-    }*/
+    }
     
     @FXML
     private void evtNovo(ActionEvent event) 
@@ -210,15 +289,97 @@ public class FXMLLivroController implements Initializable {
     }
 
     @FXML
-    private void evtAlterar(ActionEvent event) {
+    private void evtAlterar(ActionEvent event)
+    {
+        
     }
 
     @FXML
-    private void evtExcluir(ActionEvent event) {
+    private void evtExcluir(ActionEvent event) 
+    {
+        
     }
 
     @FXML
-    private void evtConfirmar(ActionEvent event) {
+    private void evtConfirmar(ActionEvent event) 
+    {
+        if(validaChars(txNome.getText(),txVolume.getText(),txEditora.getText()))
+        {
+            if(validaPreco(txValor.getText()))
+            {
+                double valor = 0;
+                int cod;
+                try 
+                {
+                    valor = Double.parseDouble(txValor.getText());
+                    cod = Integer.parseInt(txID.getText());
+                                                           
+                }
+                catch (NumberFormatException ex) 
+                {
+                    cod = 0;               
+                }
+                DALLivro dal = new DALLivro();
+                Livro l = new Livro();
+                l.setEditora(txEditora.getText());
+                l.setNome(txNome.getText());
+                l.setVolume(txVolume.getText());
+                l.setValor(valor);
+                l.setLivroID(cod);
+                Alert a = null;
+                boolean ok;
+                try
+                {
+                    Banco.getCon().getConnect().setAutoCommit(false);
+
+                    if (cod == 0)
+                    {
+                        ok = dal.gravar(l);
+
+                        if (ok)
+                        {
+                            a = new Alert(Alert.AlertType.CONFIRMATION, "Livro inserido!!", ButtonType.OK);
+                        } 
+                        else 
+                        {
+                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir o livro!!", ButtonType.OK);
+                        }
+
+                    } 
+                    else
+                    { 
+                        ok = dal.alterar(l);
+
+                        if(ok)
+                        {
+                            a = new Alert(Alert.AlertType.CONFIRMATION, "Livro atualizado!!", ButtonType.OK);
+                        } 
+                        else
+                        {
+                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar o livro!!", ButtonType.OK);
+                        }
+
+                    }
+
+                    a.showAndWait();
+                    if(ok)
+                    {
+                        Banco.getCon().getConnect().commit();
+                        EstadoOriginal();
+                        CarregaTabela("");
+                    } 
+                    else
+                    {
+                        Banco.getCon().getConnect().rollback();
+                    }
+
+                }
+                catch (SQLException ex)
+                {
+                    System.out.println(ex.getMessage());
+                }
+            }
+        }
     }
 
     @FXML

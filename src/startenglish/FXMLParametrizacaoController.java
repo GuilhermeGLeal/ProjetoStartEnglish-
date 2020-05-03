@@ -780,7 +780,7 @@ public class FXMLParametrizacaoController implements Initializable {
                 
                 FXMLPrincipalController.desabilita_parametri(false);
                 FXMLPrincipalController.chamaimagem();
-                FXMLPrincipalController.snprincpial.setRight(null);
+                FXMLPrincipalController.snprincipal.setRight(null);
                 FXMLPrincipalController.nome.setText("");
             }
             

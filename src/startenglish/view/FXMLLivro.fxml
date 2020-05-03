@@ -112,10 +112,10 @@
             </AnchorPane>
             <TableView fx:id="tabela" layoutY="75.0" prefHeight="224.0" prefWidth="669.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
-                  <TableColumn fx:id="tabelaNome" minWidth="0.0" prefWidth="276.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Nome" />
-                  <TableColumn fx:id="tabelaEditora" prefWidth="185.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Editora" />
-                  <TableColumn fx:id="tabelaVolume" prefWidth="95.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Volume" />
-                  <TableColumn fx:id="tabelaValor" prefWidth="107.0" style="-fx-background-color: #FF7F27;" text="Valor" />
+                  <TableColumn fx:id="tabelaNome" minWidth="0.0" prefWidth="276.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Nome" />
+                  <TableColumn fx:id="tabelaEditora" prefWidth="185.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Editora" />
+                  <TableColumn fx:id="tabelaVolume" prefWidth="95.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Volume" />
+                  <TableColumn fx:id="tabelaValor" prefWidth="107.0" style="-fx-background-color: #BEBEBE;" text="Valor" />
                </columns>
             </TableView>
          </children>

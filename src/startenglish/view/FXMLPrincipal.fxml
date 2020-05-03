@@ -27,9 +27,10 @@
          <children>
             <MenuButton fx:id="btCadastro" maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Cadastro" textAlignment="CENTER" VBox.vgrow="ALWAYS">
               <items>
-                <MenuItem mnemonicParsing="false" text="Aluno" />
+                <MenuItem mnemonicParsing="false" onAction="#evtAluno" text="Aluno" />
                   <MenuItem mnemonicParsing="false" onAction="#evtCurso" text="Curso" />
                   <MenuItem mnemonicParsing="false" onAction="#evtFunc" text="Funcionário" />
+                  <MenuItem mnemonicParsing="false" onAction="#evtLivro" text="Livro" />
                 <MenuItem mnemonicParsing="false" onAction="#evtParametriz" text="Parametrização" />
               </items>
                <VBox.margin>

@@ -118,7 +118,7 @@ public class FXMLPrincipalController implements Initializable {
         
         try {
             Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLParametrizacao.fxml"));
-            pnMudanca.setRight(aux);
+            pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento da Parametrização");
             
         } catch (IOException e) {
@@ -133,7 +133,7 @@ public class FXMLPrincipalController implements Initializable {
         
          try {
             Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLCurso.fxml"));
-            pnMudanca.setRight(aux);
+            pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento dos Cursos");
             
         } catch (IOException e) {
@@ -146,7 +146,7 @@ public class FXMLPrincipalController implements Initializable {
         
          try {
             Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLFuncionario.fxml"));
-            pnMudanca.setRight(aux);
+            pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento dos Funcionários");
             
         } catch (Exception e) {
@@ -177,7 +177,7 @@ public class FXMLPrincipalController implements Initializable {
     {
         try {
             Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLAluno.fxml"));
-            pnMudanca.setRight(aux);
+            pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento dos Alunos");
             
         } catch (Exception e) {
@@ -190,7 +190,7 @@ public class FXMLPrincipalController implements Initializable {
     {
        try {
             Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLLivro.fxml"));
-            pnMudanca.setRight(aux);
+            pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento dos Livros");
             
         } catch (Exception e) {

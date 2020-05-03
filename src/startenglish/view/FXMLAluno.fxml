@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.578544061302682" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="785.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLAlunoController">
+<SplitPane dividerPositions="0.5876152832674572" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="761.0" prefWidth="919.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLAlunoController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="428.0" prefWidth="736.0">
          <children>
@@ -143,11 +143,11 @@
                </children>
             </AnchorPane>
          </children></AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="333.0" prefWidth="736.0" style="-fx-background-color: black;">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="348.0" prefWidth="917.0" style="-fx-background-color: black;">
          <children>
             <AnchorPane layoutY="-1.0" prefHeight="82.0" prefWidth="917.0" style="-fx-background-color: #FF7F27;">
                <children>
-                  <JFXButton fx:id="btPesquisar" layoutX="632.0" layoutY="46.0" style="-fx-font-weight: bold;" text="Pesquisar" />
+                  <JFXButton fx:id="btPesquisar" layoutX="825.0" layoutY="43.0" style="-fx-font-weight: bold;" text="Pesquisar" />
                   <JFXTextField fx:id="txPesquisa" layoutX="14.0" layoutY="41.0" prefHeight="25.0" prefWidth="390.0" />
                   <JFXComboBox fx:id="cbFiltro" layoutX="466.0" layoutY="43.0" prefHeight="25.0" prefWidth="120.0" />
                   <Label layoutX="16.0" layoutY="14.0" text="Filtro Texto">
@@ -162,7 +162,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <TableView fx:id="tabela" layoutY="80.0" prefHeight="248.0" prefWidth="919.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
+            <TableView fx:id="tabela" layoutY="80.0" prefHeight="233.0" prefWidth="919.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
               <columns>
                 <TableColumn fx:id="tabelaNome" prefWidth="297.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Nome" />
                 <TableColumn fx:id="tabelaCPF" minWidth="0.0" prefWidth="183.0" style="-fx-background-color: #BEBEBE;" text="CPF" />

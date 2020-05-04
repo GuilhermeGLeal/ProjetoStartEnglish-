@@ -65,7 +65,7 @@ public class DALLogin {
         return log;
     }
     
-    public List<Login> getList(String filtro){
+    public List <Login> getList(String filtro){
         
        String sql="select * from login";
        if(!filtro.isEmpty())

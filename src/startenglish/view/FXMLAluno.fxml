@@ -160,6 +160,12 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
+                  <JFXComboBox fx:id="cbIdade" layoutX="629.0" layoutY="43.0" prefHeight="25.0" prefWidth="120.0" />
+                  <Label layoutX="629.0" layoutY="14.0" text="Filtro por Idade">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
             <TableView fx:id="tabela" layoutY="80.0" prefHeight="233.0" prefWidth="919.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">

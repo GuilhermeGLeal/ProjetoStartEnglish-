@@ -46,7 +46,7 @@ public class FXMLLoginController implements Initializable {
         
         
         try {
-            fxml = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
+            fxml = FXMLLoader.load(getClass().getResource("view/SignIn.fxml"));
             vbox.getChildren().removeAll();
             vbox.getChildren().setAll(fxml);
         } catch (IOException ex) {
@@ -67,7 +67,7 @@ public class FXMLLoginController implements Initializable {
         t.play();
         t.setOnFinished((e)-> {
             try {
-                fxml = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
+                fxml = FXMLLoader.load(getClass().getResource("view/SignIn.fxml"));
                 vbox.getChildren().removeAll();
                 vbox.getChildren().setAll(fxml);
             } catch(IOException ex) {
@@ -84,7 +84,7 @@ public class FXMLLoginController implements Initializable {
         t.play();
         t.setOnFinished((e)-> {
             try {
-                fxml = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
+                fxml = FXMLLoader.load(getClass().getResource("view/SignUp.fxml"));
                 vbox.getChildren().removeAll();
                 vbox.getChildren().setAll(fxml);
             } catch(IOException ex) {

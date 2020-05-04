@@ -36,6 +36,7 @@
                      </font>
                   </JFXPasswordField>
                   <JFXComboBox fx:id="cbFuncionario" focusColor="#ff7f27" labelFloat="true" layoutX="25.0" layoutY="102.0" prefHeight="25.0" prefWidth="698.0" promptText="Funcionário" unFocusColor="WHITE" />
+                  <JFXTextField fx:id="txNivel" disable="true" editable="false" layoutX="216.0" layoutY="90.0" prefHeight="25.0" prefWidth="47.0" visible="false" />
                </children>
             </AnchorPane>
          </children>

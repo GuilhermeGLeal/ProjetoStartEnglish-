@@ -22,7 +22,7 @@
             <Insets bottom="20.0" left="20.0" />
          </VBox.margin>
       </Label>
-      <HBox prefHeight="40.0" prefWidth="200.0" styleClass="tf_box">
+      <HBox fx:id="txUser" prefHeight="40.0" prefWidth="200.0" styleClass="tf_box">
          <children>
             <JFXTextField fx:id="txtUser" focusColor="#f78a1b" labelFloat="true" promptText="Usuário" styleClass="tf_box" unFocusColor="WHITE" HBox.hgrow="ALWAYS" />
          </children>
@@ -30,7 +30,7 @@
             <Insets left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
       </HBox>
-      <JFXButton fx:id="btLogin" onMouseClicked="#evtLogin" prefHeight="38.0" prefWidth="442.0" styleClass="orange-btn" text="Recuperar" VBox.vgrow="ALWAYS">
+      <JFXButton fx:id="btRecuperar" onMouseClicked="#evtRecuperar" prefHeight="38.0" prefWidth="442.0" styleClass="orange-btn" text="Recuperar" VBox.vgrow="ALWAYS">
          <VBox.margin>
             <Insets left="20.0" right="15.0" top="20.0" />
          </VBox.margin>

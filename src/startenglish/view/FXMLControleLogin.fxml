@@ -51,11 +51,10 @@
             </AnchorPane>
             <TableView fx:id="tabela" layoutY="36.0" onMouseClicked="#evtClicarTabela" prefHeight="224.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
-                  <TableColumn fx:id="tabelaUser" prefWidth="143.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Usuário" />
-                  <TableColumn fx:id="tabelaSenha" minWidth="0.0" prefWidth="136.0" style="-fx-background-color: #FF7F27;" text="Senha" />
-                  <TableColumn fx:id="tabelaStatus" prefWidth="127.0" style="-fx-background-color: #FF7F27;" text="Status" />
-                  <TableColumn fx:id="tabelaNivel" prefWidth="107.0" style="-fx-background-color: #FF7F27;" text="Nível" />
-                  <TableColumn fx:id="tabelaNome" prefWidth="211.0" style="-fx-background-color: #FF7F27;" text="Nome" />
+                  <TableColumn fx:id="tabelaUser" prefWidth="194.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Usuário" />
+                  <TableColumn fx:id="tabelaSenha" minWidth="0.0" prefWidth="180.0" style="-fx-background-color: #FF7F27;" text="Senha" />
+                  <TableColumn fx:id="tabelaStatus" prefWidth="251.0" style="-fx-background-color: #FF7F27;" text="Status" />
+                  <TableColumn fx:id="tabelaNivel" prefWidth="99.0" style="-fx-background-color: #FF7F27;" text="Nível" />
                </columns>
             </TableView>
          </children>

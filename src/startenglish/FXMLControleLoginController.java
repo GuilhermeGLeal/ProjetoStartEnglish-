@@ -92,10 +92,10 @@ public class FXMLControleLoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-          tabelaUser.setCellFactory(new PropertyValueFactory("user"));
-          tabelaSenha.setCellFactory(new PropertyValueFactory("senha"));
-          tabelaStatus.setCellFactory(new PropertyValueFactory("status"));
-          tabelaNivel.setCellFactory(new PropertyValueFactory("nivel"));
+          tabelaUser.setCellValueFactory(new PropertyValueFactory("user"));
+          tabelaSenha.setCellValueFactory(new PropertyValueFactory("senha"));
+          tabelaStatus.setCellValueFactory(new PropertyValueFactory("status"));
+          tabelaNivel.setCellValueFactory(new PropertyValueFactory("nivel"));
           
           
           MaskFieldUtil.maxField(txUsuario, 20);
@@ -167,11 +167,12 @@ public class FXMLControleLoginController implements Initializable {
     {
         
         DALLogin dale = new DALLogin();
-        List <Login> lista = dale.getList(filtro);
-        listaTabela = lista;
-        ObservableList<Login> modelo;
-        modelo = FXCollections.observableArrayList(lista);
-        tabela.setItems(modelo);
+        List <Login> listaaux = dale.getList(filtro);
+        //listaTabela = lista;
+        ObservableList<Login> listaTabela;
+        listaTabela = FXCollections.observableArrayList(listaaux);
+        
+        tabela.setItems(listaTabela);
         
     }
 

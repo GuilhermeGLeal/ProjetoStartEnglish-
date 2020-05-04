@@ -43,6 +43,7 @@ import startenglish.db.Entidades.Funcionario;
 import startenglish.db.Entidades.Professor;
 import startenglish.db.util.Banco;
 import startenglish.util.MaskFieldUtil;
+import startenglish.util.ValidarCpf;
 
 /**
  * FXML Controller class
@@ -295,6 +296,7 @@ public class FXMLFuncionarioController implements Initializable {
     @FXML
     private void evtConfirmar(ActionEvent event) {
         int cod,codEnd;
+        startenglish.util.ValidarCpf cpfvalida = new ValidarCpf();
         boolean ok = true;
         Alert a = new Alert(Alert.AlertType.CONFIRMATION);
         Endereco end = new Endereco();
@@ -320,7 +322,7 @@ public class FXMLFuncionarioController implements Initializable {
         if(cod == 0)
         {
             if(!txNome.getText().isEmpty())
-                if(!txCpf.getText().isEmpty())
+                if(!txCpf.getText().isEmpty() && cpfvalida.isCPF(txCpf.getText()))
                     if(!txCEP.getText().isEmpty())
                     {
 
@@ -404,7 +406,7 @@ public class FXMLFuncionarioController implements Initializable {
         {
             if(!txNome.getText().isEmpty())
                 if(!txCpf.getText().isEmpty())
-                    if(!txCEP.getText().isEmpty())
+                    if(!txCEP.getText().isEmpty() && cpfvalida.isCPF(txCpf.getText()))
                     {
 
                         f.setNome(txNome.getText());

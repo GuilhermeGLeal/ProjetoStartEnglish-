@@ -56,7 +56,7 @@ public class DALLogin {
             if(rs.next())
             {
                 DALFuncionario dalf = new DALFuncionario();
-                log = new Login(rs.getString("usuario"), rs.getString("senha"), rs.getString("Status").charAt(0), rs.getInt("nivel"), dalf.get(rs.getInt("funcid")));
+                log = new Login(rs.getString("usuario"), rs.getString("senha"), rs.getString("status").charAt(0), rs.getInt("nivel"), dalf.get(rs.getInt("funcid")));
                  
              }
         }
@@ -78,7 +78,7 @@ public class DALLogin {
             while(rs.next())
             {
                 DALFuncionario dale = new DALFuncionario();
-                aux.add(new Login(rs.getString("usuario"), rs.getString("senha"), rs.getString("Status").charAt(0), rs.getInt("nivel"), dale.get(rs.getInt("funcid"))));
+                aux.add(new Login(rs.getString("usuario"), rs.getString("senha"), rs.getString("status").charAt(0), rs.getInt("nivel"), dale.get(rs.getInt("funcid"))));
                 
             }
         } 

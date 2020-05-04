@@ -77,11 +77,12 @@ public class FXMLControleLoginController implements Initializable {
     @FXML
     private TableColumn<Login, String> tabelaSenha;
     @FXML
-    private TableColumn<Login, String> tabelaStatus;
+    private TableColumn<Login, Character> tabelaStatus;
     @FXML
     private TableColumn<Login, Integer> tabelaNivel;
-    @FXML
-    private TableColumn<Login, Integer> tabelaNome;
+    
+    private List<Login> listaTabela;
+    
     @FXML
     private JFXTextField txNivel;
 
@@ -91,13 +92,11 @@ public class FXMLControleLoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-          tabelaUser.setCellFactory(new PropertyValueFactory("usuario"));
+          tabelaUser.setCellFactory(new PropertyValueFactory("user"));
           tabelaSenha.setCellFactory(new PropertyValueFactory("senha"));
           tabelaStatus.setCellFactory(new PropertyValueFactory("status"));
           tabelaNivel.setCellFactory(new PropertyValueFactory("nivel"));
-          tabelaNome.setCellFactory(new PropertyValueFactory("funcid"));
           
-                 
           
           MaskFieldUtil.maxField(txUsuario, 20);
           MaskFieldUtil.maxField(txSenha, 10);
@@ -129,7 +128,7 @@ public class FXMLControleLoginController implements Initializable {
                 ((ComboBox)n).getItems().clear();
         }
       
-        //CarregaTabela("");
+        CarregaTabela("");
     }
     
     private void EstadoEdicao()
@@ -169,7 +168,8 @@ public class FXMLControleLoginController implements Initializable {
         
         DALLogin dale = new DALLogin();
         List <Login> lista = dale.getList(filtro);
-        ObservableList<Login>modelo;
+        listaTabela = lista;
+        ObservableList<Login> modelo;
         modelo = FXCollections.observableArrayList(lista);
         tabela.setItems(modelo);
         

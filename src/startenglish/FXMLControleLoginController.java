@@ -88,16 +88,7 @@ public class FXMLControleLoginController implements Initializable {
           tabelaNivel.setCellFactory(new PropertyValueFactory("nivel"));
           tabelaNome.setCellFactory(new PropertyValueFactory("funcionario"));
           
-        try {
-           DALFuncionario dale = new DALFuncionario();
-           List<Funcionario> lista = dale.get("");
-           ObservableList<Funcionario> modelo = FXCollections.observableArrayList(lista);
-           
-           cbFuncionario.setItems(modelo);
-           
-        } catch (Exception e) {
-        }
-         
+                 
           
           MaskFieldUtil.maxField(txUsuario, 20);
           MaskFieldUtil.maxField(txSenha, 10);
@@ -141,6 +132,15 @@ public class FXMLControleLoginController implements Initializable {
         btAlterar.setDisable(true);
         txPesquisa.clear();
         txUsuario.requestFocus();
+        
+        try {
+           DALFuncionario dale = new DALFuncionario();
+           List<Funcionario> lista = dale.get("");
+           ObservableList<Funcionario> modelo = FXCollections.observableArrayList(lista);
+           cbFuncionario.setItems(modelo);
+                      
+        } catch (Exception e) {
+        }
         
     }
     

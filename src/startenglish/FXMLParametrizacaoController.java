@@ -420,7 +420,7 @@ public class FXMLParametrizacaoController implements Initializable {
             ok = false;
             setTextFieldErro(txCNPJ);
             
-            a = new Alert(Alert.AlertType.WARNING, "CNPJ da empresa imcompleto!", ButtonType.CLOSE);
+            a = new Alert(Alert.AlertType.WARNING, "CNPJ da empresa incompleto!", ButtonType.CLOSE);
             txCNPJ.requestFocus();
          
         }
@@ -462,7 +462,7 @@ public class FXMLParametrizacaoController implements Initializable {
             ok = false;
             setTextFieldErro(txTelefone);
             
-            a = new Alert(Alert.AlertType.WARNING, "Telefone está imcompleto!", ButtonType.CLOSE);
+            a = new Alert(Alert.AlertType.WARNING, "Telefone está incompleto!", ButtonType.CLOSE);
             txTelefone.requestFocus();
          
         }
@@ -563,7 +563,7 @@ public class FXMLParametrizacaoController implements Initializable {
             ok = false;
             setTextFieldErro(txCEP);
             
-            a = new Alert(Alert.AlertType.WARNING, "CEP está imcompleto!", ButtonType.CLOSE);
+            a = new Alert(Alert.AlertType.WARNING, "CEP está incompleto!", ButtonType.CLOSE);
             txCEP.requestFocus();
          
         }
@@ -854,10 +854,9 @@ public class FXMLParametrizacaoController implements Initializable {
     }
   
     @FXML
-    private void evtValidaCEP(MouseEvent event) {
-        
-       validaCEP(txCEP.getText());
-               
+    private void evtValidaCEP(MouseEvent event) 
+    {        
+       validaCEP(txCEP.getText());              
     }
 
 

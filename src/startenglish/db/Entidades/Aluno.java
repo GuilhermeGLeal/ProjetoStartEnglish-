@@ -30,6 +30,7 @@ public class Aluno {
     }
 
     public Aluno() {
+        this.endereco = new Endereco();
     }
 
     public int getID() {

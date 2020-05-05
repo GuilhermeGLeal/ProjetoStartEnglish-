@@ -23,13 +23,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.json.JSONObject;
 import startenglish.db.DAL.DALAluno;
 import startenglish.db.DAL.DALEndereco;
 import startenglish.db.DAL.DALLivro;
 import startenglish.db.Entidades.Aluno;
 import startenglish.db.Entidades.Livro;
 import startenglish.db.util.Banco;
+import startenglish.util.ConsultaAPI;
 import startenglish.util.MaskFieldUtil;
 import startenglish.util.ValidarCpf;
 
@@ -87,9 +90,11 @@ public class FXMLAlunoController implements Initializable {
     private JFXButton btCancelar;
     @FXML
     private AnchorPane pndados;
-    @FXML
     private JFXComboBox<String> cbIdade;
   
+    private JSONObject json;
+    private boolean errocep;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
@@ -102,6 +107,7 @@ public class FXMLAlunoController implements Initializable {
         MaskFieldUtil.maxField(txCpf, 15);
         MaskFieldUtil.cpfField(txCpf);      
         MaskFieldUtil.maxField(txEmail, 30);
+        MaskFieldUtil.maxField(txRg,20);
         MaskFieldUtil.foneField(txTelefone);
         MaskFieldUtil.maxField(txTelefone,20);
         MaskFieldUtil.maxField(txRua, 30);
@@ -115,18 +121,10 @@ public class FXMLAlunoController implements Initializable {
         combo.add("Nome");
         combo.add("Cpf");
         combo.add("Email");
-        List<String> combo2 = new ArrayList();
-        combo2.add("Todos");
-        combo2.add("Crianças");
-        combo2.add("Adolescentes");
-        combo2.add("Adultos");
         
         ObservableList<String> modelo = FXCollections.observableArrayList(combo);
         cbFiltro.setItems(modelo);
         cbFiltro.setValue("Nome");
-        ObservableList<String> modelo2 = FXCollections.observableArrayList(combo2);
-        cbIdade.setItems(modelo2);
-        cbIdade.setValue("Todos");
         
         EstadoOriginal();
     }    
@@ -324,6 +322,7 @@ public class FXMLAlunoController implements Initializable {
                     + "-fx-font-weight: bold;");
             if(a==null)
             {
+                txTelefone.requestFocus();
                 a = new Alert(Alert.AlertType.WARNING, "Telefone está incorreto!", ButtonType.CLOSE);
                 txTelefone.requestFocus();
             }
@@ -427,6 +426,7 @@ public class FXMLAlunoController implements Initializable {
             txCpf.setText(a.getCpf());
             txEmail.setText(a.getEmail());
             txRg.setText(a.getRg());
+            txTelefone.setText(a.getFone());
             txBairro.setText(a.getEndereco().getBairro());
             txCEP.setText(a.getEndereco().getCEP());
             txCidade.setText(a.getEndereco().getCidade());
@@ -480,19 +480,23 @@ public class FXMLAlunoController implements Initializable {
     @FXML
     private void evtConfirmar(ActionEvent event) 
     {
-        if(valida(txNome.getText(),txCpf.getText(),txRg.getText(),txEmail.getText(),txTelefone.getText(),txNumero.getText(),txCEP.getText()))
+        String CEP = txCEP.getText();
+        if(!CEP.isEmpty() && CEP.length()== 9)
+            errocep=false;
+        if(valida(txNome.getText(),txCpf.getText(),txRg.getText(),txEmail.getText(),txTelefone.getText(),txNumero.getText(),txCEP.getText()) && !errocep)
         {
                 int number = 0;
-                int cod;
+                int cod,codEnd;
                 try 
                 {
                     number = Integer.parseInt(txNumero.getText());
                     cod = Integer.parseInt(txID.getText());
-                                                           
+                    codEnd=Integer.parseInt(txIDEnd.getText());                                       
                 }
                 catch (NumberFormatException ex) 
                 {
-                    cod = 0;               
+                    cod = 0;     
+                    codEnd=0;
                 }
                 DALAluno daa = new DALAluno();
                 DALEndereco dale = new DALEndereco();
@@ -502,6 +506,23 @@ public class FXMLAlunoController implements Initializable {
                 alu.setRg(txRg.getText());
                 alu.setEmail(txEmail.getText());
                 alu.setFone(txTelefone.getText());
+                alu.setID(cod);
+                alu.getEndereco().setCEP(txCEP.getText());
+                alu.getEndereco().setNumero(number);
+                alu.getEndereco().setEnderecoID(codEnd);
+                if (!txRua.getText().isEmpty())
+                {
+                    alu.getEndereco().setRua(txRua.getText());
+                }
+                if (!txBairro.getText().isEmpty()) 
+                {
+                    alu.getEndereco().setBairro(txBairro.getText());
+                }
+                if (!txCidade.getText().isEmpty()) 
+                {
+                    alu.getEndereco().setCidade(txCidade.getText());
+                }
+                
                 Alert a = null;
                 boolean ok;
                 try
@@ -510,29 +531,48 @@ public class FXMLAlunoController implements Initializable {
 
                     if (cod == 0)
                     {
-                        ok = daa.gravar(alu);
+                        ok = dale.gravar(alu.getEndereco());
+                        if(ok)
+                        {
+                            codEnd = Banco.getCon().getMaxPK("Endereco", "EnderecoID");
+                            alu.getEndereco().setEnderecoID(codEnd);
+                            ok = daa.gravar(alu);
 
-                        if (ok)
-                        {
-                            a = new Alert(Alert.AlertType.CONFIRMATION, "Aluno inserido!!", ButtonType.OK);
-                        } 
-                        else 
-                        {
-                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir o aluno!!", ButtonType.OK);
+                            if (ok)
+                            {
+                                a = new Alert(Alert.AlertType.CONFIRMATION, "Aluno inserido!!", ButtonType.OK);
+                            } 
+                            else 
+                            {
+                                a = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir o aluno!!", ButtonType.OK);
+                            }
                         }
+                        else
+                        {
+                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir o endereço do aluno!!", ButtonType.OK);
+                        }
+                        
 
                     } 
                     else
                     { 
-                        ok = daa.alterar(alu);
-
+                        ok = dale.alterar(alu.getEndereco());
                         if(ok)
                         {
-                            a = new Alert(Alert.AlertType.CONFIRMATION, "Aluno atualizado!!", ButtonType.OK);
-                        } 
+                           ok = daa.alterar(alu);
+
+                            if(ok)
+                            {
+                                a = new Alert(Alert.AlertType.CONFIRMATION, "Aluno atualizado!!", ButtonType.OK);
+                            } 
+                            else
+                            {
+                                a = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar o aluno!!", ButtonType.OK);
+                            } 
+                        }
                         else
                         {
-                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar o aluno!!", ButtonType.OK);
+                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar o endereço do aluno!!", ButtonType.OK);
                         }
 
                     }
@@ -571,6 +611,58 @@ public class FXMLAlunoController implements Initializable {
             FXMLPrincipalController.nome.setText("");
            
         }
+    }
+
+    /*private void evtSearchCEP(MouseEvent event)
+    {
+        String CEP = txCEP.getText();
+        if(!CEP.isEmpty() && CEP.length()== 9)
+        {
+            String sjson=ConsultaAPI.consultaCep(txCEP.getText(),"json");
+            json=new JSONObject(sjson);
+        
+            txBairro.setText("Aguarde...");
+            txRua.setText("Aguarde...");
+            txCidade.setText("Aguarde...");
+
+            if(json.has("erro"))
+            {           
+                Alert a = new Alert(Alert.AlertType.WARNING, "CEP não encontrado", ButtonType.CLOSE);
+                a.showAndWait();
+                txCEP.requestFocus();
+
+                errocep = true;
+            }
+            else
+            {
+                errocep = false;
+                txRua.setText(json.getString("logradouro"));
+                txCidade.setText(json.getString("localidade"));
+                txBairro.setText(json.getString("bairro"));
+
+            }
+        }
+    }*/
+
+    @FXML
+    private void evtClickTabela(MouseEvent event) 
+    {
+        if(tabela.getSelectionModel().getSelectedIndex()>=0)
+        {            
+            btAlterar.setDisable(false);
+            btExcluir.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void evtPesquisar(ActionEvent event)
+    {
+        if(cbFiltro.getSelectionModel().getSelectedItem().equals("Nome"))
+            CarregaTabela("Aluno.nome like '%"+txPesquisa.getText()+"%'");
+        else if(cbFiltro.getSelectionModel().getSelectedItem().equals("Cpf"))
+            CarregaTabela("Aluno.cpf like '%"+txPesquisa.getText()+"%'");
+        else
+            CarregaTabela("Aluno.email like '%"+txPesquisa.getText()+"%'");
     }
     
 }

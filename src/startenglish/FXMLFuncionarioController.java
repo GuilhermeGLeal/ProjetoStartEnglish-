@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -35,6 +37,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javax.imageio.ImageIO;
+import org.json.JSONObject;
 import startenglish.db.DAL.DALEndereco;
 import startenglish.db.DAL.DALFuncionario;
 import startenglish.db.DAL.DALProfessor;
@@ -42,6 +45,7 @@ import startenglish.db.Entidades.Endereco;
 import startenglish.db.Entidades.Funcionario;
 import startenglish.db.Entidades.Professor;
 import startenglish.db.util.Banco;
+import startenglish.util.ConsultaAPI;
 import startenglish.util.MaskFieldUtil;
 import startenglish.util.ValidarCpf;
 
@@ -110,7 +114,8 @@ public class FXMLFuncionarioController implements Initializable {
     private AnchorPane pnDados;
     
     private Funcionario func_alterando;
-
+    private JSONObject json;
+    private boolean errocep;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -127,11 +132,12 @@ public class FXMLFuncionarioController implements Initializable {
         MaskFieldUtil.cpfField(txCpf);
         MaskFieldUtil.foneField(txTelefone);
         MaskFieldUtil.maxField(txEmail, 30);
-        MaskFieldUtil.maxField(txNome, 30);
-        MaskFieldUtil.maxField(txRua, 20);
-        MaskFieldUtil.maxField(txBairro, 30);
+        MaskFieldUtil.maxField(txNome, 20);
+        MaskFieldUtil.maxField(txRua, 30);
+        MaskFieldUtil.maxField(txBairro, 50);
         MaskFieldUtil.numericField(txNumero);
-        MaskFieldUtil.maxField(txCidade, 20);
+        MaskFieldUtil.maxField(txCidade, 30);
+        MaskFieldUtil.maxField(txRg,9);
         
         EstadoOriginal();
         
@@ -196,6 +202,89 @@ public class FXMLFuncionarioController implements Initializable {
         tabela.setItems(modelo);
     }
     
+    private boolean isValidEmailRegex(String email){
+        
+        boolean IsEmailValid = false;
+        
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pat = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher mat = pat.matcher(email);
+        
+        if(mat.matches())
+            IsEmailValid = true;
+        
+        
+        return IsEmailValid;
+    }
+    
+    private boolean validaCEP(String CEP){
+    
+        boolean ok = true;
+        
+        Alert a = null;
+        
+        if(CEP.isEmpty()){
+                      
+            ok = false;
+            //setTextFieldErro(txCEP);
+            
+            a = new Alert(Alert.AlertType.WARNING, "CEP não pode estar vazio!", ButtonType.CLOSE);
+            txCEP.requestFocus();
+                
+        }
+        else if(!CEP.isEmpty() && CEP.length()!= 9){
+            
+            ok = false;
+            //setTextFieldErro(txCEP);
+            
+            a = new Alert(Alert.AlertType.WARNING, "CEP está imcompleto!", ButtonType.CLOSE);
+            txCEP.requestFocus();
+         
+        }
+        else{
+         
+            //setTextFieldnormal(txCEP);
+            insereCampos();
+        }
+          
+         
+        if(a != null)
+            a.showAndWait();      
+        
+        return ok;
+    }
+    
+    
+    private boolean insereCampos() 
+    {
+        String sjson=ConsultaAPI.consultaCep(txCEP.getText(),"json");
+        json=new JSONObject(sjson);
+        
+          txBairro.setText("aguarde...");
+       txRua.setText("aguarde...");
+            txCidade.setText("aguarde...");
+
+        if(json.has("erro")){
+            
+            Alert a = new Alert(Alert.AlertType.WARNING, "CEP não encontrado", ButtonType.CLOSE);
+            a.showAndWait();
+            txCEP.requestFocus();
+            
+            errocep = true;
+            return false;
+        
+        }
+        else{
+            
+            errocep = false;
+            txRua.setText(json.getString("logradouro"));
+            txCidade.setText(json.getString("localidade"));
+            txBairro.setText(json.getString("bairro"));
+            
+        }
+       
+        return true;
+    }
 
     @FXML
     private void evtNovo(ActionEvent event) {
@@ -323,7 +412,7 @@ public class FXMLFuncionarioController implements Initializable {
         {
             if(!txNome.getText().isEmpty())
                 if(!txCpf.getText().isEmpty() && cpfvalida.isCPF(txCpf.getText()))
-                    if(!txCEP.getText().isEmpty())
+                    if(!txCEP.getText().isEmpty() && validaCEP(txCEP.getText()))
                     {
 
                         f.setNome(txNome.getText());
@@ -519,6 +608,11 @@ public class FXMLFuncionarioController implements Initializable {
 
     private void evtFechar(MouseEvent event) {
         System.exit(0);
+    }
+
+    @FXML
+    private void evtValidaCEP(MouseEvent event) {
+        validaCEP(txCEP.getText());
     }
     
 }

@@ -15,11 +15,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import startenglish.db.DAL.DALParametrizacao;
+import startenglish.db.Entidades.Login;
 import startenglish.db.Entidades.Parametrizacao;
 
 
@@ -51,10 +53,24 @@ public class FXMLPrincipalController implements Initializable {
     public static BorderPane snprincipal = null;
     public static Label nome = null;
     
+    private Login log;
+    @FXML
+    private MenuItem btCadAluno;
+    @FXML
+    private MenuItem btCadCurso;
+    @FXML
+    private MenuItem btCadFunc;
+    @FXML
+    private MenuItem btCadLivro;
+    @FXML
+    private MenuItem btCadParamet;
+    @FXML
+    private MenuItem btCadLogin;
+    
        
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
+        log = SignInController.loginConectado;
        
         snprincipal = pnMudanca;
         nome = labelNome;
@@ -65,8 +81,26 @@ public class FXMLPrincipalController implements Initializable {
         img = imglogo;
             
         verificaParametrizacao();
-        
-    }    
+        verificanivel(log.getNivel());
+    }
+    
+    private void verificanivel(int nivel)
+    {
+        if(nivel == 2)
+        {
+            btCadLogin.setDisable(true);
+            btCadFunc.setDisable(true);
+            btCadParamet.setDisable(true);
+            btCadCurso.setDisable(true);
+        }
+        if(nivel == 3)
+        {
+            btCadastro.setDisable(true);
+            btConsulta.setDisable(true);
+            btFinanceiro.setDisable(true);
+            btRelatorio.setDisable(true);
+        }
+    }
    
     private void verificaParametrizacao(){
         
@@ -196,6 +230,18 @@ public class FXMLPrincipalController implements Initializable {
         } catch (Exception e) {
           
         } 
+    }
+
+    @FXML
+    private void evtLog(ActionEvent event) {
+        try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLControleLogin.fxml"));
+            pnMudanca.setCenter(aux);
+            labelNome.setText("Gerenciamento de Login");
+            
+        } catch (Exception e) {
+          
+        }
     }
     
     

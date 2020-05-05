@@ -38,6 +38,8 @@ public class SignInController implements Initializable {
     private JFXTextField txtUsuario;
     @FXML
     private JFXPasswordField txtPassword;
+    
+    public static Login loginConectado;
 
     /**
      * Initializes the controller class.
@@ -53,6 +55,7 @@ public class SignInController implements Initializable {
         
            DALLogin dale = new DALLogin();
            Login log = new Login();
+           
            Alert a = new Alert(Alert.AlertType.CONFIRMATION);
            if(!txtUsuario.getText().isEmpty() && !txtPassword.getText().isEmpty())
            {
@@ -67,8 +70,9 @@ public class SignInController implements Initializable {
                 else{
                     if(txtPassword.getText().equals(log.getSenha()))
                     {
+                        loginConectado = log;
                         try {
-                             Parent aux = FXMLLoader.load(getClass().getResource("FXMLFuncionario.fxml"));
+                             Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLPrincipal.fxml"));
                              FXMLLoginController.BPprincipal.setCenter(aux);
 
 

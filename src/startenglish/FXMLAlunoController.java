@@ -359,6 +359,7 @@ public class FXMLAlunoController implements Initializable {
             }
             catch (NumberFormatException ex) 
             {
+                ok=false;
                 txNumero.setStyle("-fx-border-color: red; -fx-border-width: 2;"
                     + "-fx-background-color: #BEBEBE;"
                     + "-fx-font-weight: bold;");
@@ -481,6 +482,7 @@ public class FXMLAlunoController implements Initializable {
     private void evtConfirmar(ActionEvent event) 
     {
         String CEP = txCEP.getText();
+        
         if(!CEP.isEmpty() && CEP.length()== 9)
             errocep=false;
         if(valida(txNome.getText(),txCpf.getText(),txRg.getText(),txEmail.getText(),txTelefone.getText(),txNumero.getText(),txCEP.getText()) && !errocep)
@@ -613,7 +615,8 @@ public class FXMLAlunoController implements Initializable {
         }
     }
 
-    /*private void evtSearchCEP(MouseEvent event)
+    /*@FXML
+    private void evtSearchCEP(MouseEvent event)
     {
         String CEP = txCEP.getText();
         if(!CEP.isEmpty() && CEP.length()== 9)
@@ -639,7 +642,6 @@ public class FXMLAlunoController implements Initializable {
                 txRua.setText(json.getString("logradouro"));
                 txCidade.setText(json.getString("localidade"));
                 txBairro.setText(json.getString("bairro"));
-
             }
         }
     }*/

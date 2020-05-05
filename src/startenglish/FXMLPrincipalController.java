@@ -69,7 +69,8 @@ public class FXMLPrincipalController implements Initializable {
     
        
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) 
+    {
         log = SignInController.loginConectado;
        
         snprincipal = pnMudanca;
@@ -81,7 +82,7 @@ public class FXMLPrincipalController implements Initializable {
         img = imglogo;
             
         verificaParametrizacao();
-        verificanivel(log.getNivel());
+        //verificanivel(log.getNivel());
     }
     
     private void verificanivel(int nivel)

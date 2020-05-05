@@ -93,6 +93,8 @@ public class FXMLControleLoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+          //cbFuncionario.setStyle("-fx-text-fill: white;");
+        
           tabelaUser.setCellValueFactory(new PropertyValueFactory("user"));
           tabelaSenha.setCellValueFactory(new PropertyValueFactory("senha"));
           tabelaStatus.setCellValueFactory(new PropertyValueFactory("status"));

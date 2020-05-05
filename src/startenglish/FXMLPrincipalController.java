@@ -81,7 +81,7 @@ public class FXMLPrincipalController implements Initializable {
         img = imglogo;
             
         verificaParametrizacao();
-        
+        verificanivel(log.getNivel());
     }
     
     private void verificanivel(int nivel)

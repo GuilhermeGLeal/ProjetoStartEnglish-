@@ -60,8 +60,8 @@ public class SignUpController implements Initializable {
                     a.showAndWait();
                 }
                 else{
-//                    startenglish.util.EnviaEmail enviar = new EnviaEmail(log.getUser(), log.getSenha());
-                      startenglish.util.EnviaEmail enviar = new EnviaEmail("azv.g14@gmail.com", log.getSenha());
+                    startenglish.util.EnviaEmail enviar = new EnviaEmail(log.getFunc().getEmail(), log.getSenha());
+//                      startenglish.util.EnviaEmail enviar = new EnviaEmail("azv.g14@gmail.com", log.getSenha());
                 }
            }
            else

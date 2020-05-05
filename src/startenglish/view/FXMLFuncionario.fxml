@@ -54,11 +54,11 @@
             </AnchorPane>
             <TableView fx:id="tabela" layoutY="36.0" onMouseClicked="#evtClicarTabela" prefHeight="183.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
-                  <TableColumn fx:id="tabelaNome" prefWidth="176.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Nome" />
-                  <TableColumn fx:id="tabelaCPF" minWidth="0.0" prefWidth="161.0" style="-fx-background-color: #FF7F27;" text="CPF" />
-                  <TableColumn fx:id="tabelaTelefone" prefWidth="162.0" style="-fx-background-color: #FF7F27;" text="Telefone" />
-                  <TableColumn fx:id="tabelaEmail" prefWidth="152.0" style="-fx-background-color: #FF7F27;" text="E-mail" />
-                  <TableColumn fx:id="tabelaCheck" prefWidth="73.0" style="-fx-background-color: #FF7F27;" text="Professor" />
+                  <TableColumn fx:id="tabelaNome" prefWidth="176.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" text="Nome" />
+                  <TableColumn fx:id="tabelaCPF" minWidth="0.0" prefWidth="161.0" style="-fx-background-color: #bebebe;" text="CPF" />
+                  <TableColumn fx:id="tabelaTelefone" prefWidth="162.0" style="-fx-background-color: #bebebe;" text="Telefone" />
+                  <TableColumn fx:id="tabelaEmail" prefWidth="152.0" style="-fx-background-color: #bebebe;" text="E-mail" />
+                  <TableColumn fx:id="tabelaCheck" prefWidth="73.0" style="-fx-background-color: #bebebe;" text="Professor" />
                </columns>
             </TableView>
          </children>

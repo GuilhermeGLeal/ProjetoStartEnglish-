@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.4463157894736842" maxHeight="610.0" maxWidth="738.0" minHeight="425.0" minWidth="738.0" orientation="VERTICAL" prefHeight="477.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLControleLoginController">
+<SplitPane dividerPositions="0.4463157894736842" maxHeight="610.0" maxWidth="738.0" minHeight="425.0" minWidth="738.0" orientation="VERTICAL" prefHeight="472.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLControleLoginController">
    <items>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="345.0" prefWidth="736.0" style="-fx-background-color: black;">
          <children>
@@ -51,10 +51,10 @@
             </AnchorPane>
             <TableView fx:id="tabela" layoutY="36.0" onMouseClicked="#evtClicarTabela" prefHeight="224.0" prefWidth="736.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
-                  <TableColumn fx:id="tabelaUser" prefWidth="194.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Usuário" />
-                  <TableColumn fx:id="tabelaSenha" minWidth="0.0" prefWidth="180.0" style="-fx-background-color: #FF7F27;" text="Senha" />
-                  <TableColumn fx:id="tabelaStatus" prefWidth="251.0" style="-fx-background-color: #FF7F27;" text="Status" />
-                  <TableColumn fx:id="tabelaNivel" prefWidth="99.0" style="-fx-background-color: #FF7F27;" text="Nível" />
+                  <TableColumn fx:id="tabelaUser" prefWidth="282.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" text="Usuário" />
+                  <TableColumn fx:id="tabelaSenha" minWidth="0.0" prefWidth="226.0" style="-fx-background-color: #bebebe;" text="Senha" />
+                  <TableColumn fx:id="tabelaStatus" prefWidth="120.0" style="-fx-background-color: #bebebe;" text="Status" />
+                  <TableColumn fx:id="tabelaNivel" prefWidth="96.0" style="-fx-background-color: #bebebe;" text="Nível" />
                </columns>
             </TableView>
          </children>

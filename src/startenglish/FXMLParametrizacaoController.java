@@ -260,7 +260,9 @@ public class FXMLParametrizacaoController implements Initializable {
     @FXML
     private void evtApagar(ActionEvent event) {
         
-        boolean ok = true;
+        if(tabela.getItems().get(0) != null){
+         
+              boolean ok = true;
           Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Confirmar exclusão?", ButtonType.YES,ButtonType.NO),b;
           
           if(a.showAndWait().get() == ButtonType.YES){
@@ -308,6 +310,8 @@ public class FXMLParametrizacaoController implements Initializable {
              
                carregarTabela();
           }
+        }
+      
     }
 
     private void setTextFieldErro(JFXTextField nome){

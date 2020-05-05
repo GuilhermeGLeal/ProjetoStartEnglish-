@@ -22,9 +22,9 @@ public class DALLogin {
         
     }
     
-    public boolean alterar(Login l){
+    public boolean alterar(Login l,String UserVelho){
         
-       String sql = "update login set usuario = '#1', senha = '#2', status='#3', nivel= #4, funcid=#5 where usuario = "+l.getUser();
+       String sql = "update login set usuario = '#1', senha = '#2', status='#3', nivel= #4, funcid=#5 where usuario = '"+UserVelho+"'";
         sql = sql.replaceAll("#1", l.getUser());
         sql = sql.replaceAll("#2", l.getSenha());
         sql = sql.replaceAll("#3",""+l.getStatus());

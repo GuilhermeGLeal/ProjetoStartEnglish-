@@ -85,6 +85,7 @@ public class FXMLControleLoginController implements Initializable {
     
     @FXML
     private JFXTextField txNivel;
+    private Login logVelho;
 
     /**
      * Initializes the controller class.
@@ -186,6 +187,7 @@ public class FXMLControleLoginController implements Initializable {
         if(tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
             Login l = (Login)tabela.getSelectionModel().getSelectedItem();
+            logVelho = (Login)tabela.getSelectionModel().getSelectedItem();
             txUsuario.setText(l.getUser());
             txSenha.setText(l.getSenha());
             txStatus.setText(""+l.getStatus());
@@ -357,21 +359,15 @@ public class FXMLControleLoginController implements Initializable {
                         
                         if(!txStatus.getText().isEmpty()) l.setStatus(txStatus.getText().charAt(0));
                         else l.setStatus('A');
+                        if(nivel!=1){
+                            if(l.getFunc().getProfessor())
+                                l.setNivel(3);
+                            else l.setNivel(2); 
+                        }
+                        else l.setNivel(nivel);
                         
-                        if(l.getFunc().getProfessor())
-                            l.setNivel(3);
-                        else l.setNivel(2);
-                        
-                              try{
-
-                                   Banco.getCon().getConnect().setAutoCommit(false);
-
-
-                                   ok = dale.alterar(l); 
-                                    
-                              }
-                              catch(SQLException ex){System.out.println(ex.getMessage()); ok = false;}
-                              
+                                   ok = dale.alterar(l,logVelho.getUser()); 
+                               
                              try{
 
                                  if(ok){
@@ -406,10 +402,13 @@ public class FXMLControleLoginController implements Initializable {
             }
         }
         
+        if(ok)
+        {
+            a.showAndWait();
+            EstadoOriginal();
+            CarregaTabela(""); 
+        }
         
-        a.showAndWait();
-        EstadoOriginal();
-        CarregaTabela("");
     }
 
     @FXML

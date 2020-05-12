@@ -307,11 +307,15 @@ public class FXMLLivroController implements Initializable {
         if(tabela.getSelectionModel().getSelectedItem() != null)
         {     
             Livro l = tabela.getSelectionModel().getSelectedItem();
-            
+            Double auxiliar;
             txID.setText(""+l.getLivroID());
             txNome.setText(l.getNome());
             txEditora.setText(l.getEditora());
-            txValor.setText(""+l.getValor());
+            auxiliar=l.getValor();
+            if(auxiliar<100)
+                txValor.setText(""+l.getValor()+'0');
+            else
+                txValor.setText(""+l.getValor());
             txVolume.setText(l.getVolume());
             
             EstadoEdicao();

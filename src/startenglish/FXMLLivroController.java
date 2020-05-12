@@ -84,7 +84,8 @@ public class FXMLLivroController implements Initializable {
         MaskFieldUtil.maxField(txEditora, 25);
         MaskFieldUtil.maxField(txVolume, 5);
         MaskFieldUtil.maxField(txNome, 30);
-        MaskFieldUtil.maxField(txValor,10);    
+        MaskFieldUtil.maxField(txValor,8);    
+        MaskFieldUtil.monetaryField(txValor);
         
         List<String> combo = new ArrayList();
         combo.add("Nome");
@@ -153,14 +154,26 @@ public class FXMLLivroController implements Initializable {
     
     private boolean validaPreco(String preco)
     {       
+        String auxiliar="";
+        for (int i = 0; i < preco.length(); i++)
+        {
+            if(preco.charAt(i)!='.')
+            {
+                if(preco.charAt(i)==',')
+                    auxiliar+='.';
+                else
+                    auxiliar+=preco.charAt(i);
+            }
+        }
+        
         double preco_inserido = 0;
         Alert a = null;
         boolean ok = true,problema = false,tamanho = true;
         
         try{
             
-            preco_inserido = Double.parseDouble(preco);
-            tamanho = validaPrecoTam(preco);
+            preco_inserido = Double.parseDouble(auxiliar);
+            tamanho = validaPrecoTam(auxiliar);
             
         }catch(NumberFormatException ex){problema = true;}
         
@@ -201,9 +214,12 @@ public class FXMLLivroController implements Initializable {
             txValor.requestFocus();           
         }
         else
+        {
             txValor.setStyle("-fx-border-width: 0;"
                     + "-fx-background-color: #BEBEBE;"
                     + "-fx-font-weight: bold;");
+        }
+            
         
         if(a != null)
             a.showAndWait();
@@ -350,15 +366,28 @@ public class FXMLLivroController implements Initializable {
             {
                 double valor = 0;
                 int cod;
+                String auxiliar="";
+                    String preco=txValor.getText();
+                    for (int i = 0; i < preco.length(); i++)
+                    {
+                        if(preco.charAt(i)!='.')
+                        {
+                            if(preco.charAt(i)==',')
+                                auxiliar+='.';
+                            else
+                                auxiliar+=preco.charAt(i);
+                        }
+                    }
                 try 
                 {
-                    valor = Double.parseDouble(txValor.getText());
+                    valor = Double.parseDouble(auxiliar);
                     cod = Integer.parseInt(txID.getText());
                                                            
                 }
                 catch (NumberFormatException ex) 
                 {
-                    cod = 0;               
+                    cod = 0;
+                    
                 }
                 DALLivro dal = new DALLivro();
                 Livro l = new Livro();

@@ -1,8 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane id="AnchorPane" prefHeight="696.0" prefWidth="1121.0" style="-fx-background-color: black; -fx-border-color: orange; -fx-border-width: 5;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="startenglish.FXMLAgendarProvaController">
-    
+<AnchorPane id="AnchorPane" prefHeight="696.0" prefWidth="1121.0" style="-fx-background-color: black; -fx-border-color: orange; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="startenglish.FXMLAgendarProvaController">
+   <children>
+      <Label alignment="CENTER" layoutX="29.0" layoutY="14.0" prefHeight="21.0" prefWidth="1064.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="AGENDAR PROVA">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox layoutX="298.0" layoutY="72.0" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #BEBEBE;" />
+      <Label layoutX="298.0" layoutY="51.0" text="Professor" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox layoutX="591.0" layoutY="71.0" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #BEBEBE;" />
+      <Label layoutX="591.0" layoutY="50.0" text="Local" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox layoutX="881.0" layoutY="72.0" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #BEBEBE;" />
+      <Label layoutX="881.0" layoutY="51.0" text="Horário" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox layoutX="52.0" layoutY="137.0" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #BEBEBE;" />
+      <Label layoutX="52.0" layoutY="116.0" text="Aluno" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox layoutX="342.0" layoutY="136.0" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #BEBEBE;" />
+      <Label layoutX="342.0" layoutY="115.0" text="Status do Aluno" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="633.0" layoutY="132.0" prefHeight="37.0" prefWidth="186.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Novo Agendamento">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXDatePicker layoutX="54.0" layoutY="71.0" prefHeight="31.0" prefWidth="175.0" style="-fx-background-color: #bebebe;" />
+      <Label layoutX="54.0" layoutY="50.0" text="Data" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="884.0" layoutY="132.0" prefHeight="37.0" prefWidth="186.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Inserir Agendamento">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <TableView layoutX="15.0" layoutY="314.0" prefHeight="269.0" prefWidth="1094.0" />
+      <JFXButton layoutX="130.0" layoutY="612.0" prefHeight="37.0" prefWidth="186.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Voltar">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="476.0" layoutY="612.0" prefHeight="37.0" prefWidth="186.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Cancelar operações">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="800.0" layoutY="612.0" prefHeight="37.0" prefWidth="186.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Salvar Operações">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXComboBox layoutX="15.0" layoutY="271.0" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #FF7F27;" />
+      <Label layoutX="15.0" layoutY="247.0" text="Selecionar Filtro" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXDatePicker layoutX="376.0" layoutY="271.0" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #FF7F27;" />
+      <JFXDatePicker layoutX="212.0" layoutY="271.0" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #FF7F27;" />
+      <JFXComboBox layoutX="540.0" layoutY="271.0" prefHeight="31.0" prefWidth="133.0" style="-fx-background-color: #FF7F27;" />
+      <Label layoutX="543.0" layoutY="247.0" text="Aluno" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="599.0" layoutY="192.0" prefHeight="37.0" prefWidth="175.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Apagar Selecionado">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="399.0" layoutY="192.0" prefHeight="37.0" prefWidth="175.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Alterar Selecionado">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <Label layoutX="211.0" layoutY="247.0" text="Data Ini" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="376.0" layoutY="247.0" text="Data Fim" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox layoutX="684.0" layoutY="271.0" prefHeight="31.0" prefWidth="143.0" style="-fx-background-color: #FF7F27;" />
+      <Label layoutX="687.0" layoutY="247.0" text="Professor" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="918.0" layoutY="268.0" prefHeight="37.0" prefWidth="152.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Pesquisar">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+      <JFXButton layoutX="918.0" layoutY="211.0" prefHeight="37.0" prefWidth="152.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Limpar Filtros">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
+   </children>
 </AnchorPane>

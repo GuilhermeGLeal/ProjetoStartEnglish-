@@ -13,6 +13,7 @@ public class Agenda {
     private String local;
     private char situacao_prova;
     private double nota;
+    private String status;
 
     public Agenda(int ID, Professor professor, Aluno aluno, Date dataProva, String horario, String local, char situacao_prova, double nota) {
         this.ID = ID;
@@ -23,19 +24,24 @@ public class Agenda {
         this.local = local;
         this.situacao_prova = situacao_prova;
         this.nota = nota;
+        
+        switch (situacao_prova) {
+            case 'A':
+                this.status = "Aguardando";
+                break;
+            case 'R':
+                this.status = "Realizou";
+                break;
+            default:
+                this.status = "Faltou";
+                break;
+        }
     }
-
-    public Agenda(Professor professor, Aluno aluno, Date dataProva, String horario, String local, char situacao_prova, double nota) {
-        this.professor = professor;
-        this.aluno = aluno;
-        this.dataProva = dataProva;
-        this.horario = horario;
-        this.local = local;
-        this.situacao_prova = situacao_prova;
-        this.nota = nota;
-    }
-
+   
     public Agenda() {
+        
+        this(0,new Professor(),new Aluno(),null,"","",'c',0.0);
+        this.status = "";
     }
 
     public int getID() {

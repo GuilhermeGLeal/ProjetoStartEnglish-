@@ -1,7 +1,9 @@
 package startenglish;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import startenglish.db.Entidades.Turma;
 
 public class FXMLTurmasController implements Initializable 
 {
@@ -25,35 +28,55 @@ public class FXMLTurmasController implements Initializable
     @FXML
     private JFXTextField txPesquisa;
     @FXML
-    private JFXComboBox<?> cbFiltro;
+    private JFXComboBox<String> cbFiltro;
     @FXML
-    private TableView<?> tabela;
+    private TableView<Turma> tabela;
     @FXML
-    private JFXComboBox<?> cbProfessor;
+    private JFXComboBox<String> cbProfessor;
     @FXML
-    private JFXComboBox<?> cbCurso;
-    @FXML
-    private JFXTextField txID1;
-    @FXML
-    private JFXTextField txID11;
+    private JFXComboBox<String> cbCurso;
     @FXML
     private JFXTextField txPesquisaIni;
     @FXML
     private JFXTextField txPesquisaFim;
     @FXML
-    private JFXTextField txID12;
+    private TableColumn<Turma,String> tabelaTurma;
     @FXML
-    private TableColumn<?, ?> tabelaTurma;
+    private TableColumn<Turma,String> tabelaProfessor;
     @FXML
-    private TableColumn<?, ?> tabelaProfessor;
+    private TableColumn<Turma,String> tabelaCurso;
     @FXML
-    private TableColumn<?, ?> tabelaCurso;
+    private TableColumn<Turma,String> tabelaIni;
     @FXML
-    private TableColumn<?, ?> tabelaIni;
+    private TableColumn<Turma,String> tabelaFim;
     @FXML
-    private TableColumn<?, ?> tabelaFim;
+    private TableColumn<Turma,String> tabelaAtivo;
     @FXML
-    private TableColumn<?, ?> tabelaAtivo;
+    private JFXTextField txHorIni;
+    @FXML
+    private JFXTextField txHorFim;
+    @FXML
+    private JFXDatePicker dtIni;
+    @FXML
+    private JFXCheckBox checkAtivo;
+    @FXML
+    private JFXTextField txTurma;
+    @FXML
+    private JFXCheckBox checkSegunda;
+    @FXML
+    private JFXTextField txVagas;
+    @FXML
+    private JFXCheckBox checkDomingo;
+    @FXML
+    private JFXCheckBox checkSabado;
+    @FXML
+    private JFXCheckBox checkSexta;
+    @FXML
+    private JFXCheckBox checkQuinta;
+    @FXML
+    private JFXCheckBox checkQuarta;
+    @FXML
+    private JFXCheckBox checkTerca;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -63,11 +86,15 @@ public class FXMLTurmasController implements Initializable
 
 
     @FXML
-    private void evtPesquisar(ActionEvent event) {
+    private void evtPesquisar(ActionEvent event)
+    {
+        
     }
 
     @FXML
-    private void evtClickTabela(MouseEvent event) {
+    private void evtClickTabela(MouseEvent event)
+    {
+        
     }
     
 }

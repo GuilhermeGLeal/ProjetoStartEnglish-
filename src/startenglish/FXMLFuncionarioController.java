@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -116,6 +117,8 @@ public class FXMLFuncionarioController implements Initializable {
     private Funcionario func_alterando;
     private JSONObject json;
     private boolean errocep;
+    @FXML
+    private ComboBox<String> cbBusca;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -139,7 +142,22 @@ public class FXMLFuncionarioController implements Initializable {
         MaskFieldUtil.maxField(txCidade, 30);
         MaskFieldUtil.maxField(txRg,9);
         
+        seta_combobox();
+        
         EstadoOriginal();
+        
+    }
+    
+    private void seta_combobox()
+    {
+        List<String> listaPesquisa = new ArrayList<>();
+        listaPesquisa.add("Nome");
+        listaPesquisa.add("CPF");
+        listaPesquisa.add("E-mail");
+        
+        cbBusca.setItems(FXCollections.observableArrayList(listaPesquisa));
+        
+        cbBusca.setValue("Nome");
         
     }
     
@@ -494,8 +512,8 @@ public class FXMLFuncionarioController implements Initializable {
         }else
         {
             if(!txNome.getText().isEmpty())
-                if(!txCpf.getText().isEmpty())
-                    if(!txCEP.getText().isEmpty() && cpfvalida.isCPF(txCpf.getText()))
+                if(!txCpf.getText().isEmpty() && cpfvalida.isCPF(txCpf.getText()))
+                    if(!txCEP.getText().isEmpty() && validaCEP(txCEP.getText()))
                     {
 
                         f.setNome(txNome.getText());
@@ -577,9 +595,12 @@ public class FXMLFuncionarioController implements Initializable {
         }
         
         
-        a.showAndWait();
-        EstadoOriginal();
-        CarregaTabela("");
+        if(ok)
+        {
+            a.showAndWait();
+            EstadoOriginal();
+            CarregaTabela("");
+        }
         
     }
 
@@ -593,7 +614,14 @@ public class FXMLFuncionarioController implements Initializable {
 
     @FXML
     private void evtPesquisar(ActionEvent event) {
-        CarregaTabela("upper(nome) like '%"+txPesquisa.getText().toUpperCase()+"%'");
+        String filtro = cbBusca.getSelectionModel().getSelectedItem();
+        
+        if(filtro.contains("Nome"))
+            CarregaTabela("upper(nome) like '%"+txPesquisa.getText().toUpperCase()+"%'");
+        if(filtro.contains("CPF"))
+            CarregaTabela("cpf like '%"+txPesquisa.getText().toUpperCase()+"%'");
+        if(filtro.contains("E-mail"))
+            CarregaTabela("upper(email) like '%"+txPesquisa.getText().toUpperCase()+"%'");
     }
 
     @FXML
@@ -606,13 +634,13 @@ public class FXMLFuncionarioController implements Initializable {
     }
 
 
-    private void evtFechar(MouseEvent event) {
-        System.exit(0);
-    }
-
     @FXML
     private void evtValidaCEP(MouseEvent event) {
         validaCEP(txCEP.getText());
+    }
+
+    @FXML
+    private void evtcbBusca(ActionEvent event) {
     }
     
 }

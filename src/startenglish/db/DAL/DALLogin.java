@@ -36,20 +36,39 @@ public class DALLogin {
     
     public boolean exclusaologica(Login l)
     {
-        String sql = "update login set login set status = 'F' where usuario = '"+l.getUser()+"'";
+        String sql = "update login set status = 'I' where usuario = '"+l.getUser()+"'";
         
         return Banco.getCon().manipular(sql);
     }
     
     public boolean apagar(Login l){
         
-        return Banco.getCon().manipular("delete from login where usuario="+l.getUser());
+        return Banco.getCon().manipular("delete from login where usuario= '"+l.getUser()+"'");
     }
     
     public Login get(String usuario){
      
         Login log = null;
         ResultSet rs = Banco.getCon().consultar("select * from login where usuario= '"+usuario+"' and status like 'A'");
+        
+        try{
+            
+            if(rs.next())
+            {
+                DALFuncionario dalf = new DALFuncionario();
+                log = new Login(rs.getString("usuario"), rs.getString("senha"), rs.getString("status").charAt(0), rs.getInt("nivel"), dalf.get(rs.getInt("funcid")));
+                 
+             }
+        }
+        catch(SQLException e ){System.out.println(e.getMessage());}
+        
+        return log;
+    }
+    
+    public Login verif(String usuario)
+    {
+        Login log = null;
+        ResultSet rs = Banco.getCon().consultar("select * from login where usuario= '"+usuario+"'");
         
         try{
             

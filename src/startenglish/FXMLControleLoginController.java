@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -58,7 +59,6 @@ public class FXMLControleLoginController implements Initializable {
     private AnchorPane pnDados;
     @FXML
     private JFXTextField txUsuario;
-    @FXML
     private JFXTextField txStatus;
     @FXML
     private JFXPasswordField txSenha;
@@ -86,6 +86,12 @@ public class FXMLControleLoginController implements Initializable {
     @FXML
     private JFXTextField txNivel;
     private Login logVelho;
+    @FXML
+    private ComboBox<String> cbStatus;
+    @FXML
+    private ComboBox<String> cbPesquisa;
+    @FXML
+    private ComboBox<String> cbStatusPesquisa;
 
     /**
      * Initializes the controller class.
@@ -103,10 +109,31 @@ public class FXMLControleLoginController implements Initializable {
           
           MaskFieldUtil.maxField(txUsuario, 20);
           MaskFieldUtil.maxField(txSenha, 10);
-          MaskFieldUtil.maxField(txStatus, 1);
+          //MaskFieldUtil.maxField(txStatus, 1);
          
+          seta_combobox();
        
         EstadoOriginal();
+    }
+    
+    private void seta_combobox()
+    {
+        List<String> listaPesquisa = new ArrayList<>();
+        listaPesquisa.add("Usuario");
+        listaPesquisa.add("Status");
+        
+        cbPesquisa.setItems(FXCollections.observableArrayList(listaPesquisa));
+        
+        List<String> listaAux = new ArrayList<>();
+        listaAux.add("Ativo");
+        listaAux.add("Inativo");
+        
+        cbStatusPesquisa.setItems(FXCollections.observableArrayList(listaAux));
+        
+        
+        cbPesquisa.setValue("Usuario");
+        txPesquisa.setDisable(false);
+        cbStatusPesquisa.setDisable(true);
     }
     
     private void EstadoOriginal()
@@ -143,6 +170,12 @@ public class FXMLControleLoginController implements Initializable {
         btAlterar.setDisable(true);
         txPesquisa.clear();
         txUsuario.requestFocus();
+        
+        List<String> listaStatus = new ArrayList<>();
+        listaStatus.add("Ativo");
+        listaStatus.add("Inativo");
+        
+        cbStatus.setItems(FXCollections.observableArrayList(listaStatus));
         
         try {
            Professor prof = new Professor();
@@ -188,16 +221,23 @@ public class FXMLControleLoginController implements Initializable {
     private void evtAlterar(ActionEvent event) {
         if(tabela.getSelectionModel().getSelectedIndex() >= 0)
         {
+            EstadoEdicao();
+            
             Login l = (Login)tabela.getSelectionModel().getSelectedItem();
             logVelho = (Login)tabela.getSelectionModel().getSelectedItem();
             txUsuario.setText(l.getUser());
             txSenha.setText(l.getSenha());
-            txStatus.setText(""+l.getStatus());
-            cbFuncionario.setValue(l.getFunc());
+            
+            if(l.getStatus() == 'A')
+                cbStatus.getSelectionModel().select(0);
+            else cbStatus.getSelectionModel().select(1);
+            
+            cbFuncionario.getSelectionModel().select(0);
+            cbFuncionario.getSelectionModel().select(l.getFunc());
             txNivel.setText(""+l.getNivel());
 
                            
-            EstadoEdicao();
+            
         }
     }
 
@@ -210,61 +250,80 @@ public class FXMLControleLoginController implements Initializable {
         DALLogin dale = new DALLogin();
             
         l = tabela.getSelectionModel().getSelectedItem();
-        
-        if(a.showAndWait().get() == ButtonType.YES){
-            
-            
-            
-            try{
-                
-                Banco.getCon().getConnect().setAutoCommit(false);
-                
-                ok = dale.apagar(l);
-                
-                if(ok){
-                    
-                     Banco.getCon().getConnect().commit();
-                    a =  new Alert(Alert.AlertType.CONFIRMATION," Exclusão realizada com sucesso!!", ButtonType.OK);
-                }
-                else{
-                    
-                    Banco.getCon().getConnect().rollback();
-                    a =  new Alert(Alert.AlertType.ERROR, "Erro ao deletar Login!", ButtonType.OK);
-                }
-                
-                a.showAndWait();
-                
-            }catch(SQLException ex){System.out.println(ex.getMessage());}
-            
-            
-        }
-        else
+        if(l.getNivel()!=1)
         {
-            try {
-                Banco.getCon().getConnect().setAutoCommit(false);
-                
-                ok = dale.exclusaologica(l);
-                
-                if(ok){
-                    
-                     Banco.getCon().getConnect().commit();
-                    a =  new Alert(Alert.AlertType.CONFIRMATION," Exclusão lógica realizada com sucesso!!", ButtonType.OK);
+            if (a.showAndWait().get() == ButtonType.YES) {
+
+                try {
+
+                    Banco.getCon().getConnect().setAutoCommit(false);
+
+                    ok = dale.apagar(l);
+
+                    if (ok) {
+
+                        Banco.getCon().getConnect().commit();
+                        a = new Alert(Alert.AlertType.CONFIRMATION, " Exclusão realizada com sucesso!!", ButtonType.OK);
+                    } else {
+
+                        Banco.getCon().getConnect().rollback();
+                        a = new Alert(Alert.AlertType.ERROR, "Erro ao deletar Login!", ButtonType.OK);
+                    }
+
+                    a.showAndWait();
+
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
                 }
-                else{
-                    
-                    Banco.getCon().getConnect().rollback();
-                    a =  new Alert(Alert.AlertType.ERROR, "Erro ao deletar lógicamente!", ButtonType.OK);
+
+            } else {
+                try {
+                    Banco.getCon().getConnect().setAutoCommit(false);
+
+                    ok = dale.exclusaologica(l);
+
+                    if (ok) {
+
+                        Banco.getCon().getConnect().commit();
+                        a = new Alert(Alert.AlertType.CONFIRMATION, " Exclusão lógica realizada com sucesso!!", ButtonType.OK);
+                    } else {
+
+                        Banco.getCon().getConnect().rollback();
+                        a = new Alert(Alert.AlertType.ERROR, "Erro ao deletar lógicamente!", ButtonType.OK);
+                    }
+
+                    a.showAndWait();
+                } catch (Exception e) {
                 }
-                
-                a.showAndWait();
-            } catch (Exception e) {
             }
         }
+        else{
+            a = new Alert(Alert.AlertType.ERROR, "Não pode ser excluido, por ser o administrador do sistema!", ButtonType.OK);
+            a.showAndWait();
+        }
         
-        EstadoEdicao();    
+        
+        //EstadoEdicao();    
         CarregaTabela("");
     }
 
+    private boolean validaUsuario(String user)
+    {
+        boolean ok = false;
+        Login auxLogin;
+          
+        if(!user.isEmpty())
+        {
+            DALLogin dale = new DALLogin();
+            auxLogin = dale.verif(user);
+            
+            if(auxLogin == null)
+                ok = true;
+        }
+                
+        return ok;
+    }
+    
     @FXML
     private void evtConfirmar(ActionEvent event) {
         int nivel;
@@ -290,7 +349,7 @@ public class FXMLControleLoginController implements Initializable {
         
         if(nivel == 0)
         {
-            if(!txUsuario.getText().isEmpty())
+            if(validaUsuario(txUsuario.getText()))
                 if(!txSenha.getText().isEmpty())
                     if(cbFuncionario.getSelectionModel().getSelectedItem() != null)
                     {
@@ -299,8 +358,16 @@ public class FXMLControleLoginController implements Initializable {
                         l.setSenha(txSenha.getText());
                         l.setFunc(f);
                         
-                        if(!txStatus.getText().isEmpty()) l.setStatus(txStatus.getText().charAt(0));
-                        else l.setStatus('A');
+                        if(cbStatus.getSelectionModel().getSelectedIndex()!=-1)
+                        {
+                            if(cbStatus.getSelectionModel().getSelectedIndex() == 0)
+                                l.setStatus('A');
+                            if(cbStatus.getSelectionModel().getSelectedIndex() == 1)
+                                l.setStatus('I');
+                        }
+                        
+//                        if(!txStatus.getText().isEmpty()) l.setStatus(txStatus.getText().charAt(0));
+//                        else l.setStatus('A');
                         
                         if(l.getFunc().getProfessor())
                             l.setNivel(3);
@@ -350,6 +417,7 @@ public class FXMLControleLoginController implements Initializable {
             }
         }else
         {
+            
             if(!txUsuario.getText().isEmpty())
                 if(!txSenha.getText().isEmpty())
                     if(cbFuncionario.getSelectionModel().getSelectedItem() != null)
@@ -359,8 +427,16 @@ public class FXMLControleLoginController implements Initializable {
                         l.setSenha(txSenha.getText());
                         l.setFunc(f);
                         
-                        if(!txStatus.getText().isEmpty()) l.setStatus(txStatus.getText().charAt(0));
-                        else l.setStatus('A');
+                        if(cbStatus.getSelectionModel().getSelectedIndex()!=-1)
+                        {
+                            if(cbStatus.getSelectionModel().getSelectedIndex() == 0)
+                                l.setStatus('A');
+                            else
+                                l.setStatus('I');
+                        }
+                        
+//                        if(!txStatus.getText().isEmpty()) l.setStatus(txStatus.getText().charAt(0));
+//                        else l.setStatus('A');
                         if(nivel!=1){
                             if(l.getFunc().getProfessor())
                                 l.setNivel(3);
@@ -423,7 +499,15 @@ public class FXMLControleLoginController implements Initializable {
 
     @FXML
     private void evtPesquisar(ActionEvent event) {
-        CarregaTabela("upper(nome) like '%"+txPesquisa.getText().toUpperCase()+"%'");
+        String filtro = cbPesquisa.getSelectionModel().getSelectedItem();
+        
+        if(filtro.contains("Usuario"))
+            CarregaTabela("upper(usuario) like '%"+txPesquisa.getText().toUpperCase()+"%'");
+        else 
+            if(cbStatusPesquisa.getSelectionModel().getSelectedIndex() == 0)
+                CarregaTabela("upper(status) like 'A'");
+            else
+                CarregaTabela("upper(status) like 'I'");
     }
 
     @FXML
@@ -432,6 +516,22 @@ public class FXMLControleLoginController implements Initializable {
             
             btAlterar.setDisable(false);
             btExcluir.setDisable(false);
+        }
+    }
+
+    @FXML
+    private void evtcbPesquisa(ActionEvent event) {
+        String filtro = cbPesquisa.getSelectionModel().getSelectedItem();
+        
+        if(filtro.contains("Usuario")){
+            
+            txPesquisa.setDisable(false);
+            cbStatusPesquisa.setDisable(true);           
+        }
+        else{
+            
+            txPesquisa.setDisable(true);
+            cbStatusPesquisa.setDisable(false);
         }
     }
     

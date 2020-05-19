@@ -49,7 +49,7 @@ public class FXMLLivroController implements Initializable {
     @FXML
     private JFXTextField txID;
     @FXML
-    private TableColumn<Livro, Double> tabelaValor;
+    private TableColumn<Livro, String> tabelaValor;
     @FXML
     private JFXTextField txEditora;
     @FXML
@@ -134,7 +134,11 @@ public class FXMLLivroController implements Initializable {
         List <Livro> listaLivro = dalL.get(filtro);
         listaLivro = dalL.get(filtro);           
         ObservableList <Livro> modelo;
-        modelo = FXCollections.observableArrayList(listaLivro);       
+        modelo = FXCollections.observableArrayList(listaLivro);
+        for (int i = 0; i < modelo.size(); i++)
+        {
+           modelo.get(i).setValor(modelo.get(i).getValor());
+        }
         tabela.setItems(modelo);
     }
 
@@ -312,7 +316,9 @@ public class FXMLLivroController implements Initializable {
             txNome.setText(l.getNome());
             txEditora.setText(l.getEditora());
             auxiliar=l.getValor();
-            if(auxiliar<100)
+            int conversor = auxiliar.intValue();
+            auxiliar=auxiliar-conversor;
+            if(auxiliar==0)
                 txValor.setText(""+l.getValor()+'0');
             else
                 txValor.setText(""+l.getValor());

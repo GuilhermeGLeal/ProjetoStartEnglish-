@@ -20,10 +20,8 @@ import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -110,7 +108,7 @@ public class FXMLParametrizacaoController implements Initializable {
     private JSONObject json;
     private boolean errocep;
     
-      
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -461,7 +459,7 @@ public class FXMLParametrizacaoController implements Initializable {
             txTelefone.requestFocus();
                 
         }
-        else if(!telefone.isEmpty() && telefone.length()!= 14){
+        else if(!telefone.isEmpty() && telefone.length()!= 14 && telefone.length()!= 13){
             
             ok = false;
             setTextFieldErro(txTelefone);
@@ -862,6 +860,5 @@ public class FXMLParametrizacaoController implements Initializable {
     {        
        validaCEP(txCEP.getText());              
     }
-
 
 }

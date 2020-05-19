@@ -184,8 +184,8 @@ public class FXMLPrincipalController implements Initializable {
             pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento dos Funcionários");
             
-        } catch (Exception e) {
-          
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
     
@@ -215,8 +215,8 @@ public class FXMLPrincipalController implements Initializable {
             pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento dos Alunos");
             
-        } catch (Exception e) {
-          
+        } catch (IOException e) {
+           System.out.println(e.getMessage());
         }
     }
 
@@ -228,8 +228,8 @@ public class FXMLPrincipalController implements Initializable {
             pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento dos Livros");
             
-        } catch (Exception e) {
-          
+        } catch (IOException e) {
+           System.out.println(e.getMessage());
         } 
     }
 
@@ -240,8 +240,47 @@ public class FXMLPrincipalController implements Initializable {
             pnMudanca.setCenter(aux);
             labelNome.setText("Gerenciamento de Login");
             
-        } catch (Exception e) {
-          
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void evtConsultaReceb(ActionEvent event) {
+        
+         try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLConsultarRecebimentos.fxml"));
+            pnMudanca.setCenter(aux);
+            labelNome.setText("Consultar Recebimentos");
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void evtAgendaProva(ActionEvent event) {
+        
+         try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLAgendarProva.fxml"));
+            pnMudanca.setCenter(aux);
+            labelNome.setText("Agendamento da prova de proficiência");
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void evtRegistrarReceb(ActionEvent event) {
+        
+         try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLRegistrarRecebimentos.fxml"));
+            pnMudanca.setCenter(aux);
+            labelNome.setText("Registrar Recebimentos");
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
     

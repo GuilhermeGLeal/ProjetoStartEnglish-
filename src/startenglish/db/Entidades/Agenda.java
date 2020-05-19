@@ -1,6 +1,6 @@
 package startenglish.db.Entidades;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 public class Agenda {
@@ -8,13 +8,22 @@ public class Agenda {
     private int ID;
     private Professor professor;
     private Aluno aluno;
-    private Date dataProva;
+    private LocalDate dataProva;
     private String horario;
     private String local;
     private char situacao_prova;
     private double nota;
 
-    public Agenda(int ID, Professor professor, Aluno aluno, Date dataProva, String horario, String local, char situacao_prova, double nota) {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    private String status;
+
+    public Agenda(int ID, Professor professor, Aluno aluno, LocalDate dataProva, String horario, String local, char situacao_prova, double nota) {
         this.ID = ID;
         this.professor = professor;
         this.aluno = aluno;
@@ -23,19 +32,24 @@ public class Agenda {
         this.local = local;
         this.situacao_prova = situacao_prova;
         this.nota = nota;
+        
+        switch (situacao_prova) {
+            case 'A':
+                this.status = "Aguardando";
+                break;
+            case 'R':
+                this.status = "Realizou";
+                break;
+            default:
+                this.status = "Faltou";
+                break;
+        }
     }
-
-    public Agenda(Professor professor, Aluno aluno, Date dataProva, String horario, String local, char situacao_prova, double nota) {
-        this.professor = professor;
-        this.aluno = aluno;
-        this.dataProva = dataProva;
-        this.horario = horario;
-        this.local = local;
-        this.situacao_prova = situacao_prova;
-        this.nota = nota;
-    }
-
+   
     public Agenda() {
+        
+        this(0,new Professor(),new Aluno(),null,"","",'c',0.0);
+        this.status = "";
     }
 
     public int getID() {
@@ -62,11 +76,11 @@ public class Agenda {
         this.aluno = aluno;
     }
 
-    public Date getDataProva() {
+    public LocalDate getDataProva() {
         return dataProva;
     }
 
-    public void setDataProva(Date dataProva) {
+    public void setDataProva(LocalDate dataProva) {
         this.dataProva = dataProva;
     }
 

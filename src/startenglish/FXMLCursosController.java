@@ -123,7 +123,7 @@ public class FXMLCursosController implements Initializable {
         combo.add("Data Lançamento");
         combo.add("Data encerramento");
         
-        ObservableList<String> modelo = FXCollections.observableArrayList(combo);;
+        ObservableList<String> modelo = FXCollections.observableArrayList(combo);
         comboBox.setItems(modelo);
         comboBox.setValue("Nome");
         

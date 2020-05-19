@@ -49,7 +49,7 @@ public class FXMLLivroController implements Initializable {
     @FXML
     private JFXTextField txID;
     @FXML
-    private TableColumn<Livro, Double> tabelaValor;
+    private TableColumn<Livro, String> tabelaValor;
     @FXML
     private JFXTextField txEditora;
     @FXML
@@ -84,7 +84,8 @@ public class FXMLLivroController implements Initializable {
         MaskFieldUtil.maxField(txEditora, 25);
         MaskFieldUtil.maxField(txVolume, 5);
         MaskFieldUtil.maxField(txNome, 30);
-        MaskFieldUtil.maxField(txValor,10);    
+        MaskFieldUtil.maxField(txValor,8);    
+        MaskFieldUtil.monetaryField(txValor);
         
         List<String> combo = new ArrayList();
         combo.add("Nome");
@@ -133,7 +134,11 @@ public class FXMLLivroController implements Initializable {
         List <Livro> listaLivro = dalL.get(filtro);
         listaLivro = dalL.get(filtro);           
         ObservableList <Livro> modelo;
-        modelo = FXCollections.observableArrayList(listaLivro);       
+        modelo = FXCollections.observableArrayList(listaLivro);
+        for (int i = 0; i < modelo.size(); i++)
+        {
+           modelo.get(i).setValor(modelo.get(i).getValor());
+        }
         tabela.setItems(modelo);
     }
 
@@ -153,14 +158,26 @@ public class FXMLLivroController implements Initializable {
     
     private boolean validaPreco(String preco)
     {       
+        String auxiliar="";
+        for (int i = 0; i < preco.length(); i++)
+        {
+            if(preco.charAt(i)!='.')
+            {
+                if(preco.charAt(i)==',')
+                    auxiliar+='.';
+                else
+                    auxiliar+=preco.charAt(i);
+            }
+        }
+        
         double preco_inserido = 0;
         Alert a = null;
         boolean ok = true,problema = false,tamanho = true;
         
         try{
             
-            preco_inserido = Double.parseDouble(preco);
-            tamanho = validaPrecoTam(preco);
+            preco_inserido = Double.parseDouble(auxiliar);
+            tamanho = validaPrecoTam(auxiliar);
             
         }catch(NumberFormatException ex){problema = true;}
         
@@ -201,9 +218,12 @@ public class FXMLLivroController implements Initializable {
             txValor.requestFocus();           
         }
         else
+        {
             txValor.setStyle("-fx-border-width: 0;"
                     + "-fx-background-color: #BEBEBE;"
                     + "-fx-font-weight: bold;");
+        }
+            
         
         if(a != null)
             a.showAndWait();
@@ -291,11 +311,17 @@ public class FXMLLivroController implements Initializable {
         if(tabela.getSelectionModel().getSelectedItem() != null)
         {     
             Livro l = tabela.getSelectionModel().getSelectedItem();
-            
+            Double auxiliar;
             txID.setText(""+l.getLivroID());
             txNome.setText(l.getNome());
             txEditora.setText(l.getEditora());
-            txValor.setText(""+l.getValor());
+            auxiliar=l.getValor();
+            int conversor = auxiliar.intValue();
+            auxiliar=auxiliar-conversor;
+            if(auxiliar==0)
+                txValor.setText(""+l.getValor()+'0');
+            else
+                txValor.setText(""+l.getValor());
             txVolume.setText(l.getVolume());
             
             EstadoEdicao();
@@ -350,15 +376,28 @@ public class FXMLLivroController implements Initializable {
             {
                 double valor = 0;
                 int cod;
+                String auxiliar="";
+                    String preco=txValor.getText();
+                    for (int i = 0; i < preco.length(); i++)
+                    {
+                        if(preco.charAt(i)!='.')
+                        {
+                            if(preco.charAt(i)==',')
+                                auxiliar+='.';
+                            else
+                                auxiliar+=preco.charAt(i);
+                        }
+                    }
                 try 
                 {
-                    valor = Double.parseDouble(txValor.getText());
+                    valor = Double.parseDouble(auxiliar);
                     cod = Integer.parseInt(txID.getText());
                                                            
                 }
                 catch (NumberFormatException ex) 
                 {
-                    cod = 0;               
+                    cod = 0;
+                    
                 }
                 DALLivro dal = new DALLivro();
                 Livro l = new Livro();

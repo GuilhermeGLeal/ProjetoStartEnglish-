@@ -59,7 +59,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txID1" alignment="CENTER" layoutX="318.0" layoutY="178.0" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txHorIni" alignment="CENTER" layoutX="318.0" layoutY="178.0" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
                   <Label layoutX="318.0" layoutY="152.0" text="Horário Inicial" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
@@ -70,7 +70,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txID11" alignment="CENTER" layoutX="500.0" layoutY="178.0" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txHorFim" alignment="CENTER" layoutX="500.0" layoutY="178.0" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
                   <Label layoutX="500.0" layoutY="152.0" text="Horário Final" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
@@ -86,7 +86,7 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <JFXDatePicker layoutX="724.0" layoutY="108.0" style="-fx-background-color: #BEBEBE;" />
+                  <JFXDatePicker fx:id="dtIni" layoutX="724.0" layoutY="108.0" style="-fx-background-color: #BEBEBE;" />
                   <Label layoutX="724.0" layoutY="82.0" text="Data de Início" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
@@ -97,12 +97,12 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <JFXCheckBox layoutX="669.0" layoutY="182.0" text="Ativo" textFill="#bebebe" />
-                  <JFXButton layoutX="13.0" layoutY="226.0" prefHeight="36.0" prefWidth="110.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Inserir Turma" />
-                  <JFXButton layoutX="128.0" layoutY="226.0" prefHeight="36.0" prefWidth="171.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Alterar Turma Selecionada" />
-                  <JFXButton layoutX="305.0" layoutY="226.0" prefHeight="36.0" prefWidth="171.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Excluir Turma Selecionada" />
-                  <JFXButton layoutX="686.0" layoutY="226.0" prefHeight="36.0" prefWidth="221.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Confirmar Alteração/Inclusão" />
-                  <JFXButton layoutX="485.0" layoutY="226.0" prefHeight="36.0" prefWidth="195.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Cancelar Alteração/Inclusão" />
+                  <JFXCheckBox fx:id="checkAtivo" layoutX="826.0" layoutY="181.0" text="Ativo" textFill="#bebebe" />
+                  <JFXButton layoutX="13.0" layoutY="300.0" prefHeight="36.0" prefWidth="110.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Inserir Turma" />
+                  <JFXButton layoutX="128.0" layoutY="300.0" prefHeight="36.0" prefWidth="171.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Alterar Turma Selecionada" />
+                  <JFXButton layoutX="305.0" layoutY="300.0" prefHeight="36.0" prefWidth="171.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Excluir Turma Selecionada" />
+                  <JFXButton layoutX="686.0" layoutY="300.0" prefHeight="36.0" prefWidth="221.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Confirmar Alteração/Inclusão" />
+                  <JFXButton layoutX="485.0" layoutY="300.0" prefHeight="36.0" prefWidth="195.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Cancelar Alteração/Inclusão" />
                   <Label layoutX="123.0" layoutY="83.0" text="Nome da Turma" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
@@ -113,7 +113,25 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txID12" alignment="CENTER" layoutX="121.0" layoutY="110.0" prefHeight="25.0" prefWidth="283.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txTurma" alignment="CENTER" layoutX="121.0" layoutY="110.0" prefHeight="25.0" prefWidth="283.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <JFXCheckBox fx:id="checkSegunda" layoutX="21.0" layoutY="246.0" text="Segunda-feira" />
+                  <JFXTextField fx:id="txVagas" alignment="CENTER" layoutX="644.0" layoutY="178.0" prefHeight="25.0" prefWidth="128.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" />
+                  <Label layoutX="644.0" layoutY="152.0" text="Vagas Disponíveis" textFill="#bebebe">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="769.0" layoutY="151.0" text="*" textFill="#ff0101">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <JFXCheckBox fx:id="checkDomingo" layoutX="591.0" layoutY="246.0" text="Domingo" />
+                  <JFXCheckBox fx:id="checkSabado" layoutX="518.0" layoutY="247.0" text="Sábado" />
+                  <JFXCheckBox fx:id="checkSexta" layoutX="422.0" layoutY="247.0" text="Sexta-feira" />
+                  <JFXCheckBox fx:id="checkQuinta" layoutX="319.0" layoutY="247.0" text="Quinta-feira" />
+                  <JFXCheckBox fx:id="checkQuarta" layoutX="218.0" layoutY="247.0" text="Quarta-feira" />
+                  <JFXCheckBox fx:id="checkTerca" layoutX="128.0" layoutY="247.0" text="Terça-feira" />
                </children>
             </AnchorPane>
          </children>
@@ -152,11 +170,11 @@
             <TableView fx:id="tabela" layoutY="80.0" onMouseClicked="#evtClickTabela" prefHeight="203.0" prefWidth="919.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
                <columns>
                   <TableColumn fx:id="tabelaTurma" prefWidth="226.0" style="-fx-background-color: #BEBEBE;" text="Turma" />
-                  <TableColumn fx:id="tabelaProfessor" prefWidth="166.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Professor" />
-                  <TableColumn fx:id="tabelaCurso" minWidth="0.0" prefWidth="221.0" style="-fx-background-color: #BEBEBE;" text="Curso" />
-                  <TableColumn fx:id="tabelaIni" prefWidth="155.0" style="-fx-background-color: #BEBEBE;" text="Horário de Início" />
-                  <TableColumn fx:id="tabelaFim" prefWidth="157.0" style="-fx-background-color: #BEBEBE;" text="Horário de Fim" />
-                  <TableColumn fx:id="tabelaAtivo" prefWidth="56.0" style="-fx-background-color: #BEBEBE;" text="Ativo" />
+                  <TableColumn fx:id="tabelaProfessor" prefWidth="150.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold;" text="Professor" />
+                  <TableColumn fx:id="tabelaCurso" minWidth="0.0" prefWidth="175.0" style="-fx-background-color: #BEBEBE;" text="Curso" />
+                  <TableColumn fx:id="tabelaIni" prefWidth="129.0" style="-fx-background-color: #BEBEBE;" text="Horário de Início" />
+                  <TableColumn fx:id="tabelaFim" prefWidth="169.0" style="-fx-background-color: #BEBEBE;" text="Horário de Fim" />
+                  <TableColumn fx:id="tabelaAtivo" prefWidth="64.0" style="-fx-background-color: #BEBEBE;" text="Ativo" />
                </columns>
             </TableView>
          </children>

@@ -222,6 +222,18 @@ public class FXMLAgendarProvaController implements Initializable {
 
     @FXML
     private void evtDataPesq(MouseEvent event) {
+        
+        List<Agenda> agendadata = new ArrayList();
+        LocalDate age = dtDataAgend.getValue();
+        
+        for (int i = 0; i < listaauxliar.size(); i++) {
+            
+            if(listaauxliar.get(i).getDataProva().equals(age))
+                agendadata.add(listaauxliar.get(i));
+        }
+        
+        tabela.setItems(FXCollections.observableArrayList(agendadata));
+        
     }
 
     @FXML
@@ -324,17 +336,15 @@ public class FXMLAgendarProvaController implements Initializable {
     private void evtPesquisar(ActionEvent event) {
 
         alunosaux = null;
-        String filtro = cbFiltro.getSelectionModel().getSelectedItem(), texto;
-        String sql = "";
+        String filtro = cbFiltro.getSelectionModel().getSelectedItem();
         LocalDate dataini = null, datafim = null;
-        DALAluno dala = new DALAluno();
         List<Aluno> alunos;
 
         if (filtro.contains("Data")) {
 
             dataini = dtDataInif.getValue();
             datafim = dtDataFIMf.getValue();
-            sql = " dataprova BETWEEN '" + dataini + "' AND '" + datafim + "'";
+           
 
         } else {
 
@@ -353,11 +363,7 @@ public class FXMLAgendarProvaController implements Initializable {
 
         }
 
-        if (alunosaux == null) {
-            carregaTabela(sql, 'P');
-        } else {
-            //tabela.setItems(FXCollections.observableArrayList(alunosaux));
-        }
+      
     }
 
     @FXML

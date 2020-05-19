@@ -90,8 +90,7 @@ public class FXMLAgendarProvaController implements Initializable {
     
     private boolean alterou;
     private List<Agenda> listaauxliar;
-    private ArrayList<Aluno> alunosaux;
-     
+        
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -242,14 +241,9 @@ public class FXMLAgendarProvaController implements Initializable {
 
     @FXML
     private void evtVoltar(ActionEvent event) {
-        
-        if (alterou) {
 
-              Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Há operações para serem salvas, deseja salva-las?", ButtonType.YES,ButtonType.NO);
-              
-               if(a.showAndWait().get() == ButtonType.YES){
-                     evtSalvarOp(event);
-               }
+        if (alterou) {
+            evtSalvarOp(event);
         }
 
         FXMLPrincipalController.snprincipal.setCenter(null);
@@ -271,6 +265,15 @@ public class FXMLAgendarProvaController implements Initializable {
 
     @FXML
     private void evtSalvarOp(ActionEvent event) {
+        
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja salvar todas modificações?", ButtonType.YES,ButtonType.NO);
+        
+        if(a.showAndWait().get() == ButtonType.YES){
+            
+        }        
+        
+        FXMLPrincipalController.snprincipal.setCenter(null);
+        FXMLPrincipalController.nome.setText("");
     }
 
     @FXML
@@ -331,15 +334,56 @@ public class FXMLAgendarProvaController implements Initializable {
             dtDataAgend.requestFocus();
           }
     }
-
+    
     @FXML
     private void evtPesquisar(ActionEvent event) {
-
-        alunosaux = null;
-        String filtro = cbFiltro.getSelectionModel().getSelectedItem();
-        LocalDate dataini = null, datafim = null;
-        
       
+        String filtro = cbFiltro.getSelectionModel().getSelectedItem();
+        LocalDate dataini, datafim;
+        List<Agenda> novasagendas = new ArrayList();
+        String nome_aluno;
+        Professor paux;
+        
+        
+        if(filtro.contains("Data")){
+            
+            dataini = dtDataInif.getValue();
+            datafim = dtDataFIMf.getValue();
+            
+            for (int i = 0; i < listaauxliar.size(); i++) {
+                
+                if(listaauxliar.get(i).getDataProva().isAfter(dataini) && listaauxliar.get(i).getDataProva().isBefore(datafim))
+                    novasagendas.add(listaauxliar.get(i));
+            }
+        }
+        else{
+            
+            if(filtro.contains("Aluno")){
+                
+                nome_aluno = txAluno.getText();
+
+                for (int i = 0; i < listaauxliar.size(); i++) {
+
+                    if (listaauxliar.get(i).getAluno().getNome().contains(nome_aluno)) {
+                        novasagendas.add(listaauxliar.get(i));
+                    }
+                }
+                
+            }
+            else{
+                
+                paux = cbProfessorF.getSelectionModel().getSelectedItem();
+                
+                for (int i = 0; i < listaauxliar.size(); i++) {
+
+                    if (listaauxliar.get(i).getProfessor().getFunc().getID() == paux.getFunc().getID()) {
+                        novasagendas.add(listaauxliar.get(i));
+                    }
+                }
+            }
+        }
+        
+        tabela.setItems(FXCollections.observableArrayList(novasagendas));
     }
 
     @FXML
@@ -351,11 +395,14 @@ public class FXMLAgendarProvaController implements Initializable {
 
     @FXML
     private void evTabela(MouseEvent event) {
-        
-          if(tabela.getSelectionModel().getSelectedIndex()>=0)
-        {
-           btApagar.setDisable(false);
-           btAlterar.setDisable(false);
+
+        if (tabela.getSelectionModel().getSelectedIndex() >= 0) {
+            btApagar.setDisable(false);
+            btAlterar.setDisable(false);
+        } else {
+
+            btApagar.setDisable(true);
+            btAlterar.setDisable(true);
         }
     }
     

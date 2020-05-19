@@ -3,6 +3,7 @@ package startenglish.db.DAL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import startenglish.db.Entidades.Agenda;
 import startenglish.db.util.Banco;
 
@@ -45,7 +46,7 @@ public class DALAgenda {
     public Agenda get(int cod) {
 
         Agenda agenda = null;
-        ResultSet rs = Banco.getCon().consultar("select * from agenda where agendaid=" + cod);
+        ResultSet rs = Banco.getCon().consultar("select * from agendaprova where agendaid=" + cod);
         DALProfessor dalp = new DALProfessor();
         DALAluno dala = new DALAluno();
 
@@ -68,7 +69,7 @@ public class DALAgenda {
 
     public ArrayList<Agenda> get(String filtro) {
 
-       String sql="select * from agenda";
+       String sql="select * from agendaprova";
              
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
@@ -97,4 +98,35 @@ public class DALAgenda {
         return aux;
     }
     
+     public boolean InserirTudo(List<Agenda> Agendas) {
+
+        boolean ok = true;
+
+        try {
+
+            Banco.getCon().getConnect().setAutoCommit(false);
+
+            ok = Banco.getCon().manipular("delete from agendaprova");
+
+            if (ok) {
+
+                for (int i = 0; i < Agendas.size() && ok; i++) {
+
+                    ok = gravar(Agendas.get(i));
+                }
+            }
+
+            if (ok) {
+                Banco.getCon().getConnect().commit();
+            } else {
+                Banco.getCon().getConnect().rollback();
+        
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            ok = false;
+        }
+
+        return ok;
+    }
 }

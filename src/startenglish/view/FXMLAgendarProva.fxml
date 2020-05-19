@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -40,19 +41,17 @@
       <JFXComboBox fx:id="cbFiltro" layoutX="15.0" layoutY="271.0" onAction="#evtFiltroComb" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #FF7F27;" />
       <JFXDatePicker fx:id="dtDataInif" layoutX="212.0" layoutY="271.0" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #FF7F27;" />
       <JFXDatePicker fx:id="dtDataFIMf" layoutX="376.0" layoutY="271.0" prefHeight="31.0" prefWidth="152.0" style="-fx-background-color: #FF7F27;" />
-      <JFXComboBox fx:id="cbAlunoF" layoutX="540.0" layoutY="271.0" prefHeight="31.0" prefWidth="165.0" style="-fx-background-color: #FF7F27;" />
-      <JFXComboBox fx:id="cbProfessorF" layoutX="720.0" layoutY="271.0" prefHeight="31.0" prefWidth="165.0" style="-fx-background-color: #FF7F27;" />
-      <JFXButton fx:id="btPesquisar" layoutX="918.0" layoutY="268.0" onAction="#evtPesquisar" prefHeight="37.0" prefWidth="152.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Pesquisar">
+      <JFXButton fx:id="btPesquisar" layoutX="935.0" layoutY="268.0" onAction="#evtPesquisar" prefHeight="37.0" prefWidth="152.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Pesquisar">
          <font>
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="btLimpar" layoutX="918.0" layoutY="211.0" onAction="#evtLimpar" prefHeight="37.0" prefWidth="152.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Limpar Filtros">
+      <JFXButton fx:id="btLimpar" layoutX="935.0" layoutY="211.0" onAction="#evtLimpar" prefHeight="37.0" prefWidth="152.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Limpar Filtros">
          <font>
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <TableView fx:id="tabela" layoutX="15.0" layoutY="314.0" prefHeight="269.0" prefWidth="1094.0" style="-fx-background-color: black;">
+      <TableView fx:id="tabela" layoutX="15.0" layoutY="314.0" onMouseClicked="#evTabela" prefHeight="269.0" prefWidth="1094.0" style="-fx-background-color: black;">
          <columns>
             <TableColumn fx:id="tcNomeAluno" editable="false" prefWidth="182.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" text="Nome do Aluno" />
             <TableColumn fx:id="tcCPF" editable="false" prefWidth="182.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" text="CPF" />
@@ -131,10 +130,12 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="726.0" layoutY="247.0" text="Professor" textFill="#bebebe">
+      <Label layoutX="741.0" layoutY="247.0" text="Professor" textFill="#bebebe">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
+      <JFXTextField fx:id="txAluno" layoutX="536.0" layoutY="274.0" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #FF7F27;" />
+      <JFXTextField fx:id="txProf" layoutX="732.0" layoutY="274.0" prefHeight="31.0" prefWidth="186.0" style="-fx-background-color: #FF7F27;" />
    </children>
 </AnchorPane>

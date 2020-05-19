@@ -338,31 +338,7 @@ public class FXMLAgendarProvaController implements Initializable {
         alunosaux = null;
         String filtro = cbFiltro.getSelectionModel().getSelectedItem();
         LocalDate dataini = null, datafim = null;
-        List<Aluno> alunos;
-
-        if (filtro.contains("Data")) {
-
-            dataini = dtDataInif.getValue();
-            datafim = dtDataFIMf.getValue();
-           
-
-        } else {
-
-            if (filtro.contains("Professor")) {
-                sql = "professorid = " + cbProfessorF.getSelectionModel().getSelectedItem().getFunc().getID();
-            } else {
-
-                alunosaux = new ArrayList();
-                sql = " upper(nome) like '%" + txAluno.getText() + "%'";
-                alunos = dala.get("sql");
-                
-                for (int i = 0; i < alunos.size(); i++) {
-                    
-                }
-            }
-
-        }
-
+        
       
     }
 

@@ -19,7 +19,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import javafx.util.Callback;
 import startenglish.db.DAL.DALAluno;
 import startenglish.db.DAL.DALProfessor;
 import startenglish.db.Entidades.Agenda;

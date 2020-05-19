@@ -18,4 +18,9 @@ public class Professor {
         this.func = func;
     }
     
+    @Override
+    public String toString(){
+        
+        return this.func.getNome();
+    }
 }

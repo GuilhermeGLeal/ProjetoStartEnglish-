@@ -90,6 +90,10 @@ public class Aluno {
     }
   
     
-    
+    @Override
+    public String toString(){
+        
+        return this.nome;
+    }
     
 }

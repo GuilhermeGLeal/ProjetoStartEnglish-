@@ -90,6 +90,7 @@ public class FXMLAgendarProvaController implements Initializable {
     
     private boolean alterou;
     private List<Agenda> listaauxliar;
+    private boolean alterando;
         
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -101,7 +102,8 @@ public class FXMLAgendarProvaController implements Initializable {
         seta_tabela();
         listaauxliar = new ArrayList();
         alterou = false;
-        carregaTabela("", 'I');
+        carregaTabela('I');
+        alterando = false;
 
     }
 
@@ -148,11 +150,11 @@ public class FXMLAgendarProvaController implements Initializable {
         cbLocal.setValue("Sede");
     }
 
-    public void carregaTabela(String filtro, char chamada) {
+    public void carregaTabela(char chamada) {
 
         DALAgenda dalcurso = new DALAgenda();
         List<Agenda> agenda;
-        agenda = dalcurso.get(filtro);
+        agenda = dalcurso.get("");
 
         if (chamada == 'I') {
             listaauxliar = agenda;
@@ -198,8 +200,8 @@ public class FXMLAgendarProvaController implements Initializable {
      
         DALProfessor dalp = new DALProfessor();
         DALAluno dala = new DALAluno();
-        List<Professor> profs = new ArrayList();
-        List<Aluno> alunos =  new ArrayList();
+        List<Professor> profs;
+        List<Aluno> alunos;
         
         profs = dalp.get("");
         alunos = dala.get("");
@@ -217,6 +219,7 @@ public class FXMLAgendarProvaController implements Initializable {
     private void evtNovo(ActionEvent event) {
         
         estado_edicao();
+        alterando = false;
     }
 
     @FXML
@@ -235,8 +238,33 @@ public class FXMLAgendarProvaController implements Initializable {
         
     }
 
+    private boolean validaAlunoProva(String nomeAluno){
+        
+        return false;
+    }
+    
+    public boolean validaHorarioData(LocalDate date, String horario){
+        return false;
+    }
+    
+    private boolean validaData(LocalDate date){
+        
+        return false;
+    }
+    
     @FXML
     private void evtInserir(ActionEvent event) {
+        
+        if(alterando){
+            
+            alterando = false;
+        }
+        else{
+            
+            if(validaData(dtDataAgend.getValue())){
+                
+            }
+        }
     }
 
     @FXML
@@ -265,15 +293,28 @@ public class FXMLAgendarProvaController implements Initializable {
 
     @FXML
     private void evtSalvarOp(ActionEvent event) {
-        
-        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja salvar todas modificações?", ButtonType.YES,ButtonType.NO);
-        
-        if(a.showAndWait().get() == ButtonType.YES){
-            
-        }        
-        
-        FXMLPrincipalController.snprincipal.setCenter(null);
-        FXMLPrincipalController.nome.setText("");
+
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja salvar todas modificações?", ButtonType.YES, ButtonType.NO);
+        boolean ok = false;
+
+        if (a.showAndWait().get() == ButtonType.YES) {
+
+            DALAgenda dale = new DALAgenda();
+            ok = dale.InserirTudo(listaauxliar);
+
+            Alert b = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.OK);
+            if (ok) {
+                b.setContentText("Todas informações salvas com sucesso!");
+            } else {
+                b.setContentText("Problemas ao salvar as informações!");
+            }
+        }
+
+        if (ok) {
+            FXMLPrincipalController.snprincipal.setCenter(null);
+            FXMLPrincipalController.nome.setText("");
+        }
+
     }
 
     @FXML
@@ -313,7 +354,7 @@ public class FXMLAgendarProvaController implements Initializable {
         if(a.showAndWait().get() == ButtonType.YES){
             
             listaauxliar.remove(tabela.getSelectionModel().getSelectedItem());
-            carregaTabela("", 'L');
+            carregaTabela('L');
         }
     }
 
@@ -331,6 +372,7 @@ public class FXMLAgendarProvaController implements Initializable {
             cbAluno.getSelectionModel().select(a.getAluno());
             cbStatus.getSelectionModel().select(a.getStatus());
 
+            alterando = true;
             dtDataAgend.requestFocus();
           }
     }
@@ -390,7 +432,7 @@ public class FXMLAgendarProvaController implements Initializable {
     private void evtLimpar(ActionEvent event) {
         
         seta_pesquisa();
-        carregaTabela("",'L');
+        carregaTabela('L');
     }
 
     @FXML

@@ -12,28 +12,30 @@ public class DALAgenda {
     
     public boolean gravar(Agenda a){
         
-        String sql = "insert into agendaprova(professorid,alunoid,dataprova,horaprova,local,situacaoprova,nota) values($1,$2,$3,'$4','$5','$6',$7)";
+        String sql = "insert into agendaprova(professorid,alunoid,dataprova,horainicio,horafim,local,situacaoprova,nota) values($1,$2,$3,'$4','$5','$6',$7,'$8')";
         sql = sql.replaceAll("$1", ""+a.getProfessor().getFunc().getID());
         sql = sql.replaceAll("$2", ""+a.getAluno().getID());
         sql = sql.replaceAll("$3", "" +a.getDataProva());
-        sql = sql.replaceAll("$4", "" + a.getHorario());
-        sql = sql.replaceAll("$5", "" + a.getLocal());
-        sql = sql.replaceAll("$6", "" + a.getSituacao_prova());
-        sql = sql.replaceAll("$7", "" + a.getNota());
+        sql = sql.replaceAll("$4", "" + a.getHoraini());
+        sql = sql.replaceAll("$5", "" + a.getHorafim());
+        sql = sql.replaceAll("$6", "" + a.getLocal());
+        sql = sql.replaceAll("$7", "" + a.getSituacao_prova());
+        sql = sql.replaceAll("$8", "" + a.getNota());
         
         return Banco.getCon().manipular(sql);
     }
     
      public boolean alterar(Agenda a){
         
-        String sql = "update agendaprova set professorid = $1,alunoid = $2,dataprova = $3,horaprova = '$4',local = '$5',situacaoprova = '$6',nota = $7 where agendaid ="+a.getID();
+        String sql = "update agendaprova set professorid = $1,alunoid = $2,dataprova = $3,horainicio = '$4', horafim = '$5' ,local = '$6',situacaoprova = '$7',nota = $8 where agendaid ="+a.getID();
         sql = sql.replaceAll("$1", ""+a.getProfessor().getFunc().getID());
         sql = sql.replaceAll("$2", ""+a.getAluno().getID());
         sql = sql.replaceAll("$3", "" +a.getDataProva());
-        sql = sql.replaceAll("$4", "" + a.getHorario());
-        sql = sql.replaceAll("$5", "" + a.getLocal());
-        sql = sql.replaceAll("$6", "" + a.getSituacao_prova());
-        sql = sql.replaceAll("$7", "" + a.getNota());
+        sql = sql.replaceAll("$4", "" + a.getHoraini());
+        sql = sql.replaceAll("$5", "" + a.getHorafim());
+        sql = sql.replaceAll("$6", "" + a.getLocal());
+        sql = sql.replaceAll("$7", "" + a.getSituacao_prova());
+        sql = sql.replaceAll("$8", "" + a.getNota());
         
         return Banco.getCon().manipular(sql);
     }
@@ -55,7 +57,7 @@ public class DALAgenda {
             if (rs != null) {
                 if (rs.next()) {
                     agenda = new Agenda(rs.getInt("agendaid"), dalp.get(rs.getInt("professorid")), dala.get(rs.getInt("alunoid")),
-                            rs.getDate("dataprova").toLocalDate(), rs.getString("horaprova"), rs.getString("local"), rs.getString("situacaoprova").charAt(0), rs.getDouble("nota"));
+                            rs.getDate("dataprova").toLocalDate(), rs.getString("horainicio"), rs.getString("horafim"), rs.getString("local"), rs.getString("situacaoprova").charAt(0), rs.getDouble("nota"));
 
                 }
             }
@@ -85,7 +87,7 @@ public class DALAgenda {
                  while(rs.next())
                 {
                     aux.add( new Agenda(rs.getInt("agendaid"), dalp.get(rs.getInt("professorid")) , dala.get(rs.getInt("alunoid")), 
-                            rs.getDate("dataprova").toLocalDate(), rs.getString("horaprova"), rs.getString("local"), rs.getString("situacaoprova").charAt(0), rs.getDouble("nota")));
+                            rs.getDate("dataprova").toLocalDate(), rs.getString("horaprova"), rs.getString("horafim"),rs.getString("local"), rs.getString("situacaoprova").charAt(0), rs.getDouble("nota")));
                 }
             }
            

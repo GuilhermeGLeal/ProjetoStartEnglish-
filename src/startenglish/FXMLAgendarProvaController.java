@@ -29,6 +29,7 @@ import startenglish.db.DAL.DALProfessor;
 import startenglish.db.Entidades.Agenda;
 import startenglish.db.Entidades.Aluno;
 import startenglish.db.Entidades.Professor;
+import startenglish.util.MaskFieldUtil;
 
 
 public class FXMLAgendarProvaController implements Initializable {
@@ -37,8 +38,6 @@ public class FXMLAgendarProvaController implements Initializable {
     private JFXComboBox<Professor> cbProfessor;
     @FXML
     private JFXComboBox<String> cbLocal;
-    @FXML
-    private JFXComboBox<String> cbHorario;
     @FXML
     private JFXComboBox<Aluno> cbAluno;
     @FXML
@@ -57,8 +56,6 @@ public class FXMLAgendarProvaController implements Initializable {
     private TableColumn<Agenda, String> tcProfessor;
     @FXML
     private TableColumn<Agenda, Date> tcData;
-    @FXML
-    private TableColumn<Agenda, String> tcHorario;
     @FXML
     private TableColumn<Agenda, String> tcStatus;
     @FXML
@@ -91,6 +88,14 @@ public class FXMLAgendarProvaController implements Initializable {
     private boolean alterou;
     private List<Agenda> listaauxliar;
     private boolean alterando;
+    @FXML
+    private JFXTextField txHoraIni;
+    @FXML
+    private JFXTextField txHoraFim;
+    @FXML
+    private TableColumn<Agenda, String> tcHoraIni;
+    @FXML
+    private TableColumn<Agenda, String> tcHoraFim;
         
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,6 +109,9 @@ public class FXMLAgendarProvaController implements Initializable {
         alterou = false;
         carregaTabela('I');
         alterando = false;
+        
+        MaskFieldUtil.maxField(txHoraIni,5);
+        MaskFieldUtil.maxField(txHoraFim, 5);
 
     }
 
@@ -112,7 +120,8 @@ public class FXMLAgendarProvaController implements Initializable {
         tcNomeAluno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAluno().getNome()));
         tcCPF.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAluno().getCpf()));
         tcData.setCellValueFactory(new PropertyValueFactory("dataProva"));
-        tcHorario.setCellValueFactory(new PropertyValueFactory("horario"));
+        tcHoraIni.setCellValueFactory(new PropertyValueFactory("horaini"));
+        tcHoraFim.setCellValueFactory(new PropertyValueFactory("horafim"));
         tcProfessor.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProfessor().getFunc().getNome()));
         tcStatus.setCellValueFactory(new PropertyValueFactory("status"));
     }
@@ -120,7 +129,6 @@ public class FXMLAgendarProvaController implements Initializable {
     public void seta_combobox() {
 
         List<String> Local = new ArrayList();
-        List<String> Horario = new ArrayList();
         List<String> Status = new ArrayList();
         List<String> Filtro = new ArrayList();
 
@@ -131,22 +139,18 @@ public class FXMLAgendarProvaController implements Initializable {
         Filtro.add("Data");
         Filtro.add("Professor");
         Local.add("Sede");
-        Horario.add("13:30 as 15:30");
-        Horario.add("08:30 as 10:30");
-
+   
         ObservableList<String> modelostatus = FXCollections.observableArrayList(Status);
         ObservableList<String> modelolocal = FXCollections.observableArrayList(Local);
         ObservableList<String> modelofiltro = FXCollections.observableArrayList(Filtro);
-        ObservableList<String> modelohorario = FXCollections.observableArrayList(Horario);
-
+        
         cbStatus.setItems(modelostatus);
         cbFiltro.setItems(modelofiltro);
         cbLocal.setItems(modelolocal);
-        cbHorario.setItems(modelohorario);
+      
 
         cbStatus.setValue("Realizou");
         cbFiltro.setValue("Aluno");
-        cbHorario.setValue("08:30 as 10:30");
         cbLocal.setValue("Sede");
     }
 
@@ -170,9 +174,10 @@ public class FXMLAgendarProvaController implements Initializable {
         dtDataAgend.requestFocus();
         cbProfessor.getSelectionModel().select(0);
         cbLocal.getSelectionModel().select(0);
-        cbHorario.getSelectionModel().select(0);
         cbAluno.getSelectionModel().select(0);
         cbStatus.getSelectionModel().select(0);
+        txHoraIni.clear();
+        txHoraFim.clear();
     }
     
     private void seta_pesquisa(){
@@ -368,7 +373,8 @@ public class FXMLAgendarProvaController implements Initializable {
             dtDataAgend.setValue(a.getDataProva());
             cbProfessor.getSelectionModel().select(a.getProfessor());
             cbLocal.getSelectionModel().select(a.getLocal());
-            cbHorario.getSelectionModel().select(a.getHorario());
+            txHoraIni.setText(a.getHoraini());
+            txHoraFim.setText(a.getHorafim());
             cbAluno.getSelectionModel().select(a.getAluno());
             cbStatus.getSelectionModel().select(a.getStatus());
 

@@ -112,7 +112,7 @@ public class FXMLAgendarProvaController implements Initializable {
         alterou = false;
         carregaTabela('I');
         alterando = false;
-        
+        setaStyleNormal();
         MaskFieldUtil.maxField(txHoraIni,5);
         MaskFieldUtil.maxField(txHoraFim, 5);
 
@@ -127,6 +127,8 @@ public class FXMLAgendarProvaController implements Initializable {
         tcHoraFim.setCellValueFactory(new PropertyValueFactory("horafim"));
         tcProfessor.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProfessor().getFunc().getNome()));
         tcStatus.setCellValueFactory(new PropertyValueFactory("status"));
+        
+        
     }
 
     public void seta_combobox() {
@@ -171,6 +173,17 @@ public class FXMLAgendarProvaController implements Initializable {
 
     }
     
+    private void setaStyleNormal(){
+        
+        setDataNormal(dtDataAgend);
+        setComboboxNormal(cbProfessor);
+        setComboboxNormal(cbLocal);
+        setTextFieldnormal(txHoraIni);
+        setTextFieldnormal(txHoraFim);
+        setComboboxNormal(cbAluno);
+        setComboboxNormal(cbStatus);
+    }
+    
     private void estado_edicao(){
         
         dtDataAgend.setValue(null);
@@ -181,6 +194,8 @@ public class FXMLAgendarProvaController implements Initializable {
         cbStatus.getSelectionModel().select(0);
         txHoraIni.clear();
         txHoraFim.clear();
+        
+        setaStyleNormal();
     }
     
     private void seta_pesquisa(){
@@ -221,6 +236,8 @@ public class FXMLAgendarProvaController implements Initializable {
         cbAluno.setItems(modeloaluno);
         cbProfessorF.setItems(modelopf);
         
+        cbAluno.getSelectionModel().select(0);
+        cbProfessor.getSelectionModel().select(0);
     }
     
     @FXML
@@ -265,11 +282,11 @@ public class FXMLAgendarProvaController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "Hora inicial vazia ou inválida!", ButtonType.CLOSE);
             txHoraIni.requestFocus();
 
-        } else if (ok && hora.isEmpty()) {
+        } else if (ok && hora.length() != 5) {
 
             ok = false;
             setTextFieldErro(txHoraIni);
-            a = new Alert(Alert.AlertType.WARNING, "Hora inicial não pode estar vazio!", ButtonType.CLOSE);
+            a = new Alert(Alert.AlertType.WARNING, "Hora inicial incompleta!", ButtonType.CLOSE);
             txHoraIni.requestFocus();
             
         } else {
@@ -302,14 +319,22 @@ public class FXMLAgendarProvaController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "Hora final vazia ou inválida!", ButtonType.CLOSE);
             txHoraFim.requestFocus();
 
-        } else if (ok && hora.compareToIgnoreCase(txHoraIni.getText()) <= 0) {
+        } 
+        else if(ok  && hora.length() != 5){
+            
+            ok = false;
+            setTextFieldErro(txHoraFim);
+            a = new Alert(Alert.AlertType.WARNING, "Hora final incompleta!", ButtonType.CLOSE);
+            txHoraFim.requestFocus();
+        }
+        else if (ok && hora.compareToIgnoreCase(txHoraIni.getText()) <= 0) {
 
             ok = false;
             setTextFieldErro(txHoraFim);
             a = new Alert(Alert.AlertType.WARNING, "Hora final menor ou igual a hora inicial!", ButtonType.CLOSE);
             txHoraFim.requestFocus();
-            
-        } else {
+        }
+        else {
             setTextFieldnormal(txHoraFim);
         }
 
@@ -319,41 +344,67 @@ public class FXMLAgendarProvaController implements Initializable {
         return ok;
     }
     
-    private boolean validaAlunoData(String nomeAluno,LocalDate date){
-        
-        return false;
-    }
-    
-    public boolean validaProfessorHorarioData(Professor prof,LocalDate date, String horaini,String horafim){
-        
+    private boolean validaAlunoData(Aluno al, LocalDate date) {
+
         Agenda aux = null;
         boolean ok = true;
         Alert a = null;
-        
-        for (int i = 0; i < listaauxliar.size() && ok;i++) {
-            
+
+        for (int i = 0; i < listaauxliar.size() && ok; i++) {
+
             aux = listaauxliar.get(i);
-            
-            if(aux.getProfessor().equals(prof) && aux.getDataProva().equals(date)){
+
+            if (aux.getAluno().equals(al) && aux.getDataProva().equals(date)) {
                 ok = false;
             }
         }
-        
-        if(!ok){
+
+        if (!ok) {
             
-            if(aux.getHoraini().equals(horaini)){
-                
-                ok = false;
-                cbProfessor.requestFocus();
-                setComboboxErro(cbProfessor);
-                a = new Alert(Alert.AlertType.WARNING, "Professor já possui uma prova agenda neste horario!!", ButtonType.CLOSE);
-                
-            }
-            
+            cbAluno.requestFocus();
+            setComboboxErro(cbAluno);
+            a = new Alert(Alert.AlertType.WARNING, "Aluno já possui prova agendada nesta data!", ButtonType.CLOSE);
         }
-        
-        if(a!=null)
+        else
+            setComboboxNormal(cbAluno);
+
+        if (a != null) {
             a.showAndWait();
+        }
+
+        return ok;
+
+    }
+    
+    public boolean validaProfessorHorarioData(Professor prof, LocalDate date, String horaini,String horafim) {
+
+        Agenda aux = null;
+        boolean ok = true;
+        Alert a = null;
+
+        for (int i = 0; i < listaauxliar.size() && ok; i++) {
+
+            aux = listaauxliar.get(i);
+
+            if (aux.getProfessor().equals(prof) && aux.getDataProva().equals(date)) {
+                ok = false;
+            }
+        }
+
+        if (!ok) {
+
+            //if(horaini.compareToIgnoreCase(aux.getHoraini()) >= 0 && ){
+            ok = false;
+            cbProfessor.requestFocus();
+            setComboboxErro(cbProfessor);
+            a = new Alert(Alert.AlertType.WARNING, "Professor já possui uma prova agenda neste horario!!", ButtonType.CLOSE);
+
+            //}  else            setComboboxNormal(cbAluno);
+        }
+
+        if (a != null) {
+            a.showAndWait();
+        }
         return ok;
     }
     
@@ -453,9 +504,9 @@ public class FXMLAgendarProvaController implements Initializable {
                 if (validaHoraFim(txHoraFim.getText())) {
 
                     if (validaProfessorHorarioData(cbProfessor.getSelectionModel().getSelectedItem(),
-                            dtDataAgend.getValue(), txHoraIni.getText(), txHoraFim.getText())) {
+                            dtDataAgend.getValue(), txHoraIni.getText(),txHoraFim.getText())) {
 
-                        if (validaAlunoData(cbAluno.getSelectionModel().getSelectedItem().getNome(), dtDataAgend.getValue())) {
+                        if (validaAlunoData(cbAluno.getSelectionModel().getSelectedItem(), dtDataAgend.getValue())) {
 
                             a.setAluno(cbAluno.getSelectionModel().getSelectedItem());
                             a.setDataProva(dtDataAgend.getValue());
@@ -478,8 +529,10 @@ public class FXMLAgendarProvaController implements Initializable {
                             
                             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento inserido com sucesso!", ButtonType.CLOSE);
                             carregaTabela('L');
-                            
+                            alert.showAndWait();
                             alterou = true;
+                             btSalvarOp.setDisable(false);
+                            evtNovo(event);
                         }
                     }
                 }
@@ -641,7 +694,7 @@ public class FXMLAgendarProvaController implements Initializable {
                 
                 for (int i = 0; i < listaauxliar.size(); i++) {
 
-                    if (listaauxliar.get(i).getProfessor().getFunc().getID() == paux.getFunc().getID()) {
+                    if (listaauxliar.get(i).getProfessor().getFunc().getNome().equals(paux.getFunc().getNome())) {
                         novasagendas.add(listaauxliar.get(i));
                     }
                 }

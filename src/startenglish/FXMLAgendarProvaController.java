@@ -154,7 +154,7 @@ public class FXMLAgendarProvaController implements Initializable {
         cbLocal.setItems(modelolocal);
       
 
-        cbStatus.setValue("Realizou");
+        cbStatus.setValue("Esperando");
         cbFiltro.setValue("Aluno");
         cbLocal.setValue("Sede");
     }
@@ -167,6 +167,7 @@ public class FXMLAgendarProvaController implements Initializable {
 
         if (chamada == 'I') {
             listaauxliar = agenda;
+             tabela.setItems(FXCollections.observableArrayList(listaauxliar));
         } else if (chamada == 'L') {
             tabela.setItems(FXCollections.observableArrayList(listaauxliar));
         }
@@ -269,6 +270,7 @@ public class FXMLAgendarProvaController implements Initializable {
         Alert a = null;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         sdf.setLenient(false);
+        char ultimocarac;
         
         try {
             sdf.parse(hora);
@@ -289,9 +291,19 @@ public class FXMLAgendarProvaController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "Hora inicial incompleta!", ButtonType.CLOSE);
             txHoraIni.requestFocus();
             
-        } else {
-            setTextFieldnormal(txHoraIni);
+        } else if (hora.length() == 5) {
+            ultimocarac = hora.charAt(hora.length() - 1);
+
+            if (ultimocarac < '0' || ultimocarac > '9') {
+                ok = false;
+                setTextFieldErro(txHoraIni);
+                a = new Alert(Alert.AlertType.WARNING, "Hora inicial inválida!", ButtonType.CLOSE);
+                txHoraIni.requestFocus();
+            }
+            else
+              setTextFieldnormal(txHoraIni);
         }
+     
 
         if(a != null)
             a.showAndWait();
@@ -305,7 +317,7 @@ public class FXMLAgendarProvaController implements Initializable {
         Alert a = null;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         sdf.setLenient(false);
-        
+        char ultimocarac;
         
         try {
             sdf.parse(hora);
@@ -327,6 +339,16 @@ public class FXMLAgendarProvaController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "Hora final incompleta!", ButtonType.CLOSE);
             txHoraFim.requestFocus();
         }
+         else if (hora.length() == 5) {
+            ultimocarac = hora.charAt(hora.length() - 1);
+
+            if (ultimocarac < '0' || ultimocarac > '9') {
+                ok = false;
+                setTextFieldErro(txHoraFim);
+                a = new Alert(Alert.AlertType.WARNING, "Hora final inválida!", ButtonType.CLOSE);
+                txHoraFim.requestFocus();
+            }
+        }
         else if (ok && hora.compareToIgnoreCase(txHoraIni.getText()) <= 0) {
 
             ok = false;
@@ -334,7 +356,7 @@ public class FXMLAgendarProvaController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "Hora final menor ou igual a hora inicial!", ButtonType.CLOSE);
             txHoraFim.requestFocus();
         }
-        else {
+        else if(ok) {
             setTextFieldnormal(txHoraFim);
         }
 
@@ -354,19 +376,21 @@ public class FXMLAgendarProvaController implements Initializable {
 
             aux = listaauxliar.get(i);
 
-            if (aux.getAluno().equals(al) && aux.getDataProva().equals(date)) {
+            if (aux.getAluno().getCpf().equals(al.getCpf()) && aux.getDataProva().equals(date)) {
                 ok = false;
             }
         }
 
-        if (!ok) {
+        if (!ok && listaauxliar.indexOf(aux) != indexalterando) {
             
             cbAluno.requestFocus();
             setComboboxErro(cbAluno);
             a = new Alert(Alert.AlertType.WARNING, "Aluno já possui prova agendada nesta data!", ButtonType.CLOSE);
         }
-        else
+        else{
+            ok = true;
             setComboboxNormal(cbAluno);
+        }
 
         if (a != null) {
             a.showAndWait();
@@ -386,22 +410,29 @@ public class FXMLAgendarProvaController implements Initializable {
 
             aux = listaauxliar.get(i);
 
-            if (aux.getProfessor().equals(prof) && aux.getDataProva().equals(date)) {
+            if (aux.getProfessor().getFunc().getCpf().equals(prof.getFunc().getCpf()) && aux.getDataProva().equals(date)) {
                 ok = false;
             }
         }
 
         if (!ok) {
 
-            //if(horaini.compareToIgnoreCase(aux.getHoraini()) >= 0 && ){
-            ok = false;
-            cbProfessor.requestFocus();
-            setComboboxErro(cbProfessor);
-            a = new Alert(Alert.AlertType.WARNING, "Professor já possui uma prova agenda neste horario!!", ButtonType.CLOSE);
+            if (listaauxliar.indexOf(aux) != indexalterando && (horaini.compareToIgnoreCase(aux.getHorafim()) > 0  || horafim.compareTo(aux.getHoraini()) > 0)) {
+                ok = false;
+                cbProfessor.requestFocus();
+                setComboboxErro(cbProfessor);
+                setTextFieldErro(txHoraFim);
+                setTextFieldErro(txHoraIni);
+                a = new Alert(Alert.AlertType.WARNING, "Professor já possui uma prova agenda neste horario!!", ButtonType.CLOSE);
 
-            //}  else            setComboboxNormal(cbAluno);
+            } else {
+                ok = true;
+                setComboboxNormal(cbProfessor);
+                setTextFieldnormal(txHoraFim);
+                setTextFieldnormal(txHoraIni);
+            }
         }
-
+      
         if (a != null) {
             a.showAndWait();
         }
@@ -519,15 +550,22 @@ public class FXMLAgendarProvaController implements Initializable {
                             
                             if(alterando){
                                 
-                                listaauxliar.add(indexalterando, a);
-                                alterando = false;
+                                listaauxliar.remove(indexalterando);
+                                listaauxliar.add(a);
+                                
                             }
                             else{
                                 listaauxliar.add(a);
                                 
                             }
-                            
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento inserido com sucesso!", ButtonType.CLOSE);
+                             Alert alert;
+                             
+                            if(alterando)
+                             alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento atualizado com sucesso!", ButtonType.CLOSE);
+                            else
+                               alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento inserido com sucesso!", ButtonType.CLOSE);
+                                
+                            alterando = false;
                             carregaTabela('L');
                             alert.showAndWait();
                             alterou = true;
@@ -560,7 +598,7 @@ public class FXMLAgendarProvaController implements Initializable {
         if(a.showAndWait().get() == ButtonType.YES){
             
             alterou = false;
-            listaauxliar = new ArrayList();
+            carregaTabela('I');
             btSalvarOp.setDisable(true);
         }
     }
@@ -582,6 +620,8 @@ public class FXMLAgendarProvaController implements Initializable {
             } else {
                 b.setContentText("Problemas ao salvar as informações!");
             }
+            
+            b.showAndWait();
         }
 
         if (ok) {

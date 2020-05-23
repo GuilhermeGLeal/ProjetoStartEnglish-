@@ -6,6 +6,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,6 +90,7 @@ public class FXMLAgendarProvaController implements Initializable {
     private boolean alterou;
     private List<Agenda> listaauxliar;
     private boolean alterando;
+    private int indexalterando;
     @FXML
     private JFXTextField txHoraIni;
     @FXML
@@ -243,33 +246,246 @@ public class FXMLAgendarProvaController implements Initializable {
         
     }
 
-    private boolean validaAlunoProva(String nomeAluno){
+    private boolean validaHoraIni(String hora) {
+
+        boolean ok = true;
+        Alert a = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        sdf.setLenient(false);
+        
+        try {
+            sdf.parse(hora);
+        } catch (ParseException e) {
+            ok = false;
+        }
+
+        if (!ok) {
+            
+            setTextFieldErro(txHoraIni);
+            a = new Alert(Alert.AlertType.WARNING, "Hora inicial vazia ou inválida!", ButtonType.CLOSE);
+            txHoraIni.requestFocus();
+
+        } else if (ok && hora.isEmpty()) {
+
+            ok = false;
+            setTextFieldErro(txHoraIni);
+            a = new Alert(Alert.AlertType.WARNING, "Hora inicial não pode estar vazio!", ButtonType.CLOSE);
+            txHoraIni.requestFocus();
+            
+        } else {
+            setTextFieldnormal(txHoraIni);
+        }
+
+        if(a != null)
+            a.showAndWait();
+        
+        return ok;
+    }
+    
+    private boolean validaHoraFim(String hora) {
+
+        boolean ok = true;
+        Alert a = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        sdf.setLenient(false);
+        
+        
+        try {
+            sdf.parse(hora);
+        } catch (ParseException e) {
+            ok = false;
+        }
+
+        if (!ok) {
+            
+            setTextFieldErro(txHoraFim);
+            a = new Alert(Alert.AlertType.WARNING, "Hora final vazia ou inválida!", ButtonType.CLOSE);
+            txHoraFim.requestFocus();
+
+        } else if (ok && hora.compareToIgnoreCase(txHoraIni.getText()) <= 0) {
+
+            ok = false;
+            setTextFieldErro(txHoraFim);
+            a = new Alert(Alert.AlertType.WARNING, "Hora final menor ou igual a hora inicial!", ButtonType.CLOSE);
+            txHoraFim.requestFocus();
+            
+        } else {
+            setTextFieldnormal(txHoraFim);
+        }
+
+        if(a != null)
+            a.showAndWait();
+        
+        return ok;
+    }
+    
+    private boolean validaAlunoData(String nomeAluno,LocalDate date){
         
         return false;
     }
     
-    public boolean validaHorarioData(LocalDate date, String horario){
-        return false;
+    public boolean validaProfessorHorarioData(Professor prof,LocalDate date, String horaini,String horafim){
+        
+        Agenda aux = null;
+        boolean ok = true;
+        Alert a = null;
+        
+        for (int i = 0; i < listaauxliar.size() && ok;i++) {
+            
+            aux = listaauxliar.get(i);
+            
+            if(aux.getProfessor().equals(prof) && aux.getDataProva().equals(date)){
+                ok = false;
+            }
+        }
+        
+        if(!ok){
+            
+            if(aux.getHoraini().equals(horaini)){
+                
+                ok = false;
+                cbProfessor.requestFocus();
+                setComboboxErro(cbProfessor);
+                a = new Alert(Alert.AlertType.WARNING, "Professor já possui uma prova agenda neste horario!!", ButtonType.CLOSE);
+                
+            }
+            
+        }
+        
+        if(a!=null)
+            a.showAndWait();
+        return ok;
     }
     
-    private boolean validaData(LocalDate date){
+    private boolean validaData(LocalDate date) {
+
+        boolean ok = true;
+        Alert a = null;
+
+        if (date == null) {
+
+            ok = false;
+            a = new Alert(Alert.AlertType.WARNING, "Data de agendamento não pode estar vazia!", ButtonType.CLOSE);
+            dtDataAgend.requestFocus();
+            setDataErro(dtDataAgend);
+
+        } else if (date.isBefore(LocalDate.now())) {
+
+            ok = false;
+            a = new Alert(Alert.AlertType.WARNING, "Data de agendamento antes do dia atual!", ButtonType.CLOSE);
+            dtDataAgend.requestFocus();
+             setDataErro(dtDataAgend);
+        } 
+        else
+            setDataNormal(dtDataAgend);
         
-        return false;
+        if(a != null)
+         a.showAndWait();
+        
+        return ok;
+    }
+    
+    private void setTextFieldErro(JFXTextField nome) {
+
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+
+    private void setTextFieldnormal(JFXTextField nome) {
+
+        nome.setStyle("-fx-border-width: 0;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+
+    }
+    
+     private void setDataErro(JFXDatePicker nome) {
+
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+
+    private void setDataNormal(JFXDatePicker nome) {
+
+        nome.setStyle("-fx-border-width: 0;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+
+    }
+    
+    private void setComboboxErro(JFXComboBox nome) {
+
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+
+     private void setComboboxNormal(JFXComboBox nome) {
+
+       nome.setStyle("-fx-border-width: 0;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+     
+    private char retornaStatus(String status){
+        
+        switch (status) {
+            case "Esperando":
+                return 'E';
+            case "Realizou":
+                return 'R';
+            default:
+                return 'F';
+        }
     }
     
     @FXML
     private void evtInserir(ActionEvent event) {
-        
-        if(alterando){
-            
-            alterando = false;
-        }
-        else{
-            
-            if(validaData(dtDataAgend.getValue())){
-                
+
+        Agenda a = new Agenda();
+
+        if (validaData(dtDataAgend.getValue())) {
+
+            if (validaHoraIni(txHoraIni.getText())) {
+
+                if (validaHoraFim(txHoraFim.getText())) {
+
+                    if (validaProfessorHorarioData(cbProfessor.getSelectionModel().getSelectedItem(),
+                            dtDataAgend.getValue(), txHoraIni.getText(), txHoraFim.getText())) {
+
+                        if (validaAlunoData(cbAluno.getSelectionModel().getSelectedItem().getNome(), dtDataAgend.getValue())) {
+
+                            a.setAluno(cbAluno.getSelectionModel().getSelectedItem());
+                            a.setDataProva(dtDataAgend.getValue());
+                            a.setProfessor(cbProfessor.getSelectionModel().getSelectedItem());
+                            a.setLocal(cbLocal.getSelectionModel().getSelectedItem());
+                            a.setHoraini(txHoraIni.getText());
+                            a.setHorafim(txHoraFim.getText());
+                            a.setStatus(cbStatus.getSelectionModel().getSelectedItem());
+                            a.setSituacao_prova(retornaStatus(cbStatus.getSelectionModel().getSelectedItem()));
+                            
+                            if(alterando){
+                                
+                                listaauxliar.add(indexalterando, a);
+                                alterando = false;
+                            }
+                            else{
+                                listaauxliar.add(a);
+                                
+                            }
+                            
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento inserido com sucesso!", ButtonType.CLOSE);
+                            carregaTabela('L');
+                            
+                            alterou = true;
+                        }
+                    }
+                }
             }
         }
+
     }
 
     @FXML
@@ -379,6 +595,7 @@ public class FXMLAgendarProvaController implements Initializable {
             cbStatus.getSelectionModel().select(a.getStatus());
 
             alterando = true;
+            indexalterando = tabela.getSelectionModel().getSelectedIndex();
             dtDataAgend.requestFocus();
           }
     }

@@ -50,7 +50,7 @@ public class Agenda {
    
     public Agenda() {
         
-        this(0,new Professor(),new Aluno(),null,"","","",'c',0.0);
+        this(0,new Professor(),new Aluno(),null,"","","",'F',0.0);
         this.status = "";
     }
 

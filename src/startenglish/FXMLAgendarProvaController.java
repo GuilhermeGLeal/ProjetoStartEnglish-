@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -231,6 +232,9 @@ public class FXMLAgendarProvaController implements Initializable {
         profs = dalp.get("");
         alunos = dala.get("");
         
+        
+        alunos.sort(Comparator.comparing(Aluno::getNome));
+        
         ObservableList<Professor> modelopf =  FXCollections.observableArrayList(profs);
         ObservableList<Aluno> modeloaluno =  FXCollections.observableArrayList(alunos);
         
@@ -447,7 +451,7 @@ public class FXMLAgendarProvaController implements Initializable {
                 
                 if (alterando) {
                     if ((horaini.compareTo(aux.getHoraini()) >= 0 && horafim.compareTo(aux.getHorafim()) <= 0)
-                            || ((horaini.compareToIgnoreCase(aux.getHorafim()) > 0 || horafim.compareTo(aux.getHoraini()) > 0))) {
+                            || ((horaini.compareToIgnoreCase(aux.getHorafim()) < 0 && horafim.compareTo(aux.getHoraini()) > 0))) {
                         
                         if(indiceaux != indexalterando)
                             flag = true;
@@ -455,7 +459,7 @@ public class FXMLAgendarProvaController implements Initializable {
 
                 } else {
                     if ((horaini.compareTo(aux.getHoraini()) >= 0 && horafim.compareTo(aux.getHorafim()) <= 0)
-                            || ((horaini.compareToIgnoreCase(aux.getHorafim()) > 0 || horafim.compareTo(aux.getHoraini()) > 0))) {
+                            || ((horaini.compareToIgnoreCase(aux.getHorafim()) < 0 && horafim.compareTo(aux.getHoraini()) > 0))) {
                         flag = true;
                     }
 
@@ -765,11 +769,11 @@ public class FXMLAgendarProvaController implements Initializable {
             
             if(filtro.contains("Aluno")){
                 
-                nome_aluno = txAluno.getText();
+                nome_aluno = txAluno.getText().toLowerCase();
 
                 for (int i = 0; i < listaauxliar.size(); i++) {
 
-                    if (listaauxliar.get(i).getAluno().getNome().contains(nome_aluno)) {
+                    if (listaauxliar.get(i).getAluno().getNome().toLowerCase().contains(nome_aluno)) {
                         novasagendas.add(listaauxliar.get(i));
                     }
                 }

@@ -90,7 +90,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="908.0" layoutY="50.0" text="Horário" textFill="#bebebe">
+      <Label layoutX="895.0" layoutY="41.0" text="Horário" textFill="#bebebe">
          <font>
             <Font size="16.0" />
          </font>
@@ -154,7 +154,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="962.0" layoutY="53.0" text="*" textFill="#f51b1b">
+      <Label layoutX="951.0" layoutY="40.0" prefHeight="27.0" prefWidth="8.0" text="*" textFill="#f51b1b">
          <font>
             <Font size="18.0" />
          </font>
@@ -177,6 +177,16 @@
       <Label layoutX="435.0" layoutY="38.0" text="*" textFill="#f51b1b">
          <font>
             <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="809.0" layoutY="52.0" text="Início" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="977.0" layoutY="50.0" text="Fim" textFill="#bebebe">
+         <font>
+            <Font size="16.0" />
          </font>
       </Label>
    </children>

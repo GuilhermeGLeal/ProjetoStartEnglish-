@@ -197,6 +197,8 @@ public class FXMLAgendarProvaController implements Initializable {
         cbStatus.getSelectionModel().select(0);
         txHoraIni.clear();
         txHoraFim.clear();
+        btAlterar.setDisable(true);
+        btApagar.setDisable(true);
         
         setaStyleNormal();
     }
@@ -244,6 +246,7 @@ public class FXMLAgendarProvaController implements Initializable {
         
         cbAluno.getSelectionModel().select(0);
         cbProfessor.getSelectionModel().select(0);
+        cbProfessorF.getSelectionModel().select(0);
     }
     
     @FXML
@@ -344,19 +347,20 @@ public class FXMLAgendarProvaController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "Hora final incompleta!", ButtonType.CLOSE);
             txHoraFim.requestFocus();
         }
-        else if (ok && hora.compareToIgnoreCase(txHoraIni.getText()) <= 0) {
+        else if (ok && hora.length() == 5) {
 
-            if (hora.length() == 5) {
-                ultimocarac = hora.charAt(hora.length() - 1);
+            ultimocarac = hora.charAt(hora.length() - 1);
 
-                if (ultimocarac < '0' || ultimocarac > '9') {
-                    ok = false;
-                    setTextFieldErro(txHoraFim);
-                    a = new Alert(Alert.AlertType.WARNING, "Hora final inválida!", ButtonType.CLOSE);
-                    txHoraFim.requestFocus();
-                }
+            if (ultimocarac < '0' || ultimocarac > '9') {
+                ok = false;
+                setTextFieldErro(txHoraFim);
+                a = new Alert(Alert.AlertType.WARNING, "Hora final inválida!", ButtonType.CLOSE);
+                txHoraFim.requestFocus();
             }
-            
+
+        }
+        if (ok && hora.compareToIgnoreCase(txHoraIni.getText()) <= 0) {
+           
             ok = false;
             setTextFieldErro(txHoraFim);
             a = new Alert(Alert.AlertType.WARNING, "Hora final menor ou igual a hora inicial!", ButtonType.CLOSE);

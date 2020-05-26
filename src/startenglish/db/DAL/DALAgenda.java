@@ -30,7 +30,7 @@ public class DALAgenda {
        String sql="select * from agendaprova";
              
         if(!filtro.isEmpty())
-            sql+=" where "+filtro;
+            sql+=" "+filtro;
         
         ArrayList <Agenda> aux = new ArrayList();
         ResultSet rs = Banco.getCon().consultar(sql);

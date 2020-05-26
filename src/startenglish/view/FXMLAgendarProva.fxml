@@ -52,12 +52,12 @@
       </JFXButton>
       <TableView fx:id="tabela" layoutX="15.0" layoutY="314.0" onMouseClicked="#evTabela" prefHeight="269.0" prefWidth="1094.0" style="-fx-background-color: black;">
          <columns>
-            <TableColumn fx:id="tcNomeAluno" editable="false" prefWidth="165.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Nome do Aluno" />
-            <TableColumn fx:id="tcCPF" editable="false" prefWidth="163.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="CPF" />
-            <TableColumn fx:id="tcProfessor" editable="false" prefWidth="235.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Professor" />
             <TableColumn fx:id="tcData" editable="false" prefWidth="161.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Data Agendamento" />
             <TableColumn fx:id="tcHoraIni" editable="false" prefWidth="153.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Hora Início" />
             <TableColumn fx:id="tcHoraFim" prefWidth="108.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Hora Final" />
+            <TableColumn fx:id="tcNomeAluno" editable="false" prefWidth="165.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Nome do Aluno" />
+            <TableColumn fx:id="tcCPF" editable="false" prefWidth="163.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="CPF" />
+            <TableColumn fx:id="tcProfessor" editable="false" prefWidth="235.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Professor" />
             <TableColumn fx:id="tcStatus" editable="false" prefWidth="108.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Status" />
          </columns></TableView>
       <JFXButton fx:id="btSalvarOp" layoutX="800.0" layoutY="612.0" onAction="#evtSalvarOp" prefHeight="37.0" prefWidth="186.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Salvar Operações">

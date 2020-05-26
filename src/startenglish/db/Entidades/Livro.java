@@ -26,6 +26,12 @@ public class Livro
 
     public Livro() {
     }
+    
+    @Override
+    public String toString()
+    {
+        return this.Nome;
+    }
 
     public String getEditora() {
         return editora;

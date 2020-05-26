@@ -766,8 +766,7 @@ public class FXMLAgendarProvaController implements Initializable {
             
             for (int i = 0; i < listaauxliar.size(); i++) {
                 
-                if(listaauxliar.get(i).getDataProva().isAfter(dataini) && listaauxliar.get(i).getDataProva().isBefore(datafim)
-                        || (listaauxliar.get(i).getDataProva().isEqual(datafim) || listaauxliar.get(i).getDataProva().isEqual(dataini) ))
+                if((listaauxliar.get(i).getDataProva().isAfter(dataini) || listaauxliar.get(i).getDataProva().isEqual(dataini)) && (listaauxliar.get(i).getDataProva().isBefore(datafim) || listaauxliar.get(i).getDataProva().isEqual(datafim)))
                     novasagendas.add(listaauxliar.get(i));
             }
         }

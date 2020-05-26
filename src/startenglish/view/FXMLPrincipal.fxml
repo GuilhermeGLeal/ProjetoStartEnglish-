@@ -50,7 +50,6 @@
             <MenuButton fx:id="btFinanceiro" maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Financeiro" VBox.vgrow="ALWAYS">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#evtAgendaProva" text="Agendar Prova" />
-                  <MenuItem mnemonicParsing="false" onAction="#evtRegistrarReceb" text="Registrar Recebimento" />
                </items>
                <VBox.margin>
                   <Insets bottom="10.0" />

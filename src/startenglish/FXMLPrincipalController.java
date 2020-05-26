@@ -269,20 +269,6 @@ public class FXMLPrincipalController implements Initializable {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    @FXML
-    private void evtRegistrarReceb(ActionEvent event) {
-        
-         try {
-            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLRegistrarRecebimentos.fxml"));
-            pnMudanca.setCenter(aux);
-            labelNome.setText("Registrar Recebimentos");
-            
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-    
+    }       
     
 }

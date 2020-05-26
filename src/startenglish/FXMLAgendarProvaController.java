@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -88,6 +89,7 @@ public class FXMLAgendarProvaController implements Initializable {
     @FXML
     private JFXComboBox<Professor> cbProfessorF;
     
+    private boolean flagalterou;
     private boolean alterou;
     private List<Agenda> listaauxliar;
     private boolean alterando;
@@ -116,7 +118,7 @@ public class FXMLAgendarProvaController implements Initializable {
         setaStyleNormal();
         MaskFieldUtil.maxField(txHoraIni,5);
         MaskFieldUtil.maxField(txHoraFim, 5);
-        
+        flagalterou = false;
 
     }
 
@@ -163,15 +165,17 @@ public class FXMLAgendarProvaController implements Initializable {
 
     public void carregaTabela(char chamada) {
 
-        DALAgenda dalcurso = new DALAgenda();
+        DALAgenda dalagenda = new DALAgenda();
         List<Agenda> agenda;
-        agenda = dalcurso.get("");
+        agenda = dalagenda.get("order by dataprova,horainicio,horafim");
 
         if (chamada == 'I') {
             listaauxliar = agenda;
-             tabela.setItems(FXCollections.observableArrayList(listaauxliar));
-        } else if (chamada == 'L') {
             tabela.setItems(FXCollections.observableArrayList(listaauxliar));
+        } else if (chamada == 'L') {
+            
+           Collections.sort(listaauxliar, Comparator.comparing(Agenda::getDataProva).thenComparing(Agenda::getHoraini));
+           tabela.setItems(FXCollections.observableArrayList(listaauxliar));
         }
 
     }
@@ -261,6 +265,9 @@ public class FXMLAgendarProvaController implements Initializable {
         
         List<Agenda> agendadata = new ArrayList();
         LocalDate age = dtDataAgend.getValue();
+        
+        if(age != null && (age.isEqual(LocalDate.now())|| age.isAfter(LocalDate.now())))
+            setDataNormal(dtDataAgend);
         
         for (int i = 0; i < listaauxliar.size(); i++) {
             
@@ -732,6 +739,7 @@ public class FXMLAgendarProvaController implements Initializable {
         
           if(tabela.getSelectionModel().getSelectedItem() != null){
         
+              flagalterou = true;
             Agenda a = tabela.getSelectionModel().getSelectedItem();
             
             dtDataAgend.setValue(a.getDataProva());
@@ -766,8 +774,7 @@ public class FXMLAgendarProvaController implements Initializable {
             
             for (int i = 0; i < listaauxliar.size(); i++) {
                 
-                if(listaauxliar.get(i).getDataProva().isAfter(dataini) && listaauxliar.get(i).getDataProva().isBefore(datafim)
-                        || (listaauxliar.get(i).getDataProva().isEqual(datafim) || listaauxliar.get(i).getDataProva().isEqual(dataini) ))
+                if((listaauxliar.get(i).getDataProva().isAfter(dataini) || listaauxliar.get(i).getDataProva().isEqual(dataini)) && (listaauxliar.get(i).getDataProva().isBefore(datafim) || listaauxliar.get(i).getDataProva().isEqual(datafim)))
                     novasagendas.add(listaauxliar.get(i));
             }
         }
@@ -819,6 +826,15 @@ public class FXMLAgendarProvaController implements Initializable {
             btApagar.setDisable(true);
             btAlterar.setDisable(true);
         }
+    }
+
+    @FXML
+    private void evtteste(ActionEvent event) {
+        
+        if(!flagalterou && dtDataAgend != null)
+             validaAlunoData(cbAluno.getSelectionModel().getSelectedItem(), dtDataAgend.getValue());
+        else
+            flagalterou = false;
     }
     
 }

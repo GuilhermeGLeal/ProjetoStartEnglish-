@@ -271,7 +271,6 @@ public class FXMLPrincipalController implements Initializable {
         }
     }
 
-    @FXML
     private void evtRegistrarReceb(ActionEvent event) {
         
          try {
@@ -296,6 +295,6 @@ public class FXMLPrincipalController implements Initializable {
             System.out.println(e.getMessage());
         } 
     }
-    
+
     
 }

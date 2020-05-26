@@ -64,6 +64,26 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     private TableColumn<Recebimentos, String> tcNomeAluno;
     @FXML
     private TableColumn<Recebimentos, String> tcStatus;
+    @FXML
+    private AnchorPane pnRegistro;
+    @FXML
+    private JFXTextField txValor;
+    @FXML
+    private JFXDatePicker dtDataReceb;
+    @FXML
+    private JFXTextField txValorPago;
+    @FXML
+    private JFXButton btConfirmar;
+    @FXML
+    private JFXButton btCancelar;
+    @FXML
+    private JFXButton btRefazer;
+    @FXML
+    private JFXButton btEstorno;
+    @FXML
+    private JFXButton btCancelarOperacoes;
+    @FXML
+    private JFXButton btFinalizar;
 
    
     @Override
@@ -71,9 +91,31 @@ public class FXMLConsultarRecebimentosController implements Initializable {
        
     }    
 
-    @FXML
-    private void evtComboBox(ActionEvent event) {
+    private void estadoOriginal(){
+        
     }
+    
+    private void estadoEdicao(){
+        
+    }
+    
+    private void carregaTabela(char chamada){
+        
+    }
+    
+    private void setaCombobox(){
+        
+    }
+    
+    private void setaTabela(){
+        
+    }
+    
+    private void estadoOriginalPesquisa(){
+        
+        cbSelecionarFiltro.getSelectionModel().select("Data de Emissão");
+    }
+    
 
     @FXML
     private void evtPesquisar(ActionEvent event) {
@@ -93,6 +135,34 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
     @FXML
     private void evtSelecionar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtConfirmar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtCancelar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtRefazerOperacao(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtEstorno(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtCancelarOperacoes(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtFinalizar(ActionEvent event) {
+    }
+
+    @FXML
+    private void evtCBfiltro(ActionEvent event) {
     }
     
 }

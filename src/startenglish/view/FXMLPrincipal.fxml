@@ -51,7 +51,6 @@
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#evtAgendaProva" text="Agendar Prova" />
                   <MenuItem mnemonicParsing="false" onAction="#evtOfertarTurmas" text="Ofertar Turmas" />
-                  <MenuItem mnemonicParsing="false" onAction="#evtRegistrarReceb" text="Registrar Recebimento" />
                </items>
                <VBox.margin>
                   <Insets bottom="10.0" />

@@ -98,11 +98,11 @@
                      </font>
                   </Label>
                   <JFXCheckBox fx:id="checkAtivo" layoutX="826.0" layoutY="181.0" text="Ativo" textFill="#bebebe" />
-                  <JFXButton layoutX="13.0" layoutY="300.0" prefHeight="36.0" prefWidth="110.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Inserir Turma" />
-                  <JFXButton layoutX="128.0" layoutY="300.0" prefHeight="36.0" prefWidth="171.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Alterar Turma Selecionada" />
-                  <JFXButton layoutX="305.0" layoutY="300.0" prefHeight="36.0" prefWidth="171.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Excluir Turma Selecionada" />
-                  <JFXButton layoutX="686.0" layoutY="300.0" prefHeight="36.0" prefWidth="221.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Confirmar Alteração/Inclusão" />
-                  <JFXButton layoutX="485.0" layoutY="300.0" prefHeight="36.0" prefWidth="195.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Cancelar Alteração/Inclusão" />
+                  <JFXButton fx:id="btInserir" layoutX="13.0" layoutY="300.0" onAction="#evtInserir" prefHeight="36.0" prefWidth="110.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Inserir Turma" />
+                  <JFXButton fx:id="btAlterar" layoutX="128.0" layoutY="300.0" onAction="#evtAlterar" prefHeight="36.0" prefWidth="171.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Alterar Turma Selecionada" />
+                  <JFXButton fx:id="btExcluir" layoutX="305.0" layoutY="300.0" onAction="#evtExcluir" prefHeight="36.0" prefWidth="171.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Excluir Turma Selecionada" />
+                  <JFXButton fx:id="btConfirmar" layoutX="686.0" layoutY="300.0" onAction="#evtConfirmar" prefHeight="36.0" prefWidth="221.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Confirmar Alteração/Inclusão" />
+                  <JFXButton fx:id="btCancelar" layoutX="485.0" layoutY="300.0" onAction="#evtCancelar" prefHeight="36.0" prefWidth="195.0" style="-fx-font-weight: bold; -fx-background-color: #FF7F27;" text="Cancelar Alteração/Inclusão" />
                   <Label layoutX="123.0" layoutY="83.0" text="Nome da Turma" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
@@ -141,8 +141,8 @@
             <AnchorPane layoutY="-1.0" prefHeight="82.0" prefWidth="917.0" style="-fx-background-color: #FF7F27;">
                <children>
                   <JFXButton fx:id="btPesquisar" layoutX="825.0" layoutY="43.0" onAction="#evtPesquisar" style="-fx-font-weight: bold;" text="Pesquisar" />
-                  <JFXTextField fx:id="txPesquisa" layoutX="151.0" layoutY="42.0" prefHeight="25.0" prefWidth="201.0" />
-                  <JFXComboBox fx:id="cbFiltro" layoutX="14.0" layoutY="42.0" prefHeight="25.0" prefWidth="120.0" />
+                  <JFXTextField fx:id="txPesquisa" layoutX="151.0" layoutY="42.0" prefHeight="25.0" prefWidth="171.0" />
+                  <JFXComboBox fx:id="cbFiltro" layoutX="14.0" layoutY="42.0" onAction="#evtFiltroTxt" prefHeight="25.0" prefWidth="120.0" />
                   <Label layoutX="153.0" layoutY="15.0" text="Filtro Texto">
                      <font>
                         <Font size="16.0" />
@@ -153,14 +153,9 @@
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <JFXTextField fx:id="txPesquisaIni" layoutX="367.0" layoutY="41.0" prefHeight="25.0" prefWidth="139.0" />
-                  <Label layoutX="369.0" layoutY="14.0" text="Filtro Horário Inicial">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
-                  <JFXTextField fx:id="txPesquisaFim" layoutX="522.0" layoutY="39.0" prefHeight="25.0" prefWidth="139.0" />
-                  <Label layoutX="524.0" layoutY="12.0" text="Filtro Horário Final">
+                  <JFXCheckBox fx:id="checkAtivaSearch" layoutX="803.0" layoutY="16.0" text="Apenas Ativas" />
+                  <JFXComboBox fx:id="cbFiltroProfessor" layoutX="335.0" layoutY="43.0" prefHeight="25.0" prefWidth="151.0" />
+                  <Label layoutX="335.0" layoutY="13.0" text="Filtro Professor">
                      <font>
                         <Font size="16.0" />
                      </font>

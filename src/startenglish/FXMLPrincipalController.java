@@ -271,7 +271,6 @@ public class FXMLPrincipalController implements Initializable {
         }
     }
 
-    @FXML
     private void evtRegistrarReceb(ActionEvent event) {
         
          try {
@@ -283,6 +282,19 @@ public class FXMLPrincipalController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
-    
+
+    @FXML
+    private void evtOfertarTurmas(ActionEvent event) 
+    {
+       try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLTurmas.fxml"));
+            pnMudanca.setCenter(aux);
+            labelNome.setText("Ofertar Turmas");
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+
     
 }

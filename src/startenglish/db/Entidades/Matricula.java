@@ -1,7 +1,8 @@
 package startenglish.db.Entidades;
 
 
-public class Matricula {
+public class Matricula 
+{
     
     private int nummat;
     private Livro livro;
@@ -10,7 +11,9 @@ public class Matricula {
     private char ativo;
     private double valor;
 
-    public Matricula() {
+    public Matricula() 
+    {
+        
     }
 
     public Matricula(int nummat, Livro livro, int turmaID, Aluno aluno, char ativo, double valor) {

@@ -6,8 +6,12 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -29,6 +33,7 @@ import startenglish.db.DAL.DALProfessor;
 import startenglish.db.Entidades.Agenda;
 import startenglish.db.Entidades.Aluno;
 import startenglish.db.Entidades.Professor;
+import startenglish.util.MaskFieldUtil;
 
 
 public class FXMLAgendarProvaController implements Initializable {
@@ -37,8 +42,6 @@ public class FXMLAgendarProvaController implements Initializable {
     private JFXComboBox<Professor> cbProfessor;
     @FXML
     private JFXComboBox<String> cbLocal;
-    @FXML
-    private JFXComboBox<String> cbHorario;
     @FXML
     private JFXComboBox<Aluno> cbAluno;
     @FXML
@@ -57,8 +60,6 @@ public class FXMLAgendarProvaController implements Initializable {
     private TableColumn<Agenda, String> tcProfessor;
     @FXML
     private TableColumn<Agenda, Date> tcData;
-    @FXML
-    private TableColumn<Agenda, String> tcHorario;
     @FXML
     private TableColumn<Agenda, String> tcStatus;
     @FXML
@@ -88,9 +89,19 @@ public class FXMLAgendarProvaController implements Initializable {
     @FXML
     private JFXComboBox<Professor> cbProfessorF;
     
+    private boolean flagalterou;
     private boolean alterou;
     private List<Agenda> listaauxliar;
     private boolean alterando;
+    private int indexalterando;
+    @FXML
+    private JFXTextField txHoraIni;
+    @FXML
+    private JFXTextField txHoraFim;
+    @FXML
+    private TableColumn<Agenda, String> tcHoraIni;
+    @FXML
+    private TableColumn<Agenda, String> tcHoraFim;
         
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -104,6 +115,10 @@ public class FXMLAgendarProvaController implements Initializable {
         alterou = false;
         carregaTabela('I');
         alterando = false;
+        setaStyleNormal();
+        MaskFieldUtil.maxField(txHoraIni,5);
+        MaskFieldUtil.maxField(txHoraFim, 5);
+        flagalterou = false;
 
     }
 
@@ -112,56 +127,68 @@ public class FXMLAgendarProvaController implements Initializable {
         tcNomeAluno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAluno().getNome()));
         tcCPF.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAluno().getCpf()));
         tcData.setCellValueFactory(new PropertyValueFactory("dataProva"));
-        tcHorario.setCellValueFactory(new PropertyValueFactory("horario"));
+        tcHoraIni.setCellValueFactory(new PropertyValueFactory("horaini"));
+        tcHoraFim.setCellValueFactory(new PropertyValueFactory("horafim"));
         tcProfessor.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProfessor().getFunc().getNome()));
         tcStatus.setCellValueFactory(new PropertyValueFactory("status"));
+        
+        
     }
 
     public void seta_combobox() {
 
         List<String> Local = new ArrayList();
-        List<String> Horario = new ArrayList();
         List<String> Status = new ArrayList();
         List<String> Filtro = new ArrayList();
 
-        Status.add("Esperando");
+        Status.add("Aguardando");
         Status.add("Faltou");
         Status.add("Realizou");
         Filtro.add("Aluno");
         Filtro.add("Data");
         Filtro.add("Professor");
         Local.add("Sede");
-        Horario.add("13:30 as 15:30");
-        Horario.add("08:30 as 10:30");
-
+   
         ObservableList<String> modelostatus = FXCollections.observableArrayList(Status);
         ObservableList<String> modelolocal = FXCollections.observableArrayList(Local);
         ObservableList<String> modelofiltro = FXCollections.observableArrayList(Filtro);
-        ObservableList<String> modelohorario = FXCollections.observableArrayList(Horario);
-
+        
         cbStatus.setItems(modelostatus);
         cbFiltro.setItems(modelofiltro);
         cbLocal.setItems(modelolocal);
-        cbHorario.setItems(modelohorario);
+      
 
-        cbStatus.setValue("Realizou");
+        cbStatus.setValue("Aguardando");
         cbFiltro.setValue("Aluno");
-        cbHorario.setValue("08:30 as 10:30");
         cbLocal.setValue("Sede");
     }
 
     public void carregaTabela(char chamada) {
 
-        DALAgenda dalcurso = new DALAgenda();
+        DALAgenda dalagenda = new DALAgenda();
         List<Agenda> agenda;
-        agenda = dalcurso.get("");
+        agenda = dalagenda.get("order by dataprova,horainicio,horafim");
 
         if (chamada == 'I') {
             listaauxliar = agenda;
-        } else if (chamada == 'L') {
             tabela.setItems(FXCollections.observableArrayList(listaauxliar));
+        } else if (chamada == 'L') {
+            
+           Collections.sort(listaauxliar, Comparator.comparing(Agenda::getDataProva).thenComparing(Agenda::getHoraini));
+           tabela.setItems(FXCollections.observableArrayList(listaauxliar));
         }
 
+    }
+    
+    private void setaStyleNormal(){
+        
+        setDataNormal(dtDataAgend);
+        setComboboxNormal(cbProfessor);
+        setComboboxNormal(cbLocal);
+        setTextFieldnormal(txHoraIni);
+        setTextFieldnormal(txHoraFim);
+        setComboboxNormal(cbAluno);
+        setComboboxNormal(cbStatus);
     }
     
     private void estado_edicao(){
@@ -170,9 +197,14 @@ public class FXMLAgendarProvaController implements Initializable {
         dtDataAgend.requestFocus();
         cbProfessor.getSelectionModel().select(0);
         cbLocal.getSelectionModel().select(0);
-        cbHorario.getSelectionModel().select(0);
         cbAluno.getSelectionModel().select(0);
         cbStatus.getSelectionModel().select(0);
+        txHoraIni.clear();
+        txHoraFim.clear();
+        btAlterar.setDisable(true);
+        btApagar.setDisable(true);
+        
+        setaStyleNormal();
     }
     
     private void seta_pesquisa(){
@@ -206,6 +238,9 @@ public class FXMLAgendarProvaController implements Initializable {
         profs = dalp.get("");
         alunos = dala.get("");
         
+        
+        alunos.sort(Comparator.comparing(Aluno::getNome));
+        
         ObservableList<Professor> modelopf =  FXCollections.observableArrayList(profs);
         ObservableList<Aluno> modeloaluno =  FXCollections.observableArrayList(alunos);
         
@@ -213,6 +248,9 @@ public class FXMLAgendarProvaController implements Initializable {
         cbAluno.setItems(modeloaluno);
         cbProfessorF.setItems(modelopf);
         
+        cbAluno.getSelectionModel().select(0);
+        cbProfessor.getSelectionModel().select(0);
+        cbProfessorF.getSelectionModel().select(0);
     }
     
     @FXML
@@ -228,6 +266,9 @@ public class FXMLAgendarProvaController implements Initializable {
         List<Agenda> agendadata = new ArrayList();
         LocalDate age = dtDataAgend.getValue();
         
+        if(age != null && (age.isEqual(LocalDate.now())|| age.isAfter(LocalDate.now())))
+            setDataNormal(dtDataAgend);
+        
         for (int i = 0; i < listaauxliar.size(); i++) {
             
             if(listaauxliar.get(i).getDataProva().equals(age))
@@ -238,33 +279,363 @@ public class FXMLAgendarProvaController implements Initializable {
         
     }
 
-    private boolean validaAlunoProva(String nomeAluno){
+    private boolean validaHoraIni(String hora) {
+
+        boolean ok = true;
+        Alert a = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        sdf.setLenient(false);
+        char ultimocarac;
         
-        return false;
+        try {
+            sdf.parse(hora);
+        } catch (ParseException e) {
+            ok = false;
+        }
+
+        if (!ok) {
+            
+            setTextFieldErro(txHoraIni);
+            a = new Alert(Alert.AlertType.WARNING, "Hora inicial vazia ou inválida!", ButtonType.CLOSE);
+            txHoraIni.requestFocus();
+
+        } else if (ok && hora.length() != 5) {
+
+            ok = false;
+            setTextFieldErro(txHoraIni);
+            a = new Alert(Alert.AlertType.WARNING, "Hora inicial incompleta!", ButtonType.CLOSE);
+            txHoraIni.requestFocus();
+            
+        } else if (hora.length() == 5) {
+            ultimocarac = hora.charAt(hora.length() - 1);
+
+            if (ultimocarac < '0' || ultimocarac > '9') {
+                ok = false;
+                setTextFieldErro(txHoraIni);
+                a = new Alert(Alert.AlertType.WARNING, "Hora inicial inválida!", ButtonType.CLOSE);
+                txHoraIni.requestFocus();
+            }
+            else
+              setTextFieldnormal(txHoraIni);
+        }
+     
+
+        if(a != null)
+            a.showAndWait();
+        
+        return ok;
     }
     
-    public boolean validaHorarioData(LocalDate date, String horario){
-        return false;
+    private boolean validaHoraFim(String hora) {
+
+        boolean ok = true;
+        Alert a = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        sdf.setLenient(false);
+        char ultimocarac;
+        
+        try {
+            sdf.parse(hora);
+        } catch (ParseException e) {
+            ok = false;
+        }
+
+        if (!ok) {
+            
+            setTextFieldErro(txHoraFim);
+            a = new Alert(Alert.AlertType.WARNING, "Hora final vazia ou inválida!", ButtonType.CLOSE);
+            txHoraFim.requestFocus();
+
+        } 
+        else if(ok  && hora.length() != 5){
+            
+            ok = false;
+            setTextFieldErro(txHoraFim);
+            a = new Alert(Alert.AlertType.WARNING, "Hora final incompleta!", ButtonType.CLOSE);
+            txHoraFim.requestFocus();
+        }
+        else if (ok && hora.length() == 5) {
+
+            ultimocarac = hora.charAt(hora.length() - 1);
+
+            if (ultimocarac < '0' || ultimocarac > '9') {
+                ok = false;
+                setTextFieldErro(txHoraFim);
+                a = new Alert(Alert.AlertType.WARNING, "Hora final inválida!", ButtonType.CLOSE);
+                txHoraFim.requestFocus();
+            }
+
+        }
+        if (ok && hora.compareToIgnoreCase(txHoraIni.getText()) <= 0) {
+           
+            ok = false;
+            setTextFieldErro(txHoraFim);
+            a = new Alert(Alert.AlertType.WARNING, "Hora final menor ou igual a hora inicial!", ButtonType.CLOSE);
+            txHoraFim.requestFocus();
+        }
+        else if(ok) {
+            setTextFieldnormal(txHoraFim);
+        }
+
+        if(a != null)
+            a.showAndWait();
+        
+        return ok;
     }
     
-    private boolean validaData(LocalDate date){
+    private boolean validaAlunoData(Aluno al, LocalDate date) {
+
+        Agenda aux = null;
+        boolean ok = true;
+        Alert a = null;
+
+        for (int i = 0; i < listaauxliar.size() && ok; i++) {
+
+            aux = listaauxliar.get(i);
+
+            if (aux.getAluno().getCpf().equals(al.getCpf()) && aux.getDataProva().equals(date)) {
+                ok = false;
+            }
+        }
+
+        if (!ok) {
+
+            if (alterando) {
+
+                if (aux != null && aux.getAluno().getCpf().equals(al.getCpf()) && listaauxliar.indexOf(aux) != indexalterando) {
+
+                    a = new Alert(Alert.AlertType.WARNING, "Aluno já possui prova agendada nesta data!", ButtonType.CLOSE);
+                    cbAluno.requestFocus();
+                    setComboboxErro(cbAluno);
+                } else {
+                    ok = true;
+                    setComboboxNormal(cbAluno);
+                }
+
+            } else {
+                a = new Alert(Alert.AlertType.WARNING, "Aluno já possui prova agendada nesta data!", ButtonType.CLOSE);
+                cbAluno.requestFocus();
+                setComboboxErro(cbAluno);
+            }
+
+        }
+        else{
+            ok = true;
+            setComboboxNormal(cbAluno);
+        }
+
+        if (a != null) {
+            a.showAndWait();
+        }
+
+        return ok;
+
+    }
+    
+    public boolean validaProfessorHorarioData(String prof, LocalDate date, String horaini,String horafim) {
+
+        Agenda aux = null;
+        boolean ok = true;
+        Alert a = null;
+        List<Agenda> listaProfHor = new ArrayList();
+        boolean flag = false;
+        List<Integer> indices = new ArrayList();
+        int indiceaux;
         
-        return false;
+        for (int i = 0; i < listaauxliar.size(); i++) {
+
+            aux = listaauxliar.get(i);
+
+            if (aux.getProfessor().getFunc().getCpf().equals(prof) && aux.getDataProva().equals(date)) {
+                ok = false;
+                listaProfHor.add(aux);
+                indices.add(i);
+            }
+        }
+
+        if (!ok) {
+
+            for (int i = 0; i < listaProfHor.size() && !flag; i++) {
+
+                aux = listaProfHor.get(i);
+                indiceaux = indices.get(i);
+                
+                if (alterando) {
+                    if ((horaini.compareTo(aux.getHoraini()) >= 0 && horafim.compareTo(aux.getHorafim()) <= 0)
+                            || ((horaini.compareToIgnoreCase(aux.getHorafim()) < 0 && horafim.compareTo(aux.getHoraini()) > 0))) {
+                        
+                        if(indiceaux != indexalterando)
+                            flag = true;
+                    }
+
+                } else {
+                    if ((horaini.compareTo(aux.getHoraini()) >= 0 && horafim.compareTo(aux.getHorafim()) <= 0)
+                            || ((horaini.compareToIgnoreCase(aux.getHorafim()) < 0 && horafim.compareTo(aux.getHoraini()) > 0))) {
+                        flag = true;
+                    }
+
+                }
+            }
+
+            if (!flag) {
+                ok = true;
+                setComboboxNormal(cbProfessor);
+                setTextFieldnormal(txHoraFim);
+                setTextFieldnormal(txHoraIni);
+            } else {
+                ok = false;
+                cbProfessor.requestFocus();
+                setComboboxErro(cbProfessor);
+                setTextFieldErro(txHoraFim);
+                setTextFieldErro(txHoraIni);
+                a = new Alert(Alert.AlertType.WARNING, "Professor já possui uma prova agenda neste horario!!", ButtonType.CLOSE);
+            }
+        }
+
+        if (a != null) {
+            a.showAndWait();
+        }
+        return ok;
+    }
+    
+    private boolean validaData(LocalDate date) {
+
+        boolean ok = true;
+        Alert a = null;
+
+        if (date == null) {
+
+            ok = false;
+            a = new Alert(Alert.AlertType.WARNING, "Data de agendamento não pode estar vazia!", ButtonType.CLOSE);
+            dtDataAgend.requestFocus();
+            setDataErro(dtDataAgend);
+
+        } else if (date.isBefore(LocalDate.now())) {
+
+            ok = false;
+            a = new Alert(Alert.AlertType.WARNING, "Data de agendamento antes do dia atual!", ButtonType.CLOSE);
+            dtDataAgend.requestFocus();
+             setDataErro(dtDataAgend);
+        } 
+        else
+            setDataNormal(dtDataAgend);
+        
+        if(a != null)
+         a.showAndWait();
+        
+        return ok;
+    }
+    
+    private void setTextFieldErro(JFXTextField nome) {
+
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+
+    private void setTextFieldnormal(JFXTextField nome) {
+
+        nome.setStyle("-fx-border-width: 0;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+
+    }
+    
+     private void setDataErro(JFXDatePicker nome) {
+
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+
+    private void setDataNormal(JFXDatePicker nome) {
+
+        nome.setStyle("-fx-border-width: 0;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+
+    }
+    
+    private void setComboboxErro(JFXComboBox nome) {
+
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+
+     private void setComboboxNormal(JFXComboBox nome) {
+
+       nome.setStyle("-fx-border-width: 0;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+     
+    private char retornaStatus(String status){
+        
+        switch (status) {
+            case "Aguardando":
+                return 'A';
+            case "Realizou":
+                return 'R';
+            default:
+                return 'F';
+        }
     }
     
     @FXML
     private void evtInserir(ActionEvent event) {
-        
-        if(alterando){
-            
-            alterando = false;
-        }
-        else{
-            
-            if(validaData(dtDataAgend.getValue())){
-                
+
+        Agenda a = new Agenda();
+
+        if (validaData(dtDataAgend.getValue())) {
+
+            if (validaAlunoData(cbAluno.getSelectionModel().getSelectedItem(), dtDataAgend.getValue())) {
+
+                if (validaHoraIni(txHoraIni.getText())) {
+
+                    if (validaHoraFim(txHoraFim.getText())) {
+
+                        if (validaProfessorHorarioData(cbProfessor.getSelectionModel().getSelectedItem().getFunc().getCpf(),
+                            dtDataAgend.getValue(), txHoraIni.getText(),txHoraFim.getText())) {
+
+                            a.setAluno(cbAluno.getSelectionModel().getSelectedItem());
+                            a.setDataProva(dtDataAgend.getValue());
+                            a.setProfessor(cbProfessor.getSelectionModel().getSelectedItem());
+                            a.setLocal(cbLocal.getSelectionModel().getSelectedItem());
+                            a.setHoraini(txHoraIni.getText());
+                            a.setHorafim(txHoraFim.getText());
+                            a.setStatus(cbStatus.getSelectionModel().getSelectedItem());
+                            a.setSituacao_prova(retornaStatus(cbStatus.getSelectionModel().getSelectedItem()));
+                            
+                            if(alterando){
+                                
+                                listaauxliar.remove(indexalterando);
+                                listaauxliar.add(a);
+                                
+                            }
+                            else{
+                                listaauxliar.add(a);
+                                
+                            }
+                             Alert alert;
+                             
+                            if(alterando)
+                             alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento atualizado com sucesso!", ButtonType.CLOSE);
+                            else
+                               alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento inserido com sucesso!", ButtonType.CLOSE);
+                                
+                            alterando = false;
+                            carregaTabela('L');
+                            alert.showAndWait();
+                            alterou = true;
+                             btSalvarOp.setDisable(false);
+                            evtNovo(event);
+                        }
+                    }
+                }
             }
         }
+
     }
 
     @FXML
@@ -286,8 +657,9 @@ public class FXMLAgendarProvaController implements Initializable {
         if(a.showAndWait().get() == ButtonType.YES){
             
             alterou = false;
-            listaauxliar = new ArrayList();
+            carregaTabela('I');
             btSalvarOp.setDisable(true);
+            estado_edicao();
         }
     }
 
@@ -308,6 +680,8 @@ public class FXMLAgendarProvaController implements Initializable {
             } else {
                 b.setContentText("Problemas ao salvar as informações!");
             }
+            
+            b.showAndWait();
         }
 
         if (ok) {
@@ -355,6 +729,8 @@ public class FXMLAgendarProvaController implements Initializable {
             
             listaauxliar.remove(tabela.getSelectionModel().getSelectedItem());
             carregaTabela('L');
+            alterou = true;
+            btSalvarOp.setDisable(false);
         }
     }
 
@@ -363,17 +739,21 @@ public class FXMLAgendarProvaController implements Initializable {
         
           if(tabela.getSelectionModel().getSelectedItem() != null){
         
+              flagalterou = true;
             Agenda a = tabela.getSelectionModel().getSelectedItem();
             
             dtDataAgend.setValue(a.getDataProva());
             cbProfessor.getSelectionModel().select(a.getProfessor());
             cbLocal.getSelectionModel().select(a.getLocal());
-            cbHorario.getSelectionModel().select(a.getHorario());
+            txHoraIni.setText(a.getHoraini());
+            txHoraFim.setText(a.getHorafim());
             cbAluno.getSelectionModel().select(a.getAluno());
             cbStatus.getSelectionModel().select(a.getStatus());
 
             alterando = true;
+            indexalterando = tabela.getSelectionModel().getSelectedIndex();
             dtDataAgend.requestFocus();
+            setaStyleNormal();
           }
     }
     
@@ -394,7 +774,7 @@ public class FXMLAgendarProvaController implements Initializable {
             
             for (int i = 0; i < listaauxliar.size(); i++) {
                 
-                if(listaauxliar.get(i).getDataProva().isAfter(dataini) && listaauxliar.get(i).getDataProva().isBefore(datafim))
+                if((listaauxliar.get(i).getDataProva().isAfter(dataini) || listaauxliar.get(i).getDataProva().isEqual(dataini)) && (listaauxliar.get(i).getDataProva().isBefore(datafim) || listaauxliar.get(i).getDataProva().isEqual(datafim)))
                     novasagendas.add(listaauxliar.get(i));
             }
         }
@@ -402,11 +782,11 @@ public class FXMLAgendarProvaController implements Initializable {
             
             if(filtro.contains("Aluno")){
                 
-                nome_aluno = txAluno.getText();
+                nome_aluno = txAluno.getText().toLowerCase();
 
                 for (int i = 0; i < listaauxliar.size(); i++) {
 
-                    if (listaauxliar.get(i).getAluno().getNome().contains(nome_aluno)) {
+                    if (listaauxliar.get(i).getAluno().getNome().toLowerCase().contains(nome_aluno)) {
                         novasagendas.add(listaauxliar.get(i));
                     }
                 }
@@ -418,7 +798,7 @@ public class FXMLAgendarProvaController implements Initializable {
                 
                 for (int i = 0; i < listaauxliar.size(); i++) {
 
-                    if (listaauxliar.get(i).getProfessor().getFunc().getID() == paux.getFunc().getID()) {
+                    if (listaauxliar.get(i).getProfessor().getFunc().getNome().equals(paux.getFunc().getNome())) {
                         novasagendas.add(listaauxliar.get(i));
                     }
                 }
@@ -446,6 +826,15 @@ public class FXMLAgendarProvaController implements Initializable {
             btApagar.setDisable(true);
             btAlterar.setDisable(true);
         }
+    }
+
+    @FXML
+    private void evtteste(ActionEvent event) {
+        
+        if(!flagalterou && dtDataAgend != null)
+             validaAlunoData(cbAluno.getSelectionModel().getSelectedItem(), dtDataAgend.getValue());
+        else
+            flagalterou = false;
     }
     
 }

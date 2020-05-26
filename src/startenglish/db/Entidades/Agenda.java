@@ -9,7 +9,8 @@ public class Agenda {
     private Professor professor;
     private Aluno aluno;
     private LocalDate dataProva;
-    private String horario;
+    private String horaini;
+    private String horafim;
     private String local;
     private char situacao_prova;
     private double nota;
@@ -23,12 +24,13 @@ public class Agenda {
     }
     private String status;
 
-    public Agenda(int ID, Professor professor, Aluno aluno, LocalDate dataProva, String horario, String local, char situacao_prova, double nota) {
+    public Agenda(int ID, Professor professor, Aluno aluno, LocalDate dataProva, String horaini, String horafim, String local, char situacao_prova, double nota) {
         this.ID = ID;
         this.professor = professor;
         this.aluno = aluno;
         this.dataProva = dataProva;
-        this.horario = horario;
+        this.horaini = horaini;
+        this.horafim = horafim;
         this.local = local;
         this.situacao_prova = situacao_prova;
         this.nota = nota;
@@ -48,7 +50,7 @@ public class Agenda {
    
     public Agenda() {
         
-        this(0,new Professor(),new Aluno(),null,"","",'c',0.0);
+        this(0,new Professor(),new Aluno(),null,"","","",'F',0.0);
         this.status = "";
     }
 
@@ -84,16 +86,25 @@ public class Agenda {
         this.dataProva = dataProva;
     }
 
-    public String getHorario() {
-        return horario;
-    }
-
-    public void setHorario(String horario) {
-        this.horario = horario;
-    }
-
+  
     public String getLocal() {
         return local;
+    }
+
+    public String getHoraini() {
+        return horaini;
+    }
+
+    public void setHoraini(String horaini) {
+        this.horaini = horaini;
+    }
+
+    public String getHorafim() {
+        return horafim;
+    }
+
+    public void setHorafim(String horafim) {
+        this.horafim = horafim;
     }
 
     public void setLocal(String local) {

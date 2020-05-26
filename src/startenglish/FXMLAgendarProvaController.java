@@ -262,6 +262,9 @@ public class FXMLAgendarProvaController implements Initializable {
         List<Agenda> agendadata = new ArrayList();
         LocalDate age = dtDataAgend.getValue();
         
+        if(age != null && (age.isEqual(LocalDate.now())|| age.isAfter(LocalDate.now())))
+            setDataNormal(dtDataAgend);
+        
         for (int i = 0; i < listaauxliar.size(); i++) {
             
             if(listaauxliar.get(i).getDataProva().equals(age))
@@ -818,6 +821,12 @@ public class FXMLAgendarProvaController implements Initializable {
             btApagar.setDisable(true);
             btAlterar.setDisable(true);
         }
+    }
+
+    @FXML
+    private void evtteste(ActionEvent event) {
+          if(dtDataAgend != null)
+             validaAlunoData(cbAluno.getSelectionModel().getSelectedItem(), dtDataAgend.getValue());
     }
     
 }

@@ -6,17 +6,22 @@ public class Matricula
     
     private int nummat;
     private Livro livro;
-    private int turmaID;
+    private Turma turmaID;
     private Aluno aluno;
     private char ativo;
     private double valor;
+    private String instuiEnsino;
+    private String infoCancelamento;
+    private double desconto;
+    private String nomeResponsável;
+    
 
     public Matricula() 
     {
         
     }
 
-    public Matricula(int nummat, Livro livro, int turmaID, Aluno aluno, char ativo, double valor) {
+    public Matricula(int nummat, Livro livro, Turma turmaID, Aluno aluno, char ativo, double valor) {
         this.nummat = nummat;
         this.livro = livro;
         this.turmaID = turmaID;
@@ -24,7 +29,23 @@ public class Matricula
         this.ativo = ativo;
         this.valor = valor;
     }
+
+    public Matricula(int nummat, Livro livro, Turma turmaID, Aluno aluno, char ativo, double valor, String instuiEnsino, String infoCancelamento, double desconto, String nomeResponsável) {
+        this.nummat = nummat;
+        this.livro = livro;
+        this.turmaID = turmaID;
+        this.aluno = aluno;
+        this.ativo = ativo;
+        this.valor = valor;
+        this.instuiEnsino = instuiEnsino;
+        this.infoCancelamento = infoCancelamento;
+        this.desconto = desconto;
+        this.nomeResponsável = nomeResponsável;
+    }
+
     
+    
+      
     public int getNummat() {
         return nummat;
     }
@@ -41,11 +62,11 @@ public class Matricula
         this.livro = livro;
     }
 
-    public int getTurmaID() {
+    public Turma getTurmaID() {
         return turmaID;
     }
 
-    public void setTurmaID(int turmaID) {
+    public void setTurmaID(Turma turmaID) {
         this.turmaID = turmaID;
     }
 
@@ -72,6 +93,40 @@ public class Matricula
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+    public String getInstuiEnsino() {
+        return instuiEnsino;
+    }
+
+    public void setInstuiEnsino(String instuiEnsino) {
+        this.instuiEnsino = instuiEnsino;
+    }
+
+    public String getInfoCancelamento() {
+        return infoCancelamento;
+    }
+
+    public void setInfoCancelamento(String infoCancelamento) {
+        this.infoCancelamento = infoCancelamento;
+    }
+
+    public double getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(double desconto) {
+        this.desconto = desconto;
+    }
+
+    public String getNomeResponsável() {
+        return nomeResponsável;
+    }
+
+    public void setNomeResponsável(String nomeResponsável) {
+        this.nomeResponsável = nomeResponsável;
+    }
+    
+    
     
     
 }

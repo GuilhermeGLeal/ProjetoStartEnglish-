@@ -115,7 +115,9 @@ public class DALFalta {
         {
             while(rs.next())
             {
+                DALTurma dalt = new DALTurma();
                 
+                //aux.add(new Falta(dalt.get(rs.getInt("turmaid")), , data, ));
             }
         } 
         catch (SQLException ex) 

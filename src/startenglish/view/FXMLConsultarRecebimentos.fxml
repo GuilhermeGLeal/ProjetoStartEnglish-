@@ -15,10 +15,10 @@
    <children>
       <AnchorPane fx:id="pnFiltros" prefHeight="293.0" prefWidth="1151.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
          <children>
-            <JFXComboBox fx:id="cbSelecionarFiltro" layoutX="63.0" layoutY="81.0" onAction="#evtCBfiltro" prefHeight="31.0" prefWidth="161.0" style="-fx-background-color: #bebebe;" />
+            <JFXComboBox fx:id="cbSelecionarFiltro" layoutX="63.0" layoutY="81.0" onAction="#evtCBfiltro" prefHeight="31.0" prefWidth="177.0" style="-fx-background-color: #bebebe;" />
             <JFXDatePicker fx:id="dtEmissIni" layoutX="278.0" layoutY="97.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
             <JFXDatePicker fx:id="dtEmissFim" layoutX="481.0" layoutY="97.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
-            <JFXTextField fx:id="txNomeAluno" alignment="CENTER" layoutX="561.0" layoutY="182.0" prefHeight="31.0" prefWidth="253.0" style="-fx-background-color: #bebebe;" text="Nome do aluno" />
+            <JFXTextField fx:id="txAlunoFiltro" alignment="CENTER" layoutX="561.0" layoutY="182.0" prefHeight="31.0" prefWidth="253.0" style="-fx-background-color: #bebebe;" text="Nome do aluno" />
             <JFXButton fx:id="btPesquisar" layoutX="383.0" layoutY="243.0" onAction="#evtPesquisar" prefHeight="31.0" prefWidth="111.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Pesquisar" />
             <JFXButton fx:id="btLimparFiltros" layoutX="701.0" layoutY="243.0" onAction="#evtLimpar" prefHeight="31.0" prefWidth="141.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Limpar Filtros" />
             <Label layoutX="63.0" layoutY="60.0" prefHeight="21.0" prefWidth="142.0" text="Selecionar Filtro" textFill="#bebebe">
@@ -29,7 +29,7 @@
             <JFXDatePicker fx:id="dtVencIni" layoutX="710.0" layoutY="97.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
             <JFXDatePicker fx:id="dtVencFim" layoutX="913.0" layoutY="97.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
             <JFXDatePicker fx:id="dtPagaIni" layoutX="63.0" layoutY="182.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
-            <JFXDatePicker fx:id="dtPagaIni" layoutX="266.0" layoutY="182.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
+            <JFXDatePicker fx:id="dtPagFim" layoutX="266.0" layoutY="182.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
             <Label layoutX="289.0" layoutY="50.0" text="Data de Emissão" textFill="#bebebe">
                <font>
                   <Font size="16.0" />
@@ -104,7 +104,7 @@
                   <TableColumn fx:id="tcDataPagamentoo" prefWidth="146.0" style="-fx-background-color: #BEBEBE;" text="DataPagamento" />
                   <TableColumn fx:id="tcNumMat" prefWidth="167.0" style="-fx-background-color: #BEBEBE;" text="Número Matricula" />
                   <TableColumn fx:id="tcNomeAluno" prefWidth="185.0" style="-fx-background-color: #BEBEBE;" text="Nome do Aluno" />
-                  <TableColumn fx:id="tcStatus" prefWidth="101.0" style="-fx-background-color: #BEBEBE;" text="Status" />
+                  <TableColumn fx:id="tcStatus" prefWidth="88.0" style="-fx-background-color: #BEBEBE;" text="Status" />
                </columns>
             </TableView>
             <JFXButton fx:id="btVoltar" layoutX="267.0" layoutY="356.0" onAction="#evtVoltar" prefHeight="31.0" prefWidth="145.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Voltar" />

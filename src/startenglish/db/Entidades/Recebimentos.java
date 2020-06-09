@@ -1,6 +1,6 @@
 package startenglish.db.Entidades;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 public class Recebimentos {
@@ -8,14 +8,14 @@ public class Recebimentos {
     private int recebimentoid;
     private Caixa caixa;
     private Matricula mat;
-    private Date dtvencimento;
-    private Date dtreceb;
-    private Date dtemissoa;
+    private LocalDate dtvencimento;
+    private LocalDate dtreceb;
+    private LocalDate dtemissoa;
     private double valor;
     private double valorpago;
     private String pago;
 
-    public Recebimentos(int recebimentoid, Caixa caixa, Matricula mat, Date dtvencimento, Date dtreceb, Date dtemissoa, double valor, double valorpago) {
+    public Recebimentos(int recebimentoid, Caixa caixa, Matricula mat, LocalDate dtvencimento, LocalDate dtreceb, LocalDate dtemissoa, double valor, double valorpago) {
         this.recebimentoid = recebimentoid;
         this.caixa = caixa;
         this.mat = mat;
@@ -28,6 +28,15 @@ public class Recebimentos {
             this.pago = "Pago";
     }
 
+    public String getPago() {
+        return pago;
+    }
+
+    public void setPago(String pago) {
+        this.pago = pago;
+    }
+
+    
     public Recebimentos() {
         
         this(0,new Caixa(),new Matricula(),null,null,null,0.0,0.0);
@@ -58,27 +67,27 @@ public class Recebimentos {
         this.mat = mat;
     }
 
-    public Date getDtvencimento() {
+    public LocalDate getDtvencimento() {
         return dtvencimento;
     }
 
-    public void setDtvencimento(Date dtvencimento) {
+    public void setDtvencimento(LocalDate dtvencimento) {
         this.dtvencimento = dtvencimento;
     }
 
-    public Date getDtreceb() {
+    public LocalDate getDtreceb() {
         return dtreceb;
     }
 
-    public void setDtreceb(Date dtreceb) {
+    public void setDtreceb(LocalDate dtreceb) {
         this.dtreceb = dtreceb;
     }
 
-    public Date getDtemissoa() {
+    public LocalDate getDtemissoa() {
         return dtemissoa;
     }
 
-    public void setDtemissoa(Date dtemissoa) {
+    public void setDtemissoa(LocalDate dtemissoa) {
         this.dtemissoa = dtemissoa;
     }
 

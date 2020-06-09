@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,13 +54,12 @@ public class FXMLRegistrarRecebimentosController implements Initializable {
     private JFXDatePicker dtDataReceb;
     @FXML
     private JFXTextField txValorPago;
-
+      
    
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+    public void initialize(URL url, ResourceBundle rb) {        
     }    
-
+    
     @FXML
     private void evtBuscar(ActionEvent event) {
     }

@@ -27,6 +27,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import startenglish.db.DAL.DALRecebimento;
 import startenglish.db.Entidades.Recebimentos;
+import startenglish.util.MaskFieldUtil;
 
 
 public class FXMLConsultarRecebimentosController implements Initializable {
@@ -109,6 +110,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         estadoOriginal();
         setaCombobox();
         carregaTabela('I');
+        MaskFieldUtil.maxField(txNomeAluno, 30);
     }    
 
     private void estadoOriginal(){
@@ -398,7 +400,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     private void evtSelecionar(ActionEvent event) {
         
         if(tabelaRecibmentos.getSelectionModel().getFocusedIndex() >=0){
-            
+              estadoEdicao();
             Recebimentos receb = tabelaRecibmentos.getSelectionModel().getSelectedItem();
             
             txNomeAluno.setText(receb.getMat().getAluno().getNome());
@@ -407,15 +409,96 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             txValorPago.setText(""+receb.getValor());
          
             recebAtual = receb;
-            estadoEdicao();
+          
         }
     }
 
+    private boolean validaValor(String valor){
+        
+        Alert a = null;
+        boolean ok = true;
+        double valorTrans = 0;
+        
+        try{
+            valorTrans = Double.parseDouble(valor);
+        }catch(NumberFormatException e){ ok = false;}
+        
+        if(!ok){
+                          
+            a = new Alert(Alert.AlertType.WARNING, "Valor inválido", ButtonType.CLOSE);
+            setTextFieldErro(txValorPago);
+        }
+        else if(ok && valorTrans <= 0){
+            
+            ok = false;
+            a = new Alert(Alert.AlertType.WARNING, "Valor negativo ou igual a zero!", ButtonType.CLOSE);
+            setTextFieldErro(txValorPago);
+        }
+        else
+            setTextFieldnormal(txValorPago);
+        
+        if(a != null)
+            a.showAndWait();
+        
+        return ok;
+    }
+    
+    private boolean validaSePago(){
+        
+        Alert a = null;
+        boolean ok = true;
+        
+        if(recebAtual.getDtreceb() != null){
+            
+            ok = false;
+            a = new Alert(Alert.AlertType.WARNING, "Esse recebimento já está papo, somente é possível realizar estorno!!", ButtonType.CLOSE);
+        }
+        
+        if(a != null)
+              a.showAndWait();
+        
+        return ok;
+    }
+    
     @FXML
     private void evtConfirmar(ActionEvent event) {
-        
-        alterou = true;
-        btFinalizar.setDisable(false);
+
+        double diferenca;
+        double valorPago;
+        Recebimentos rec = new Recebimentos();
+
+        if (validaSePago()) {
+
+            if (validaValor(txValorPago.getText())) {
+
+                try {
+                    valorPago = Double.parseDouble(txValorPago.getText());
+                } catch (NumberFormatException e) {
+                    valorPago = 0;
+                }
+                diferenca = recebAtual.getValor() - valorPago;
+                
+                recebAtual.setValorpago(valorPago);
+                recebAtual.setDtreceb(dtDataReceb.getValue());
+                recebAtual.setPago("Pago");
+                
+                recebs.remove(recebs.indexOf(recebAtual));
+                recebs.add(recebAtual);
+                
+                if(diferenca > 0){
+                    
+                    rec.setCaixa(recebAtual.getCaixa());
+                    rec.setMat(recebAtual.getMat());
+                    rec.setDtemissoa(LocalDate.now());
+                    rec.setDtvencimento(LocalDate.now().plusDays(30));
+                    rec.setValor(diferenca);
+                    recebs.add(rec);
+                }
+                
+                alterou = true;
+                btFinalizar.setDisable(false);
+            }
+        }
     }
 
     @FXML

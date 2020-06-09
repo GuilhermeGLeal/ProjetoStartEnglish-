@@ -50,7 +50,7 @@
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <TableView fx:id="tabela" layoutX="15.0" layoutY="314.0" onMouseClicked="#evTabela" prefHeight="269.0" prefWidth="1094.0" style="-fx-background-color: black;">
+      <TableView fx:id="tabela" layoutX="15.0" layoutY="314.0" onMouseClicked="#evTabela" prefHeight="269.0" prefWidth="1094.0" snapToPixel="false" style="-fx-background-color: black;">
          <columns>
             <TableColumn fx:id="tcData" editable="false" prefWidth="161.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Data Agendamento" />
             <TableColumn fx:id="tcHoraIni" editable="false" prefWidth="153.0" resizable="false" style="-fx-background-color: #bebebe; -fx-font-weight: bold; -fx-alignment: CENTER;" text="Hora Início" />

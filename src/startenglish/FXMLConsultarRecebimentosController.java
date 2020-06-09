@@ -368,6 +368,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     private void evtLimpar(ActionEvent event) {
         
         carregaTabela('L');
+        cbStatus.setSelected(false);
         estadoOriginalPesquisa();
     }
 
@@ -512,26 +513,34 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     
     @FXML
     private void evtCBfiltro(ActionEvent event) {
-        
+
         String filtro = cbSelecionarFiltro.getSelectionModel().getSelectedItem();
-        
-        if(filtro.contains("Data")){
-            
+
+        if (filtro.contains("Data")) {
+
             txAlunoFiltro.setDisable(true);
-            
-            if(filtro.contains("Emissão")){
-               setaDatas(true,'E');
+
+            if (filtro.contains("Emissão")) {
+                setaDatas(true, 'E');
+
+                dtEmissIni.setValue(LocalDate.now());
+                dtEmissFim.setValue(LocalDate.now().plusDays(30));
+            } else if (filtro.contains("Vencimento")) {
+                setaDatas(true, 'V');
+
+                dtVencIni.setValue(LocalDate.now());
+                dtVencFim.setValue(LocalDate.now().plusDays(30));
+            } else {
+                setaDatas(true, 'P');
+                dtPagaIni.setValue(LocalDate.now());
+                dtPagFim.setValue(LocalDate.now().plusDays(30));
             }
-            else if(filtro.contains("Vencimento")){
-                setaDatas(true,'V');
-            }
-            else
-                setaDatas(true,'P');
-        }
-        else{
-            
+
+           
+        } else {
+
             txAlunoFiltro.setDisable(false);
-            setaDatas(true,'a');
+            setaDatas(true, 'a');
         }
     }
     

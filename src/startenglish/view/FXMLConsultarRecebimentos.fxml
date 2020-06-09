@@ -15,10 +15,10 @@
    <children>
       <AnchorPane fx:id="pnFiltros" prefHeight="293.0" prefWidth="1151.0" style="-fx-background-color: black; -fx-border-width: 5; -fx-border-color: #FF7F27;">
          <children>
-            <JFXComboBox fx:id="cbSelecionarFiltro" layoutX="63.0" layoutY="81.0" onAction="#evtCBfiltro" prefHeight="31.0" prefWidth="177.0" style="-fx-background-color: #bebebe;" />
+            <JFXComboBox fx:id="cbSelecionarFiltro" layoutX="63.0" layoutY="81.0" onAction="#evtCBfiltro" prefHeight="31.0" prefWidth="194.0" style="-fx-background-color: #bebebe;" />
             <JFXDatePicker fx:id="dtEmissIni" layoutX="278.0" layoutY="97.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
             <JFXDatePicker fx:id="dtEmissFim" layoutX="481.0" layoutY="97.0" prefHeight="31.0" prefWidth="169.0" style="-fx-background-color: #bebebe;" />
-            <JFXTextField fx:id="txAlunoFiltro" alignment="CENTER" layoutX="561.0" layoutY="182.0" prefHeight="31.0" prefWidth="253.0" style="-fx-background-color: #bebebe;" text="Nome do aluno" />
+            <JFXTextField fx:id="txAlunoFiltro" alignment="CENTER" layoutX="561.0" layoutY="182.0" prefHeight="31.0" prefWidth="253.0" promptText="Nome do aluno" style="-fx-background-color: #bebebe;" />
             <JFXButton fx:id="btPesquisar" layoutX="383.0" layoutY="243.0" onAction="#evtPesquisar" prefHeight="31.0" prefWidth="111.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Pesquisar" />
             <JFXButton fx:id="btLimparFiltros" layoutX="701.0" layoutY="243.0" onAction="#evtLimpar" prefHeight="31.0" prefWidth="141.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Limpar Filtros" />
             <Label layoutX="63.0" layoutY="60.0" prefHeight="21.0" prefWidth="142.0" text="Selecionar Filtro" textFill="#bebebe">
@@ -111,10 +111,10 @@
             <JFXButton fx:id="btSelecionarRecebimentos" layoutX="482.0" layoutY="159.0" onAction="#evtSelecionar" prefHeight="25.0" prefWidth="213.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Selecionar Recebimentos" />
             <AnchorPane fx:id="pnRegistro" layoutX="39.0" layoutY="198.0" prefHeight="153.0" prefWidth="1101.0">
                <children>
-                  <JFXTextField fx:id="txNomeAluno" alignment="CENTER" layoutX="22.0" layoutY="48.0" prefHeight="31.0" prefWidth="143.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" text="Aluno" />
-                  <JFXTextField fx:id="txValor" alignment="CENTER" layoutX="191.0" layoutY="48.0" prefHeight="31.0" prefWidth="151.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" text="Valor" />
+                  <JFXTextField fx:id="txNomeAluno" alignment="CENTER" layoutX="22.0" layoutY="48.0" prefHeight="31.0" prefWidth="143.0" promptText="Aluno" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txValor" alignment="CENTER" layoutX="191.0" layoutY="48.0" prefHeight="31.0" prefWidth="151.0" promptText="Valor" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
                   <JFXDatePicker fx:id="dtDataReceb" layoutX="367.0" layoutY="48.0" prefHeight="31.0" prefWidth="151.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
-                  <JFXTextField fx:id="txValorPago" alignment="CENTER" layoutX="551.0" layoutY="48.0" prefHeight="31.0" prefWidth="153.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" text="Valor pago" />
+                  <JFXTextField fx:id="txValorPago" alignment="CENTER" layoutX="551.0" layoutY="48.0" prefHeight="31.0" prefWidth="153.0" promptText="Valor pago" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
                   <JFXButton fx:id="btConfirmar" layoutX="723.0" layoutY="39.0" onAction="#evtConfirmar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Confirmar" />
                   <JFXButton fx:id="btCancelar" layoutX="815.0" layoutY="79.0" onAction="#evtCancelar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Cancelar" />
                   <JFXButton fx:id="btEstorno" layoutX="896.0" layoutY="39.0" onAction="#evtEstorno" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Realizar Estorno" />

@@ -62,8 +62,13 @@ public class DALCurso {
             
             if(rs.next())
             {
-                curso = new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento").toLocalDate(), rs.getDate("dataencerramento").toLocalDate(), 
+                  if(rs.getDate("dataencerramento") == null)
+                     curso = new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento").toLocalDate(), null, 
                         rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"));
+                else
+                     curso = new Cursos(rs.getInt("cursoid"),rs.getString("etapa"), rs.getDate("datalancamento").toLocalDate(), rs.getDate("dataencerramento").toLocalDate(), 
+                        rs.getString("nomecurso"), rs.getString("descricao"), rs.getDouble("preco"));
+              
                  
              }
         }

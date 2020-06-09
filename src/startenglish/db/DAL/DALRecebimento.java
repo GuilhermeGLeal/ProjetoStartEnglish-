@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import startenglish.db.Entidades.Caixa;
+import startenglish.db.Entidades.Matricula;
 import startenglish.db.Entidades.Recebimentos;
 import startenglish.db.util.Banco;
 
@@ -37,16 +38,25 @@ public class DALRecebimento {
         ArrayList <Recebimentos> aux = new ArrayList();
         ResultSet rs = Banco.getCon().consultar(sql);
         DALMatricula dalm = new DALMatricula();
+        Matricula mat;
         
         try 
         {
             if(rs != null){
                  while(rs.next())
                 {
-                    aux.add(
-                    new Recebimentos(rs.getInt("recebimentoid"), new Caixa(rs.getInt("caixaid")), dalm.get(rs.getInt("matriculaid")), 
-                            rs.getDate("dtvencimento").toLocalDate(), rs.getDate("dtreceb").toLocalDate(), rs.getDate("dtemissao").toLocalDate(),
-                            rs.getDouble("valor"), rs.getDouble("valorreceb")));
+                    mat = dalm.get(rs.getInt("matriculaid"));
+                    
+                    if(rs.getDate("dtreceb") == null)
+                        aux.add(
+                        new Recebimentos(rs.getInt("recebimentoid"), new Caixa(rs.getInt("caixaid")),mat , 
+                                rs.getDate("dtvencimento").toLocalDate(), null , rs.getDate("dtemissao").toLocalDate(),
+                                rs.getDouble("valor"), rs.getDouble("valorreceb")));
+                    else
+                        aux.add(
+                        new Recebimentos(rs.getInt("recebimentoid"), new Caixa(rs.getInt("caixaid")),mat , 
+                                rs.getDate("dtvencimento").toLocalDate(), rs.getDate("dtreceb").toLocalDate() , rs.getDate("dtemissao").toLocalDate(),
+                                rs.getDouble("valor"), rs.getDouble("valorreceb")));
                 }
             }
            

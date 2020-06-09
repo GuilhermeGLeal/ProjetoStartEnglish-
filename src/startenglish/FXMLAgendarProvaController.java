@@ -628,7 +628,7 @@ public class FXMLAgendarProvaController implements Initializable {
                             carregaTabela('L');
                             alert.showAndWait();
                             alterou = true;
-                             btSalvarOp.setDisable(false);
+                            btSalvarOp.setDisable(false);
                             evtNovo(event);
                         }
                     }

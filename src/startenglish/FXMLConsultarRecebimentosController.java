@@ -451,7 +451,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         if(recebAtual.getDtreceb() != null){
             
             ok = false;
-            a = new Alert(Alert.AlertType.WARNING, "Esse recebimento já está papo, somente é possível realizar estorno!!", ButtonType.CLOSE);
+            a = new Alert(Alert.AlertType.WARNING, "Esse recebimento já está pago, somente é possível realizar estorno!!", ButtonType.CLOSE);
         }
         
         if(a != null)
@@ -497,6 +497,11 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 
                 alterou = true;
                 btFinalizar.setDisable(false);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento atualizado com sucesso!", ButtonType.CLOSE);
+                alert.showAndWait();
+                carregaTabela('L');
+                estadoEdicao();
+                pnRegistro.setDisable(true);
             }
         }
     }

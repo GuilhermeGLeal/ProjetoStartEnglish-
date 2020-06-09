@@ -111,7 +111,7 @@
             <JFXButton fx:id="btSelecionarRecebimentos" layoutX="482.0" layoutY="159.0" onAction="#evtSelecionar" prefHeight="25.0" prefWidth="213.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Selecionar Recebimentos" />
             <AnchorPane fx:id="pnRegistro" layoutX="39.0" layoutY="198.0" prefHeight="153.0" prefWidth="1101.0">
                <children>
-                  <JFXTextField fx:id="txNomeAluno" alignment="CENTER" editable="false" layoutX="22.0" layoutY="48.0" prefHeight="31.0" prefWidth="143.0" promptText="Aluno" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txNomeAluno" alignment="CENTER" editable="false" layoutX="22.0" layoutY="48.0" prefHeight="31.0" prefWidth="163.0" promptText="Aluno" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
                   <JFXTextField fx:id="txValor" alignment="CENTER" editable="false" layoutX="191.0" layoutY="48.0" prefHeight="31.0" prefWidth="151.0" promptText="Valor" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
                   <JFXDatePicker fx:id="dtDataReceb" layoutX="367.0" layoutY="48.0" prefHeight="31.0" prefWidth="151.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
                   <JFXTextField fx:id="txValorPago" alignment="CENTER" layoutX="551.0" layoutY="48.0" prefHeight="31.0" prefWidth="153.0" promptText="Valor pago" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />

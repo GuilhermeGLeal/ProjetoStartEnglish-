@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import startenglish.db.Entidades.Cursos;
+import startenglish.db.Entidades.Professor;
 import startenglish.db.Entidades.Turma;
 import startenglish.db.util.Banco;
 
@@ -56,11 +57,15 @@ public class DALTurma
         ResultSet rs = Banco.getCon().consultar("select * from turma where turmaid="+cod);
         DALProfessor prof= new DALProfessor();
         DALCurso cur = new DALCurso();
+        Professor pro;
+        Cursos curs;
         try{
             
             if(rs.next())
-            {                
-                turma = new Turma(rs.getInt("turmaID"),rs.getString("nome"),prof.get(rs.getInt("professorID")),cur.get(rs.getInt("cursoID")),
+            {            
+                pro = prof.get(rs.getInt("professorid"));
+                curs = cur.get(rs.getInt("cursoid"));
+                turma = new Turma(rs.getInt("turmaid"),rs.getString("nome"),pro,curs,
                 rs.getString("horario"),rs.getDate("ano").toLocalDate(),rs.getString("ativo").charAt(0),rs.getString("semana"),rs.getInt("qtd_vagas"));
              }
         }

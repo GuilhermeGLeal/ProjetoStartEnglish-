@@ -18,6 +18,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -86,8 +88,6 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private JFXButton btCancelar;
     @FXML
-    private JFXButton btRefazer;
-    @FXML
     private JFXButton btEstorno;
     @FXML
     private JFXButton btCancelarOperacoes;
@@ -95,12 +95,13 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     private JFXButton btFinalizar;
 
     private boolean alterou;
-    private boolean alterando;
+    private Recebimentos recebAtual;
     private List<Recebimentos>recebs;
     @FXML
     private JFXDatePicker dtPagFim;
     @FXML
     private JFXTextField txAlunoFiltro;
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
                
@@ -113,8 +114,9 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     private void estadoOriginal(){
         
         alterou = false;
-        alterando = false;
+        
         btSelecionarRecebimentos.setDisable(true);
+        estadoEdicao();
         pnRegistro.setDisable(true);
         btFinalizar.setDisable(true);
         
@@ -122,6 +124,11 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     }
     
     private void estadoEdicao(){
+        
+        txNomeAluno.clear();
+        txValor.clear();
+        dtDataReceb.setValue(null);
+        txValorPago.clear();
         
         pnRegistro.setDisable(false);
     }
@@ -139,6 +146,36 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             
             tabelaRecibmentos.setItems(FXCollections.observableArrayList(recebs));
         }
+
+    }
+    
+    private void setTextFieldErro(JFXTextField nome) {
+
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+
+    private void setTextFieldnormal(JFXTextField nome) {
+
+        nome.setStyle("-fx-border-width: 0;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+
+    }
+    
+     private void setDataErro(JFXDatePicker nome) {
+
+        nome.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
+    }
+
+    private void setDataNormal(JFXDatePicker nome) {
+
+        nome.setStyle("-fx-border-width: 0;"
+                + "-fx-background-color: #BEBEBE;"
+                + "-fx-font-weight: bold;");
 
     }
     
@@ -185,10 +222,146 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         
         cbStatus.disarm();
     }
-    
-
+ 
     @FXML
     private void evtPesquisar(ActionEvent event) {
+
+        String filtro = cbSelecionarFiltro.getSelectionModel().getSelectedItem();
+        String nomeAluno;
+        LocalDate ini, fim;
+        List<Recebimentos> novaLista = new ArrayList();
+
+        if (cbStatus.isArmed()) { //PAGOS
+
+            if (filtro.contains("Nome do Aluno")) {
+
+                nomeAluno = txAlunoFiltro.getText();
+
+                for (int i = 0; i < recebs.size(); i++) {
+
+                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno) && recebs.get(i).getPago().equals("Pago")) {
+                        novaLista.add(recebs.get(i));
+                    }
+                }
+            } else {
+
+                 if (filtro.contains("Emissão")) {
+
+                    ini = dtEmissIni.getValue();
+                    fim = dtEmissFim.getValue();
+
+                    for (int i = 0; i < recebs.size(); i++) {
+
+                        if ((recebs.get(i).getDtemissoa().isAfter(ini) || recebs.get(i).getDtemissoa().isEqual(ini)) 
+                             && (recebs.get(i).getDtemissoa().isBefore(fim) || recebs.get(i).getDtemissoa().isEqual(fim))
+                                && recebs.get(i).getPago().equals("Pago")) {
+                            
+                            novaLista.add(recebs.get(i));
+                        }
+                    }
+
+                } else if (filtro.contains("Vencimento")) {
+                    
+                    ini = dtVencIni.getValue();
+                    fim = dtVencFim.getValue();
+
+                    for (int i = 0; i < recebs.size(); i++) {
+
+                        if ((recebs.get(i).getDtvencimento().isAfter(ini) || recebs.get(i).getDtvencimento().isEqual(ini)) 
+                             && (recebs.get(i).getDtvencimento().isBefore(fim) || recebs.get(i).getDtvencimento().isEqual(fim))
+                                && recebs.get(i).getPago().equals("Pago")) {
+                            
+                            novaLista.add(recebs.get(i));
+                        }
+                    }
+
+                } else {
+
+                    ini = dtPagaIni.getValue();
+                    fim = dtPagFim.getValue();
+
+                    for (int i = 0; i < recebs.size(); i++) {
+
+                        if (recebs.get(i).getDtreceb() != null) {
+
+                            if ((recebs.get(i).getDtreceb().isAfter(ini) || recebs.get(i).getDtreceb().isEqual(ini))
+                                    && (recebs.get(i).getDtreceb().isBefore(fim) || recebs.get(i).getDtreceb().isEqual(fim))
+                                    && recebs.get(i).getPago().equals("Pago")) {
+
+                                novaLista.add(recebs.get(i));
+                            }
+                        }
+
+                    }
+                }
+            }
+        } else { // NAO PAGOS
+
+            if (filtro.contains("Nome do Aluno")) {
+
+                nomeAluno = txAlunoFiltro.getText();
+
+                for (int i = 0; i < recebs.size(); i++) {
+
+                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno) &&recebs.get(i).getPago().equals("Não Pago")) {
+                        novaLista.add(recebs.get(i));
+                    }
+                }
+            } else {
+
+                if (filtro.contains("Emissão")) {
+
+                    ini = dtEmissIni.getValue();
+                    fim = dtEmissFim.getValue();
+
+                    for (int i = 0; i < recebs.size(); i++) {
+
+                        if ((recebs.get(i).getDtemissoa().isAfter(ini) || recebs.get(i).getDtemissoa().isEqual(ini)) 
+                             && (recebs.get(i).getDtemissoa().isBefore(fim) || recebs.get(i).getDtemissoa().isEqual(fim))
+                                && recebs.get(i).getPago().equals("Não Pago")) {
+                            
+                            novaLista.add(recebs.get(i));
+                        }
+                    }
+
+                } else if (filtro.contains("Vencimento")) {
+                    
+                    ini = dtVencIni.getValue();
+                    fim = dtVencFim.getValue();
+
+                    for (int i = 0; i < recebs.size(); i++) {
+
+                        if ((recebs.get(i).getDtvencimento().isAfter(ini) || recebs.get(i).getDtvencimento().isEqual(ini)) 
+                             && (recebs.get(i).getDtvencimento().isBefore(fim) || recebs.get(i).getDtvencimento().isEqual(fim))
+                                && recebs.get(i).getPago().equals("Não Pago")) {
+                            
+                            novaLista.add(recebs.get(i));
+                        }
+                    }
+
+                } else {
+
+                    ini = dtPagaIni.getValue();
+                    fim = dtPagFim.getValue();
+
+                    for (int i = 0; i < recebs.size(); i++) {
+
+                        if (recebs.get(i).getDtreceb() != null) {
+
+                            if ((recebs.get(i).getDtreceb().isAfter(ini) || recebs.get(i).getDtreceb().isEqual(ini))
+                                    && (recebs.get(i).getDtreceb().isBefore(fim) || recebs.get(i).getDtreceb().isEqual(fim))
+                                    && recebs.get(i).getPago().equals("Não Pago")) {
+
+                                novaLista.add(recebs.get(i));
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        tabelaRecibmentos.setItems(FXCollections.observableArrayList(novaLista));
     }
 
     @FXML
@@ -211,34 +384,91 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
     @FXML
     private void evtVoltar(ActionEvent event) {
+        
+        if (alterou) {
+            evtFinalizar(event);
+        }
+
+        FXMLPrincipalController.snprincipal.setCenter(null);
+        FXMLPrincipalController.nome.setText("");
     }
 
     @FXML
     private void evtSelecionar(ActionEvent event) {
+        
+        if(tabelaRecibmentos.getSelectionModel().getFocusedIndex() >=0){
+            
+            Recebimentos receb = tabelaRecibmentos.getSelectionModel().getSelectedItem();
+            
+            txNomeAluno.setText(receb.getMat().getAluno().getNome());
+            txValor.setText(""+receb.getValor());
+            dtDataReceb.setValue(LocalDate.now());
+            txValorPago.setText(""+receb.getValor());
+         
+            recebAtual = receb;
+            estadoEdicao();
+        }
     }
 
     @FXML
     private void evtConfirmar(ActionEvent event) {
+        
+        alterou = true;
+        btFinalizar.setDisable(false);
     }
 
     @FXML
     private void evtCancelar(ActionEvent event) {
-    }
 
-    @FXML
-    private void evtRefazerOperacao(ActionEvent event) {
+       estadoEdicao();
+       pnRegistro.setDisable(true);
     }
 
     @FXML
     private void evtEstorno(ActionEvent event) {
+        
+        alterou = true;
+        btFinalizar.setDisable(false);
     }
 
     @FXML
     private void evtCancelarOperacoes(ActionEvent event) {
+        
+         Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja cancelar todas as operações realizadas?", ButtonType.YES,ButtonType.NO);
+        
+        if(a.showAndWait().get() == ButtonType.YES){            
+          
+            carregaTabela('I');
+            btFinalizar.setDisable(true);
+            estadoOriginal();
+        }
     }
 
     @FXML
     private void evtFinalizar(ActionEvent event) {
+        
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja salvar todas modificações?", ButtonType.YES, ButtonType.NO);
+        boolean ok = false;
+        
+        if (a.showAndWait().get() == ButtonType.YES) {
+
+            DALRecebimento dale = new DALRecebimento();
+            ok = dale.InserirTudo(recebs);
+
+            Alert b = new Alert(Alert.AlertType.INFORMATION, "", ButtonType.OK);
+            if (ok) {
+                b.setContentText("Todas informações salvas com sucesso!");
+            } else {
+                b.setContentText("Problemas ao salvar as informações!");
+            }
+            
+            b.showAndWait();
+        }
+
+        if (ok) {
+            FXMLPrincipalController.snprincipal.setCenter(null);
+            FXMLPrincipalController.nome.setText("");
+        }
     }
 
     private void setaDatas(boolean flag, char data) {

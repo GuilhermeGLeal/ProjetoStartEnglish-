@@ -26,6 +26,8 @@ public class Recebimentos {
         this.valorpago = valorpago;
         if(valorpago > 0 )
             this.pago = "Pago";
+        else
+            this.pago = "Não Pago";
     }
 
     public String getPago() {

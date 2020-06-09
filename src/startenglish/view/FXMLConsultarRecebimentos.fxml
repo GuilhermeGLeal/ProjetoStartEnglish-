@@ -116,8 +116,7 @@
                   <JFXDatePicker fx:id="dtDataReceb" layoutX="367.0" layoutY="48.0" prefHeight="31.0" prefWidth="151.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
                   <JFXTextField fx:id="txValorPago" alignment="CENTER" layoutX="551.0" layoutY="48.0" prefHeight="31.0" prefWidth="153.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" text="Valor pago" />
                   <JFXButton fx:id="btConfirmar" layoutX="723.0" layoutY="39.0" onAction="#evtConfirmar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Confirmar" />
-                  <JFXButton fx:id="btCancelar" layoutX="723.0" layoutY="82.0" onAction="#evtCancelar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Cancelar" />
-                  <JFXButton fx:id="btRefazer" layoutX="896.0" layoutY="82.0" onAction="#evtRefazerOperacao" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Refazer Operação" />
+                  <JFXButton fx:id="btCancelar" layoutX="815.0" layoutY="79.0" onAction="#evtCancelar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Cancelar" />
                   <JFXButton fx:id="btEstorno" layoutX="896.0" layoutY="39.0" onAction="#evtEstorno" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Realizar Estorno" />
                   <Label layoutX="22.0" layoutY="27.0" text="Nome do Aluno" textFill="#bebebe">
                      <font>

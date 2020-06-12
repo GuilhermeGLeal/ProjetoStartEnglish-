@@ -8,6 +8,8 @@ import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -138,14 +140,16 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     private void carregaTabela(char chamada) {
 
         DALRecebimento dalRECEB = new DALRecebimento();
-        List<Recebimentos> recebimentos;
-        recebimentos = dalRECEB.get("");
-
+        List<Recebimentos> recebimentos = new ArrayList();
+      
         if (chamada == 'I') {
+            recebimentos = dalRECEB.get("");
             recebs = recebimentos;
             tabelaRecibmentos.setItems(FXCollections.observableArrayList(recebs));
-        } else if (chamada == 'L') {
+        } else if (chamada == 'L') {            
             
+            tabelaRecibmentos.setItems(FXCollections.observableArrayList(recebimentos));
+            Collections.sort(recebs, Comparator.comparing(Recebimentos::getDtemissoa).thenComparing(Recebimentos::getDtvencimento));
             tabelaRecibmentos.setItems(FXCollections.observableArrayList(recebs));
         }
 
@@ -233,7 +237,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         LocalDate ini, fim;
         List<Recebimentos> novaLista = new ArrayList();
 
-        if (cbStatus.isArmed()) { //PAGOS
+        if (cbStatus.isSelected()) { //PAGOS
 
             if (filtro.contains("Nome do Aluno")) {
 
@@ -245,6 +249,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                         novaLista.add(recebs.get(i));
                     }
                 }
+                
+                 
             } else {
 
                  if (filtro.contains("Emissão")) {
@@ -261,6 +267,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                             novaLista.add(recebs.get(i));
                         }
                     }
+                    
+                    
 
                 } else if (filtro.contains("Vencimento")) {
                     
@@ -276,6 +284,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                             novaLista.add(recebs.get(i));
                         }
                     }
+                    
+                 
 
                 } else {
 
@@ -295,6 +305,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                         }
 
                     }
+                    
+                    
                 }
             }
         } else { // NAO PAGOS
@@ -363,6 +375,13 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             }
         }
 
+        if(filtro.contains("Emissão"))
+             Collections.sort(novaLista, Comparator.comparing(Recebimentos::getDtemissoa));
+        else if(filtro.contains("Vencimento"))
+             Collections.sort(novaLista, Comparator.comparing(Recebimentos::getDtvencimento));
+        else
+             Collections.sort(novaLista, Comparator.comparing(Recebimentos::getRecebimentoid));
+        
         tabelaRecibmentos.setItems(FXCollections.observableArrayList(novaLista));
     }
 
@@ -399,7 +418,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private void evtSelecionar(ActionEvent event) {
         
-        if(tabelaRecibmentos.getSelectionModel().getFocusedIndex() >=0){
+        if(tabelaRecibmentos.getSelectionModel().getSelectedIndex()>=0){
               estadoEdicao();
             Recebimentos receb = tabelaRecibmentos.getSelectionModel().getSelectedItem();
             
@@ -484,9 +503,9 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 
                 recebs.remove(recebs.indexOf(recebAtual));
                 recebs.add(recebAtual);
-                
-                if(diferenca > 0){
-                    
+
+                if (diferenca > 0) {
+
                     rec.setCaixa(recebAtual.getCaixa());
                     rec.setMat(recebAtual.getMat());
                     rec.setDtemissoa(LocalDate.now());
@@ -494,14 +513,16 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                     rec.setValor(diferenca);
                     recebs.add(rec);
                 }
-                
+
                 alterou = true;
                 btFinalizar.setDisable(false);
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento atualizado com sucesso!", ButtonType.CLOSE);
                 alert.showAndWait();
+
                 carregaTabela('L');
                 estadoEdicao();
                 pnRegistro.setDisable(true);
+
             }
         }
     }
@@ -622,6 +643,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 setaDatas(true, 'P');
                 dtPagaIni.setValue(LocalDate.now());
                 dtPagFim.setValue(LocalDate.now().plusDays(30));
+                cbStatus.setSelected(true);
             }
 
            

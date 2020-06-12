@@ -42,7 +42,7 @@ public class Recebimentos {
     public Recebimentos() {
         
         this(0,new Caixa(),new Matricula(),null,null,null,0.0,0.0);
-        this.pago = "Não pago";
+        this.pago = "Não Pago";
     }
 
     public int getRecebimentoid() {

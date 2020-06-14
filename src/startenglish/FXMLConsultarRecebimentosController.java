@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -380,7 +381,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         else if(filtro.contains("Vencimento"))
              Collections.sort(novaLista, Comparator.comparing(Recebimentos::getDtvencimento));
         else
-             Collections.sort(novaLista, Comparator.comparing(Recebimentos::getRecebimentoid));
+             Collections.sort(novaLista, Comparator.comparing(Recebimentos::getDtreceb));
         
         tabelaRecibmentos.setItems(FXCollections.observableArrayList(novaLista));
     }
@@ -431,7 +432,56 @@ public class FXMLConsultarRecebimentosController implements Initializable {
           
         }
     }
+    
+//    private boolean validaRecebatualaux(){
+//        
+//        List<Recebimentos> recebsMat = recebMat();
+//        boolean flag = true;
+//        LocalDateTime date;
+//        for (int i = 0; i < recebsMat.size(); i++) {
+//                     
+//           
+//            if()
+//        }
+//       
+//    }
+//    
+    private List<Recebimentos> recebMat(){
+        
+        List<Recebimentos> recebsMat = new ArrayList();
+        
+        for (int i = 0; i < recebs.size(); i++) {
+            
+            if(recebs.get(i).getMat().getNummat() == recebAtual.getMat().getNummat())
+                recebsMat.add(recebs.get(i));
+        }
+        
+        Collections.sort(recebsMat, Comparator.comparing(Recebimentos::getDtreceb));
+        return recebsMat;
+    }
+    
+    private boolean validaRecebimentoAtual(){
+        
+        return false;
+    }
 
+    private boolean validaSeNaoPago(){
+        
+        Alert a = null;
+        boolean ok = true;
+        
+        if(recebAtual.getDtreceb() == null){
+            
+            ok = false;
+            a = new Alert(Alert.AlertType.WARNING, "Esse recebimento não está pago, somente é possível realizar pagamento normal!!", ButtonType.CLOSE);
+        }
+        
+        if(a != null)
+              a.showAndWait();
+        
+        return ok;
+    }
+    
     private boolean validaValor(String valor){
         
         Alert a = null;
@@ -499,8 +549,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 
                 recebAtual.setValorpago(valorPago);
                 recebAtual.setDtreceb(dtDataReceb.getValue());
-                recebAtual.setPago("Pago");
-                
+                recebAtual.setPago("Pago");                   
+               
                 recebs.remove(recebs.indexOf(recebAtual));
                 recebs.add(recebAtual);
 
@@ -537,8 +587,12 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private void evtEstorno(ActionEvent event) {
         
-        alterou = true;
-        btFinalizar.setDisable(false);
+        if(validaSeNaoPago()){
+            
+            alterou = true;
+            btFinalizar.setDisable(false);
+        }
+    
     }
 
     @FXML

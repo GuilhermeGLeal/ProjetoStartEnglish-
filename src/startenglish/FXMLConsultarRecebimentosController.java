@@ -6,8 +6,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -109,12 +109,15 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-               
+     
         setaTabela();
         estadoOriginal();
         setaCombobox();
         carregaTabela('I');
         MaskFieldUtil.maxField(txNomeAluno, 30);
+        MaskFieldUtil.maxField(txValorPago, 10);
+        MaskFieldUtil.monetaryField(txValorPago);
+     
     }    
 
     private void estadoOriginal(){
@@ -125,7 +128,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         estadoEdicao();
         pnRegistro.setDisable(true);
         btFinalizar.setDisable(true);
-        
+      
         estadoOriginalPesquisa();
     }
     
@@ -135,7 +138,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         txValor.clear();
         dtDataReceb.setValue(null);
         txValorPago.clear();
-        
+        setTextFieldnormal(txValorPago);
+        setDataNormal(dtDataReceb);
         pnRegistro.setDisable(false);
     }
     
@@ -150,7 +154,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             tabelaRecibmentos.setItems(FXCollections.observableArrayList(recebs));
         } else if (chamada == 'L') {            
                       
-            //Collections.sort(recebs, Comparator.comparing(Recebimentos::getDtemissoa).thenComparing(Recebimentos::getDtvencimento));
+            Collections.sort(recebs, Comparator.comparing(Recebimentos::getDtemissoa).thenComparing(Recebimentos::getDtvencimento));
             tabelaRecibmentos.setItems(FXCollections.observableArrayList(recebs));
         }
 
@@ -397,7 +401,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private void evtTabela(MouseEvent event) {
         
-        if(tabelaRecibmentos.getSelectionModel().getFocusedIndex() >=0){
+        if(tabelaRecibmentos.getSelectionModel().getSelectedIndex() >=0){
             btSelecionarRecebimentos.setDisable(false);
         }
         else{
@@ -419,14 +423,35 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private void evtSelecionar(ActionEvent event) {
         
+        Double valor,valorAux;
+        int conversor;
+        String valorS;
+        
         if(tabelaRecibmentos.getSelectionModel().getSelectedIndex()>=0){
-              estadoEdicao();
+        
+            estadoEdicao();
             Recebimentos receb = tabelaRecibmentos.getSelectionModel().getSelectedItem();
-            
+
             txNomeAluno.setText(receb.getMat().getAluno().getNome());
-            txValor.setText(""+receb.getValor());
+            txValor.setText("" + receb.getValor());
             dtDataReceb.setValue(LocalDate.now());
-            txValorPago.setText(""+receb.getValor());
+
+            if (receb.getValorpago() != 0) {
+               valorAux =  valor = receb.getValorpago();
+            } else {
+                valorAux = valor = receb.getValor();
+            }
+
+            conversor = valor.intValue();
+            valor = valor - conversor;
+            valorS = valorAux.toString();
+            
+            if(valor==0)
+                txValorPago.setText(valorS+'0');
+            else{
+               
+                txValorPago.setText(valorS);
+            }
             
             recebAtual = receb;
             indexAtual = tabelaRecibmentos.getSelectionModel().getSelectedIndex();
@@ -434,36 +459,36 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         }
     }
     
-//    private boolean validaRecebatualaux(){
+////    private boolean validaRecebatualaux(){
+////        
+////        List<Recebimentos> recebsMat = recebMat();
+////        boolean flag = true;
+////        LocalDateTime date;
+////        for (int i = 0; i < recebsMat.size(); i++) {
+////                     
+////           
+////            if()
+////        }
+////       
+////    }
+////    
+//    private List<Recebimentos> recebMat(){
 //        
-//        List<Recebimentos> recebsMat = recebMat();
-//        boolean flag = true;
-//        LocalDateTime date;
-//        for (int i = 0; i < recebsMat.size(); i++) {
-//                     
-//           
-//            if()
+//        List<Recebimentos> recebsMat = new ArrayList();
+//        
+//        for (int i = 0; i < recebs.size(); i++) {
+//            
+//            if(recebs.get(i).getMat().getNummat() == recebAtual.getMat().getNummat())
+//                recebsMat.add(recebs.get(i));
 //        }
-//       
+//        
+//        Collections.sort(recebsMat, Comparator.comparing(Recebimentos::getDtreceb));
+//        return recebsMat;
 //    }
-//    
-    private List<Recebimentos> recebMat(){
-        
-        List<Recebimentos> recebsMat = new ArrayList();
-        
-        for (int i = 0; i < recebs.size(); i++) {
-            
-            if(recebs.get(i).getMat().getNummat() == recebAtual.getMat().getNummat())
-                recebsMat.add(recebs.get(i));
-        }
-        
-        Collections.sort(recebsMat, Comparator.comparing(Recebimentos::getDtreceb));
-        return recebsMat;
-    }
     
     private boolean validaRecebimentoAtual(){
         
-        return false;
+        return true;
     }
 
     private boolean validaSeNaoPago(){
@@ -483,28 +508,71 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         return ok;
     }
     
+     private boolean validaPrecoTam(String preco){
+        
+        boolean ok = false;
+        int i;
+        
+        for (i = 0;  i<preco.length() && preco.charAt(i) != '.' ; i++){}
+            
+        
+        if(i <=7 )
+            ok = true;
+        
+        return ok;
+    }
+     
     private boolean validaValor(String valor){
         
+        String auxiliar="";
+        for (int i = 0; i < valor.length(); i++)
+        {
+            if(valor.charAt(i)!='.')
+            {
+                if(valor.charAt(i)==',')
+                    auxiliar+='.';
+                else
+                    auxiliar+=valor.charAt(i);
+            }
+        }
+        
         Alert a = null;
-        boolean ok = true;
+        boolean ok = true,tamanho = true;
         double valorTrans = 0;
         
         try{
-            valorTrans = Double.parseDouble(valor);
+            valorTrans = Double.parseDouble(auxiliar);
+            tamanho = validaPrecoTam(valor);
+            
         }catch(NumberFormatException e){ ok = false;}
         
-        if(!ok){
-                          
-            a = new Alert(Alert.AlertType.WARNING, "Valor inválido", ButtonType.CLOSE);
+        if(valor.isEmpty()){
+            
+            a = new Alert(Alert.AlertType.WARNING, "Valor pago não pode estar vazio!!", ButtonType.CLOSE);
             setTextFieldErro(txValorPago);
+            txValorPago.requestFocus();
+        }
+        else if(!valor.isEmpty() && !ok){
+                          
+            a = new Alert(Alert.AlertType.WARNING, "Valor pago inválido!!", ButtonType.CLOSE);
+            setTextFieldErro(txValorPago);
+            txValorPago.requestFocus();
         }
         else if(ok && valorTrans <= 0){
             
             ok = false;
-            a = new Alert(Alert.AlertType.WARNING, "Valor negativo ou igual a zero!", ButtonType.CLOSE);
+            a = new Alert(Alert.AlertType.WARNING, "Valor pago negativo ou igual a zero!", ButtonType.CLOSE);
             setTextFieldErro(txValorPago);
+            txValorPago.requestFocus();
+        } // perguntar valor maior que a conta
+        else if(!tamanho){
+            
+            ok = false;
+            setTextFieldErro(txValorPago);
+            a = new Alert(Alert.AlertType.WARNING, "É permitido apenas 7 digitos antes da casa decimal!", ButtonType.CLOSE);
+            txValorPago.requestFocus();
         }
-        else
+        else 
             setTextFieldnormal(txValorPago);
         
         if(a != null)
@@ -513,41 +581,41 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         return ok;
     }
     
-     private boolean validaValorEstorno(String valor,double valorConta){
-        
-        Alert a = null;
-        boolean ok = true;
-        double valorTrans = 0;
-        
-        try{
-            valorTrans = Double.parseDouble(valor);
-        }catch(NumberFormatException e){ ok = false;}
-        
-        if(!ok){
-                          
-            a = new Alert(Alert.AlertType.WARNING, "Valor inválido", ButtonType.CLOSE);
-            setTextFieldErro(txValorPago);
-        }
-        else if(ok && valorTrans <= 0){
-            
-            ok = false;
-            a = new Alert(Alert.AlertType.WARNING, "Valor negativo ou igual a zero!", ButtonType.CLOSE);
-            setTextFieldErro(txValorPago);
-        }
-        else if(ok && valorTrans > valorConta){
-            
-            ok = false;
-            a = new Alert(Alert.AlertType.WARNING, "Valor de estorno mais que o valor do recebimento!", ButtonType.CLOSE);
-            setTextFieldErro(txValorPago);
-        }
-        else
-            setTextFieldnormal(txValorPago);
-        
-        if(a != null)
-            a.showAndWait();
-        
-        return ok;
-    }
+//     private boolean validaValorEstorno(String valor,double valorConta){
+//        
+//        Alert a = null;
+//        boolean ok = true;
+//        double valorTrans = 0;
+//        
+//        try{
+//            valorTrans = Double.parseDouble(valor);
+//        }catch(NumberFormatException e){ ok = false;}
+//        
+//        if(!ok){
+//                          
+//            a = new Alert(Alert.AlertType.WARNING, "Valor inválido", ButtonType.CLOSE);
+//            setTextFieldErro(txValorPago);
+//        }
+//        else if(ok && valorTrans <= 0){
+//            
+//            ok = false;
+//            a = new Alert(Alert.AlertType.WARNING, "Valor negativo ou igual a zero!", ButtonType.CLOSE);
+//            setTextFieldErro(txValorPago);
+//        }
+//        else if(ok && valorTrans > valorConta){
+//            
+//            ok = false;
+//            a = new Alert(Alert.AlertType.WARNING, "Valor de estorno mais que o valor do recebimento!", ButtonType.CLOSE);
+//            setTextFieldErro(txValorPago);
+//        }
+//        else
+//            setTextFieldnormal(txValorPago);
+//        
+//        if(a != null)
+//            a.showAndWait();
+//        validaValorEstorno(txValorPago.getText(), recebAtual.getValor())
+//        return ok;
+//    }
      
     private boolean validaSePago(){
         
@@ -566,11 +634,30 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         return ok;
     }
     
+    private Double converteValor(String valor) {
+
+        String novoValor = "";
+       
+        for (int i = 0; i < valor.length(); i++) {
+            if (valor.charAt(i) != '.') {
+                if (valor.charAt(i) == ',') {
+                    novoValor += '.';
+                } else {
+                    novoValor += valor.charAt(i);
+                }
+            }
+        }        
+        return Double.parseDouble(novoValor);
+     
+    }
+    
     @FXML
     private void evtConfirmar(ActionEvent event) {
 
         double diferenca;
+        String diferenca2;
         double valorPago;
+              
         Recebimentos rec, recebAux;
 
         if (validaSePago()) {
@@ -578,7 +665,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             if (validaValor(txValorPago.getText())) {
 
                 try {
-                    valorPago = Double.parseDouble(txValorPago.getText());
+                    valorPago = converteValor(txValorPago.getText());
+                    
                 } catch (NumberFormatException e) {
                     valorPago = 0;
                 }
@@ -598,19 +686,23 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
                 if (diferenca > 0) {
 
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    diferenca2 =  df.format(diferenca);
+                    diferenca2 = diferenca2.replace(',','.');
+                    
                     rec = new Recebimentos();
                     rec.setCaixa(recebAtual.getCaixa());
                     rec.setMat(recebAtual.getMat());
                     rec.setDtemissoa(LocalDate.now());
                     rec.setDtvencimento(LocalDate.now().plusDays(30));
-                    rec.setValor(diferenca);
+                    rec.setValor(Double.parseDouble(diferenca2));
                     recebs.add(rec);
                 }
 
                 recebs.remove(indexAtual);
                 alterou = true;
                 btFinalizar.setDisable(false);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento atualizado com sucesso!", ButtonType.CLOSE);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento pago com sucesso!", ButtonType.CLOSE);
                 alert.showAndWait();
 
                 carregaTabela('L');
@@ -631,41 +723,29 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private void evtEstorno(ActionEvent event) {
 
-        double diferenca;
-        double valorPago;
         Recebimentos rec;
+        Alert alert;
 
         if (validaSeNaoPago()) {
 
             if (validaRecebimentoAtual()) {
 
-                if (validaValorEstorno(txValorPago.getText(), recebAtual.getValor())) {
+                alert = new Alert(Alert.AlertType.CONFIRMATION, "Deseja realizar estorno?", ButtonType.YES, ButtonType.NO);
 
-                    try {
-                        valorPago = Double.parseDouble(txValorPago.getText());
-                    } catch (NumberFormatException e) {
-                        valorPago = 0;
-                    }
+                if (alert.showAndWait().get() == ButtonType.YES) {
 
-                    if (valorPago == recebAtual.getValor()) {
+                    rec = new Recebimentos();
+                    rec.setCaixa(recebAtual.getCaixa());
+                    rec.setMat(recebAtual.getMat());
+                    rec.setDtemissoa(recebAtual.getDtemissoa());
+                    rec.setDtvencimento(recebAtual.getDtvencimento());
+                    rec.setValor(recebAtual.getValor());
 
-                    } else {
-
-                        diferenca = recebAtual.getValor() - valorPago;
-                        recebAtual.setValorpago(valorPago);
-
-                        rec = new Recebimentos();
-                        rec.setCaixa(recebAtual.getCaixa());
-                        rec.setMat(recebAtual.getMat());
-                        rec.setDtemissoa(LocalDate.now());
-                        rec.setDtvencimento(LocalDate.now().plusDays(30));
-                        rec.setValor(diferenca);
-                        recebs.add(rec);
-                    }
-
+                    recebs.add(rec);
+                    recebs.remove(indexAtual);
                     alterou = true;
                     btFinalizar.setDisable(false);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento atualizado com sucesso!", ButtonType.CLOSE);
+                    alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento estornado com sucesso!", ButtonType.CLOSE);
                     alert.showAndWait();
 
                     carregaTabela('L');
@@ -673,22 +753,18 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                     pnRegistro.setDisable(true);
 
                 }
-
             }
-
         }
-
     }
 
     @FXML
     private void evtCancelarOperacoes(ActionEvent event) {
-        
-         Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja cancelar todas as operações realizadas?", ButtonType.YES,ButtonType.NO);
-        
-        if(a.showAndWait().get() == ButtonType.YES){            
-          
+
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Deseja cancelar todas as operações realizadas?", ButtonType.YES, ButtonType.NO);
+
+        if (a.showAndWait().get() == ButtonType.YES) {
+
             carregaTabela('I');
-            btFinalizar.setDisable(true);
             estadoOriginal();
         }
     }
@@ -764,10 +840,11 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
         String filtro = cbSelecionarFiltro.getSelectionModel().getSelectedItem();
 
+        cbStatus.setDisable(false);
         if (filtro.contains("Data")) {
 
             txAlunoFiltro.setDisable(true);
-
+            
             if (filtro.contains("Emissão")) {
                 setaDatas(true, 'E');
 
@@ -783,6 +860,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 dtPagaIni.setValue(LocalDate.now());
                 dtPagFim.setValue(LocalDate.now().plusDays(30));
                 cbStatus.setSelected(true);
+                cbStatus.setDisable(true);
             }
 
            

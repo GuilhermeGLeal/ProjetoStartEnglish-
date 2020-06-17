@@ -109,31 +109,31 @@
             </TableView>
             <JFXButton fx:id="btVoltar" layoutX="267.0" layoutY="356.0" onAction="#evtVoltar" prefHeight="31.0" prefWidth="145.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Voltar" />
             <JFXButton fx:id="btSelecionarRecebimentos" layoutX="482.0" layoutY="159.0" onAction="#evtSelecionar" prefHeight="25.0" prefWidth="213.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Selecionar Recebimentos" />
-            <AnchorPane fx:id="pnRegistro" layoutX="11.0" layoutY="198.0" prefHeight="153.0" prefWidth="1129.0">
+            <AnchorPane fx:id="pnRegistro" layoutX="11.0" layoutY="191.0" prefHeight="160.0" prefWidth="1129.0">
                <children>
-                  <JFXTextField fx:id="txNomeAluno" alignment="CENTER" editable="false" layoutX="6.0" layoutY="48.0" prefHeight="31.0" prefWidth="231.0" promptText="Aluno" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
-                  <JFXTextField fx:id="txValor" alignment="CENTER" editable="false" layoutX="247.0" layoutY="47.0" prefHeight="31.0" prefWidth="151.0" promptText="Valor" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
-                  <JFXDatePicker fx:id="dtDataReceb" layoutX="415.0" layoutY="47.0" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
-                  <JFXTextField fx:id="txValorPago" alignment="CENTER" layoutX="599.0" layoutY="47.0" prefHeight="31.0" prefWidth="163.0" promptText="Valor pago" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
-                  <JFXButton fx:id="btConfirmar" layoutX="779.0" layoutY="41.0" onAction="#evtConfirmar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Pagamento Normal" />
-                  <JFXButton fx:id="btCancelar" layoutX="871.0" layoutY="81.0" onAction="#evtCancelar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Cancelar" />
-                  <JFXButton fx:id="btEstorno" layoutX="952.0" layoutY="41.0" onAction="#evtEstorno" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Realizar Estorno" />
-                  <Label layoutX="22.0" layoutY="27.0" text="Nome do Aluno" textFill="#bebebe">
+                  <JFXTextField fx:id="txNomeAluno" alignment="CENTER" editable="false" layoutX="10.0" layoutY="59.0" prefHeight="31.0" prefWidth="231.0" promptText="Aluno" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txValor" alignment="CENTER" editable="false" layoutX="251.0" layoutY="58.0" prefHeight="31.0" prefWidth="151.0" promptText="Valor" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
+                  <JFXDatePicker fx:id="dtDataReceb" layoutX="419.0" layoutY="58.0" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
+                  <JFXTextField fx:id="txValorPago" alignment="CENTER" layoutX="603.0" layoutY="58.0" prefHeight="31.0" prefWidth="163.0" promptText="Valor pago" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
+                  <JFXButton fx:id="btConfirmar" layoutX="783.0" layoutY="52.0" onAction="#evtConfirmar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Pagamento Normal" />
+                  <JFXButton fx:id="btCancelar" layoutX="875.0" layoutY="92.0" onAction="#evtCancelar" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Cancelar" />
+                  <JFXButton fx:id="btEstorno" layoutX="956.0" layoutY="52.0" onAction="#evtEstorno" prefHeight="31.0" prefWidth="163.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Realizar Estorno" />
+                  <Label layoutX="26.0" layoutY="38.0" text="Nome do Aluno" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="247.0" layoutY="27.0" text="Valor" textFill="#bebebe">
+                  <Label layoutX="251.0" layoutY="38.0" text="Valor" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="414.0" layoutY="26.0" text="Data de Recebimento" textFill="#bebebe">
+                  <Label layoutX="418.0" layoutY="37.0" text="Data de Recebimento" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="599.0" layoutY="26.0" text="Valor Pago" textFill="#bebebe">
+                  <Label layoutX="603.0" layoutY="37.0" text="Valor Pago" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />
                      </font>

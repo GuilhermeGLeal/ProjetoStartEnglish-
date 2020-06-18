@@ -440,7 +440,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         
         Double valor,valorAux;
         int conversor;
-        String valorS;
+        String auxiliardec;
         
         if(tabelaRecibmentos.getSelectionModel().getSelectedIndex()>=0){
         
@@ -459,15 +459,14 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
             conversor = valor.intValue();
             valor = valor - conversor;
-            valorS = valorAux.toString();
+            auxiliardec=valor.toString();
             
-            if(valor==0)
-                txValorPago.setText(valorS+'0');
-            else{
-               
-                txValorPago.setText(valorS);
-            }
+            txValorPago.setText(""+valorAux);
             
+             if(auxiliardec.length()==3 && auxiliardec.charAt(2)!='0')
+                txValorPago.setText(txValorPago.getText()+'0');
+             if(valor == 0)
+                    txValorPago.setText(txValorPago  .getText()+'0');       
             recebAtual = receb;
             indexAtual = tabelaRecibmentos.getSelectionModel().getSelectedIndex();
             

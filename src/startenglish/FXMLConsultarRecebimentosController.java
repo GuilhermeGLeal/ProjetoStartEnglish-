@@ -98,6 +98,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private JFXButton btFinalizar;
 
+    private int recebimentoIDmem;
     private boolean alterou;
     private Recebimentos recebAtual;
     private int indexAtual;
@@ -117,6 +118,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         MaskFieldUtil.maxField(txNomeAluno, 30);
         MaskFieldUtil.maxField(txValorPago, 10);
         MaskFieldUtil.monetaryField(txValorPago);
+        setaIDrecebAtual();
      
     }    
 
@@ -143,6 +145,19 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         pnRegistro.setDisable(false);
     }
     
+    private void setaIDrecebAtual(){
+        
+        int idAux = recebs.get(0).getRecebimentoid();
+        
+        for (int i = 0; i < recebs.size(); i++) {
+            
+            if(recebs.get(i).getRecebimentoid() > idAux)
+                idAux = recebs.get(i).getRecebimentoid();
+        }
+        
+       recebimentoIDmem = idAux;
+    }
+    
     private void carregaTabela(char chamada) {
 
         DALRecebimento dalRECEB = new DALRecebimento();
@@ -154,7 +169,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             tabelaRecibmentos.setItems(FXCollections.observableArrayList(recebs));
         } else if (chamada == 'L') {            
                       
-            Collections.sort(recebs, Comparator.comparing(Recebimentos::getDtemissoa).thenComparing(Recebimentos::getDtvencimento));
+            Collections.sort(recebs, Comparator.comparing(Recebimentos::getDtvencimento));
             tabelaRecibmentos.setItems(FXCollections.observableArrayList(recebs));
         }
 
@@ -455,6 +470,15 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             
             recebAtual = receb;
             indexAtual = tabelaRecibmentos.getSelectionModel().getSelectedIndex();
+            
+            if(recebAtual.getDtreceb() != null){
+                btEstorno.setDisable(false);
+                btConfirmar.setDisable(true);
+            }
+            else{
+                btEstorno.setDisable(true);
+                btConfirmar.setDisable(false);
+            }
           
         }
     }
@@ -491,24 +515,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         return true;
     }
 
-    private boolean validaSeNaoPago(){
-        
-        Alert a = null;
-        boolean ok = true;
-        
-        if(recebAtual.getDtreceb() == null){
-            
-            ok = false;
-            a = new Alert(Alert.AlertType.WARNING, "Esse recebimento não está pago, somente é possível realizar pagamento normal!!", ButtonType.CLOSE);
-        }
-        
-        if(a != null)
-              a.showAndWait();
-        
-        return ok;
-    }
-    
-     private boolean validaPrecoTam(String preco){
+     
+    private boolean validaPrecoTam(String preco){
         
         boolean ok = false;
         int i;
@@ -564,7 +572,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "Valor pago negativo ou igual a zero!", ButtonType.CLOSE);
             setTextFieldErro(txValorPago);
             txValorPago.requestFocus();
-        } // perguntar valor maior que a conta
+        } 
         else if(!tamanho){
             
             ok = false;
@@ -580,60 +588,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         
         return ok;
     }
-    
-//     private boolean validaValorEstorno(String valor,double valorConta){
-//        
-//        Alert a = null;
-//        boolean ok = true;
-//        double valorTrans = 0;
-//        
-//        try{
-//            valorTrans = Double.parseDouble(valor);
-//        }catch(NumberFormatException e){ ok = false;}
-//        
-//        if(!ok){
-//                          
-//            a = new Alert(Alert.AlertType.WARNING, "Valor inválido", ButtonType.CLOSE);
-//            setTextFieldErro(txValorPago);
-//        }
-//        else if(ok && valorTrans <= 0){
-//            
-//            ok = false;
-//            a = new Alert(Alert.AlertType.WARNING, "Valor negativo ou igual a zero!", ButtonType.CLOSE);
-//            setTextFieldErro(txValorPago);
-//        }
-//        else if(ok && valorTrans > valorConta){
-//            
-//            ok = false;
-//            a = new Alert(Alert.AlertType.WARNING, "Valor de estorno mais que o valor do recebimento!", ButtonType.CLOSE);
-//            setTextFieldErro(txValorPago);
-//        }
-//        else
-//            setTextFieldnormal(txValorPago);
-//        
-//        if(a != null)
-//            a.showAndWait();
-//        validaValorEstorno(txValorPago.getText(), recebAtual.getValor())
-//        return ok;
-//    }
-     
-    private boolean validaSePago(){
-        
-        Alert a = null;
-        boolean ok = true;
-        
-        if(recebAtual.getDtreceb() != null){
-            
-            ok = false;
-            a = new Alert(Alert.AlertType.WARNING, "Esse recebimento já está pago, somente é possível realizar estorno!!", ButtonType.CLOSE);
-        }
-        
-        if(a != null)
-              a.showAndWait();
-        
-        return ok;
-    }
-    
+          
     private Double converteValor(String valor) {
 
         String novoValor = "";
@@ -657,19 +612,25 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         double diferenca;
         String diferenca2;
         double valorPago;
-              
+        Alert alert = null;
         Recebimentos rec, recebAux;
+        boolean ok = true;
+        if (validaValor(txValorPago.getText())) {
 
-        if (validaSePago()) {
+            try {
+                valorPago = converteValor(txValorPago.getText());
 
-            if (validaValor(txValorPago.getText())) {
+            } catch (NumberFormatException e) {
+                valorPago = 0;
+            }
 
-                try {
-                    valorPago = converteValor(txValorPago.getText());
-                    
-                } catch (NumberFormatException e) {
-                    valorPago = 0;
-                }
+            if(valorPago > recebAtual.getValor())
+              alert = new Alert(Alert.AlertType.CONFIRMATION, "Valor pago maior que o do recebimento, Deseja continuar?", ButtonType.YES,ButtonType.NO);
+            else
+                ok = false;
+            
+            if (!ok || (alert != null && alert.showAndWait().get() == ButtonType.YES)) {
+
                 diferenca = recebAtual.getValor() - valorPago;
 
                 recebAux = new Recebimentos();
@@ -687,10 +648,12 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 if (diferenca > 0) {
 
                     DecimalFormat df = new DecimalFormat("#.##");
-                    diferenca2 =  df.format(diferenca);
-                    diferenca2 = diferenca2.replace(',','.');
-                    
+                    diferenca2 = df.format(diferenca);
+                    diferenca2 = diferenca2.replace(',', '.');
+                    recebimentoIDmem++;
                     rec = new Recebimentos();
+                    
+                    rec.setRecebimentoid(recebimentoIDmem);
                     rec.setCaixa(recebAtual.getCaixa());
                     rec.setMat(recebAtual.getMat());
                     rec.setDtemissoa(LocalDate.now());
@@ -702,15 +665,16 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 recebs.remove(indexAtual);
                 alterou = true;
                 btFinalizar.setDisable(false);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento pago com sucesso!", ButtonType.CLOSE);
+                alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento pago com sucesso!", ButtonType.CLOSE);
                 alert.showAndWait();
 
                 carregaTabela('L');
                 estadoEdicao();
                 pnRegistro.setDisable(true);
-
             }
+
         }
+
     }
 
     @FXML
@@ -726,35 +690,33 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         Recebimentos rec;
         Alert alert;
 
-        if (validaSeNaoPago()) {
+        if (validaRecebimentoAtual()) {
 
-            if (validaRecebimentoAtual()) {
+            alert = new Alert(Alert.AlertType.CONFIRMATION, "Deseja realizar estorno?", ButtonType.YES, ButtonType.NO);
 
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Deseja realizar estorno?", ButtonType.YES, ButtonType.NO);
+            if (alert.showAndWait().get() == ButtonType.YES) {
 
-                if (alert.showAndWait().get() == ButtonType.YES) {
+                rec = new Recebimentos();
+                rec.setCaixa(recebAtual.getCaixa());
+                rec.setMat(recebAtual.getMat());
+                rec.setDtemissoa(recebAtual.getDtemissoa());
+                rec.setDtvencimento(recebAtual.getDtvencimento());
+                rec.setValor(recebAtual.getValor());
 
-                    rec = new Recebimentos();
-                    rec.setCaixa(recebAtual.getCaixa());
-                    rec.setMat(recebAtual.getMat());
-                    rec.setDtemissoa(recebAtual.getDtemissoa());
-                    rec.setDtvencimento(recebAtual.getDtvencimento());
-                    rec.setValor(recebAtual.getValor());
+                recebs.add(rec);
+                recebs.remove(indexAtual);
+                alterou = true;
+                btFinalizar.setDisable(false);
+                alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento estornado com sucesso!", ButtonType.CLOSE);
+                alert.showAndWait();
 
-                    recebs.add(rec);
-                    recebs.remove(indexAtual);
-                    alterou = true;
-                    btFinalizar.setDisable(false);
-                    alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento estornado com sucesso!", ButtonType.CLOSE);
-                    alert.showAndWait();
+                carregaTabela('L');
+                estadoEdicao();
+                pnRegistro.setDisable(true);
 
-                    carregaTabela('L');
-                    estadoEdicao();
-                    pnRegistro.setDisable(true);
-
-                }
             }
         }
+
     }
 
     @FXML

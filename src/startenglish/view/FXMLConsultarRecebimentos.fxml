@@ -97,14 +97,14 @@
          <children>
             <TableView fx:id="tabelaRecibmentos" layoutX="10.0" layoutY="14.0" onMouseClicked="#evtTabela" prefHeight="135.0" prefWidth="1129.0" style="-fx-background-color: black;">
                <columns>
-                  <TableColumn fx:id="tcDataEmissao" prefWidth="126.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="DataEmissão" />
                   <TableColumn fx:id="tcDataVencimento" prefWidth="152.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="DataVencimento" />
-                  <TableColumn fx:id="tcDataPagamentoo" prefWidth="146.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="DataPagamento" />
                   <TableColumn fx:id="tcNumMat" prefWidth="139.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="Número Matricula" />
                   <TableColumn fx:id="tcNomeAluno" prefWidth="213.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="Nome do Aluno" />
                   <TableColumn fx:id="tcValor" prefWidth="121.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="Valor" />
+                  <TableColumn fx:id="tcDataPagamentoo" prefWidth="146.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="DataPagamento" />
                   <TableColumn fx:id="tcValorPago" prefWidth="124.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="ValorPago" />
                   <TableColumn fx:id="tcStatus" prefWidth="106.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="Status" />
+                  <TableColumn fx:id="tcDataEmissao" prefWidth="126.0" style="-fx-background-color: #BEBEBE; -fx-font-weight: bold; -fx-alignment: center;" text="DataEmissão" />
                </columns>
             </TableView>
             <JFXButton fx:id="btVoltar" layoutX="267.0" layoutY="356.0" onAction="#evtVoltar" prefHeight="31.0" prefWidth="145.0" style="-fx-background-color: #FF7F27; -fx-font-weight: bold;" text="Voltar" />

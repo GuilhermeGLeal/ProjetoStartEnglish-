@@ -14,8 +14,13 @@ public class DALRecebimento {
     
     public boolean inserir(Recebimentos r){
         
-        String sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb)"
+        String sql;
+        if(r.getDtreceb() != null)
+         sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb)"
                 + " values(#1,#2,'#3','#4','#5',#6,#7)";
+        else
+            sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb)"
+                + " values(#1,#2,'#3',#4,'#5',#6,#7)";
         
         sql = sql.replaceAll("#1",""+r.getMat().getNummat());
         sql = sql.replaceAll("#2",""+r.getCaixa().getCaixaid());

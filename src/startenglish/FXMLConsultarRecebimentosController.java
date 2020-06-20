@@ -605,7 +605,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             setTextFieldErro(txValorPago);
             txValorPago.requestFocus();
         }       
-        else if(ok && valorTrans == 0){
+        else if(ok && valorTrans == 0 || valor.startsWith("0")){
             
             ok = false;
             a = new Alert(Alert.AlertType.WARNING, "Valor pago negativo ou igual a zero!", ButtonType.CLOSE);

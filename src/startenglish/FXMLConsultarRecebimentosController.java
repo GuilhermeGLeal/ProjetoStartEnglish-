@@ -68,11 +68,11 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private TableColumn<Recebimentos, Double> tcValorPago;
     @FXML
-    private TableColumn<Recebimentos, Date> tcDataEmissao;
+    private TableColumn<Recebimentos, String> tcDataEmissao;
     @FXML
-    private TableColumn<Recebimentos, Date> tcDataVencimento;
+    private TableColumn<Recebimentos, String> tcDataVencimento;
     @FXML
-    private TableColumn<Recebimentos, Date> tcDataPagamentoo;
+    private TableColumn<Recebimentos, String> tcDataPagamentoo;
     @FXML
     private TableColumn<Recebimentos, Integer> tcNumMat;
     @FXML
@@ -224,9 +224,9 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         
         tcValor.setCellValueFactory(new PropertyValueFactory("valor"));
         tcValorPago.setCellValueFactory(new PropertyValueFactory("valorpago"));
-        tcDataEmissao.setCellValueFactory(new PropertyValueFactory("dtemissoa"));
-        tcDataVencimento.setCellValueFactory(new PropertyValueFactory("dtvencimento"));
-        tcDataPagamentoo.setCellValueFactory(new PropertyValueFactory("dtreceb"));
+        tcDataEmissao.setCellValueFactory(new PropertyValueFactory("dtEmissaoFORM"));
+        tcDataVencimento.setCellValueFactory(new PropertyValueFactory("dtVencimentoFORM"));
+        tcDataPagamentoo.setCellValueFactory(new PropertyValueFactory("dtRecebFORM"));
         tcNumMat.setCellValueFactory(cellData -> new SimpleObjectProperty(cellData.getValue().getMat().getNummat()));
         tcNomeAluno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMat().getAluno().getNome()));
         tcStatus.setCellValueFactory(new PropertyValueFactory("pago"));
@@ -605,7 +605,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             setTextFieldErro(txValorPago);
             txValorPago.requestFocus();
         }       
-        else if(ok && valorTrans == 0 || valor.startsWith("0")){
+        else if(ok && valorTrans == 0) {
             
             ok = false;
             a = new Alert(Alert.AlertType.WARNING, "Valor pago negativo ou igual a zero!", ButtonType.CLOSE);
@@ -675,7 +675,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 recebAux.setValorpago(valorPago);
                 recebAux.setDtreceb(dtDataReceb.getValue());
                 recebAux.setPago("Pago");
-
+                recebAux.setaDatas();
                 recebs.add(recebAux);
 
                 if (diferenca > 0) {
@@ -692,6 +692,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                     rec.setDtemissoa(LocalDate.now());
                     rec.setDtvencimento(LocalDate.now().plusDays(30));
                     rec.setValor(Double.parseDouble(diferenca2));
+                    rec.setaDatas();
                     recebs.add(rec);
                 }
 
@@ -737,7 +738,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 rec.setDtemissoa(recebAtual.getDtemissoa());
                 rec.setDtvencimento(recebAtual.getDtvencimento());
                 rec.setValor(recebAtual.getValor());
-
+                rec.setaDatas();
+                
                 aux = retornaNaoPago(recebsMat);
                 if(aux != null){
                          recebs.remove(recebs.indexOf(aux));

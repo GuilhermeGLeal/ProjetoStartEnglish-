@@ -59,7 +59,7 @@ public class FXMLAgendarProvaController implements Initializable {
     @FXML
     private TableColumn<Agenda, String> tcProfessor;
     @FXML
-    private TableColumn<Agenda, Date> tcData;
+    private TableColumn<Agenda, String> tcData;
     @FXML
     private TableColumn<Agenda, String> tcStatus;
     @FXML
@@ -126,7 +126,7 @@ public class FXMLAgendarProvaController implements Initializable {
 
         tcNomeAluno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAluno().getNome()));
         tcCPF.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAluno().getCpf()));
-        tcData.setCellValueFactory(new PropertyValueFactory("dataProva"));
+        tcData.setCellValueFactory(new PropertyValueFactory("dataProvaFORM"));
         tcHoraIni.setCellValueFactory(new PropertyValueFactory("horaini"));
         tcHoraFim.setCellValueFactory(new PropertyValueFactory("horafim"));
         tcProfessor.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProfessor().getFunc().getNome()));
@@ -510,7 +510,7 @@ public class FXMLAgendarProvaController implements Initializable {
             dtDataAgend.requestFocus();
             setDataErro(dtDataAgend);
 
-        } else if (date.isBefore(LocalDate.now())) {
+        } else if (!alterando && date.isBefore(LocalDate.now())) {
 
             ok = false;
             a = new Alert(Alert.AlertType.WARNING, "Data de agendamento antes do dia atual!", ButtonType.CLOSE);
@@ -607,7 +607,7 @@ public class FXMLAgendarProvaController implements Initializable {
                             a.setHorafim(txHoraFim.getText());
                             a.setStatus(cbStatus.getSelectionModel().getSelectedItem());
                             a.setSituacao_prova(retornaStatus(cbStatus.getSelectionModel().getSelectedItem()));
-                            
+                            a.setaData();
                             if (alterando) {
 
                                 if (indexalterando < listaauxliar.size()) {

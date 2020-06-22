@@ -266,7 +266,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
                 for (int i = 0; i < recebs.size(); i++) {
 
-                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno) && recebs.get(i).getPago().equals("Pago")) {
+                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno.toLowerCase()) && recebs.get(i).getPago().equals("Pago")) {
                         novaLista.add(recebs.get(i));
                     }
                 }
@@ -338,7 +338,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
                 for (int i = 0; i < recebs.size(); i++) {
 
-                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno) &&recebs.get(i).getPago().equals("Não Pago")) {
+                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno.toLowerCase()) &&recebs.get(i).getPago().equals("Não Pago")) {
                         novaLista.add(recebs.get(i));
                     }
                 }
@@ -488,7 +488,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                     txValorPago.setText(txValorPago  .getText()+'0');    
              
             recebAtual = receb;
-            indexAtual = tabelaRecibmentos.getSelectionModel().getSelectedIndex();
+            indexAtual = recebs.indexOf(recebAtual);
             
             if(recebAtual.getDtreceb() != null){
                 btEstorno.setDisable(false);
@@ -638,6 +638,26 @@ public class FXMLConsultarRecebimentosController implements Initializable {
      
     }
     
+    private boolean validaData(LocalDate date){
+        
+        Alert a = null;
+        boolean ok = true;
+        
+        if(date.isBefore(recebAtual.getDtemissoa()))
+        {
+            ok = false;
+            setDataErro(dtDataReceb);
+             a = new Alert(Alert.AlertType.WARNING, "Data de pagamento antes da data de emissão!", ButtonType.CLOSE);
+        }
+        else
+            setDataNormal(dtDataReceb);
+        
+        if(a != null)
+            a.showAndWait();
+        
+        return ok;
+    }
+    
     @FXML
     private void evtConfirmar(ActionEvent event) {
 
@@ -647,6 +667,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         Alert alert = null;
         Recebimentos rec, recebAux;
         boolean ok = true;
+        
+        //if(validaData(dtDataReceb.getValue())){}
         if (validaValor(txValorPago.getText())) {
 
             try {
@@ -690,7 +712,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                     rec.setCaixa(recebAtual.getCaixa());
                     rec.setMat(recebAtual.getMat());
                     rec.setDtemissoa(LocalDate.now());
-                    rec.setDtvencimento(LocalDate.now().plusDays(30));
+                    rec.setDtvencimento(recebAtual.getDtvencimento().plusDays(30));
                     rec.setValor(Double.parseDouble(diferenca2));
                     rec.setaDatas();
                     recebs.add(rec);
@@ -782,6 +804,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         
         if (a.showAndWait().get() == ButtonType.YES) {
 
+            Collections.sort(recebs, Comparator.comparing(Recebimentos::getRecebimentoid));
             DALRecebimento dale = new DALRecebimento();
             ok = dale.InserirTudo(recebs);
 

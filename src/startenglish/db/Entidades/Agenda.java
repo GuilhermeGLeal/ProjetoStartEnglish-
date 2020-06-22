@@ -1,6 +1,7 @@
 package startenglish.db.Entidades;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class Agenda {
@@ -14,6 +15,8 @@ public class Agenda {
     private String local;
     private char situacao_prova;
     private double nota;
+    private String dataProvaFORM;
+    private String status;
 
     public String getStatus() {
         return status;
@@ -22,8 +25,17 @@ public class Agenda {
     public void setStatus(String status) {
         this.status = status;
     }
-    private String status;
+   
 
+    public String getDataProvaFORM() {
+        return dataProvaFORM;
+    }
+
+    public void setDataProvaFORM(String dataProvaFORM) {
+        this.dataProvaFORM = dataProvaFORM;
+    }
+
+    
     public Agenda(int ID, Professor professor, Aluno aluno, LocalDate dataProva, String horaini, String horafim, String local, char situacao_prova, double nota) {
         this.ID = ID;
         this.professor = professor;
@@ -46,8 +58,16 @@ public class Agenda {
                 this.status = "Faltou";
                 break;
         }
+        
+        setaData();
     }
    
+    public void setaData(){
+        if(dataProva != null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            this.dataProvaFORM  = this.dataProva.format(formatter);
+        }
+    }
     public Agenda() {
         
         this(0,new Professor(),new Aluno(),null,"","","",'F',0.0);

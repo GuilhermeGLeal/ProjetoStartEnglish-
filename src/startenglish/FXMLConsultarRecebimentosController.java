@@ -68,11 +68,11 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private TableColumn<Recebimentos, Double> tcValorPago;
     @FXML
-    private TableColumn<Recebimentos, Date> tcDataEmissao;
+    private TableColumn<Recebimentos, String> tcDataEmissao;
     @FXML
-    private TableColumn<Recebimentos, Date> tcDataVencimento;
+    private TableColumn<Recebimentos, String> tcDataVencimento;
     @FXML
-    private TableColumn<Recebimentos, Date> tcDataPagamentoo;
+    private TableColumn<Recebimentos, String> tcDataPagamentoo;
     @FXML
     private TableColumn<Recebimentos, Integer> tcNumMat;
     @FXML
@@ -118,6 +118,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         MaskFieldUtil.maxField(txNomeAluno, 30);
         MaskFieldUtil.maxField(txValorPago, 10);
         MaskFieldUtil.monetaryField(txValorPago);
+        MaskFieldUtil.monetaryField(txValor);
         setaIDrecebAtual();
      
     }    
@@ -223,9 +224,9 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         
         tcValor.setCellValueFactory(new PropertyValueFactory("valor"));
         tcValorPago.setCellValueFactory(new PropertyValueFactory("valorpago"));
-        tcDataEmissao.setCellValueFactory(new PropertyValueFactory("dtemissoa"));
-        tcDataVencimento.setCellValueFactory(new PropertyValueFactory("dtvencimento"));
-        tcDataPagamentoo.setCellValueFactory(new PropertyValueFactory("dtreceb"));
+        tcDataEmissao.setCellValueFactory(new PropertyValueFactory("dtEmissaoFORM"));
+        tcDataVencimento.setCellValueFactory(new PropertyValueFactory("dtVencimentoFORM"));
+        tcDataPagamentoo.setCellValueFactory(new PropertyValueFactory("dtRecebFORM"));
         tcNumMat.setCellValueFactory(cellData -> new SimpleObjectProperty(cellData.getValue().getMat().getNummat()));
         tcNomeAluno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMat().getAluno().getNome()));
         tcStatus.setCellValueFactory(new PropertyValueFactory("pago"));
@@ -265,7 +266,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
                 for (int i = 0; i < recebs.size(); i++) {
 
-                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno) && recebs.get(i).getPago().equals("Pago")) {
+                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno.toLowerCase()) && recebs.get(i).getPago().equals("Pago")) {
                         novaLista.add(recebs.get(i));
                     }
                 }
@@ -337,7 +338,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
                 for (int i = 0; i < recebs.size(); i++) {
 
-                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno) &&recebs.get(i).getPago().equals("Não Pago")) {
+                    if (recebs.get(i).getMat().getAluno().getNome().toLowerCase().contains(nomeAluno.toLowerCase()) &&recebs.get(i).getPago().equals("Não Pago")) {
                         novaLista.add(recebs.get(i));
                     }
                 }
@@ -440,15 +441,30 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         
         Double valor,valorAux;
         int conversor;
-        String valorS;
-        
+        String auxiliardec;
+        DecimalFormat df;
+                
         if(tabelaRecibmentos.getSelectionModel().getSelectedIndex()>=0){
         
             estadoEdicao();
             Recebimentos receb = tabelaRecibmentos.getSelectionModel().getSelectedItem();
 
             txNomeAluno.setText(receb.getMat().getAluno().getNome());
-            txValor.setText("" + receb.getValor());
+            valor = valorAux = receb.getValor();
+            conversor = valor.intValue();
+            valor = valor - conversor;
+                       
+            txValor.setText(""+valorAux);
+            df = new DecimalFormat("#.##");
+            auxiliardec = df.format(valor);
+            auxiliardec = auxiliardec.replace(',', '.');
+            
+              
+             if(auxiliardec.length() == 3 && auxiliardec.charAt(2) != '0')
+                txValor.setText(txValor.getText()+'0');
+             if(valor == 0)
+                    txValor.setText(txValor  .getText()+'0');   
+             
             dtDataReceb.setValue(LocalDate.now());
 
             if (receb.getValorpago() != 0) {
@@ -459,77 +475,107 @@ public class FXMLConsultarRecebimentosController implements Initializable {
 
             conversor = valor.intValue();
             valor = valor - conversor;
-            valorS = valorAux.toString();
+                        
+            txValorPago.setText(""+valorAux);
+            df = new DecimalFormat("#.##");
+            auxiliardec = df.format(valor);
+            auxiliardec = auxiliardec.replace(',', '.');
             
-            if(valor==0)
-                txValorPago.setText(valorS+'0');
-            else{
-               
-                txValorPago.setText(valorS);
-            }
-            
+              
+             if(auxiliardec.length() == 3 && auxiliardec.charAt(2) != '0')
+                txValorPago.setText(txValorPago.getText()+'0');
+             if(valor == 0)
+                    txValorPago.setText(txValorPago  .getText()+'0');    
+             
             recebAtual = receb;
-            indexAtual = tabelaRecibmentos.getSelectionModel().getSelectedIndex();
+            indexAtual = recebs.indexOf(recebAtual);
             
             if(recebAtual.getDtreceb() != null){
                 btEstorno.setDisable(false);
                 btConfirmar.setDisable(true);
+                
+                dtDataReceb.setEditable(false);
+                txValorPago.setEditable(false);
             }
             else{
                 btEstorno.setDisable(true);
                 btConfirmar.setDisable(false);
+                
+                dtDataReceb.setEditable(true);
+                txValorPago.setEditable(true);
             }
           
         }
     }
     
-////    private boolean validaRecebatualaux(){
-////        
-////        List<Recebimentos> recebsMat = recebMat();
-////        boolean flag = true;
-////        LocalDateTime date;
-////        for (int i = 0; i < recebsMat.size(); i++) {
-////                     
-////           
-////            if()
-////        }
-////       
-////    }
-////    
-//    private List<Recebimentos> recebMat(){
-//        
-//        List<Recebimentos> recebsMat = new ArrayList();
-//        
-//        for (int i = 0; i < recebs.size(); i++) {
-//            
-//            if(recebs.get(i).getMat().getNummat() == recebAtual.getMat().getNummat())
-//                recebsMat.add(recebs.get(i));
-//        }
-//        
-//        Collections.sort(recebsMat, Comparator.comparing(Recebimentos::getDtreceb));
-//        return recebsMat;
-//    }
-    
-    private boolean validaRecebimentoAtual(){
-        
-        return true;
-    }
-
+    private Recebimentos retornaNaoPago(List<Recebimentos> recebsMat){
      
-    private boolean validaPrecoTam(String preco){
+        for (int i = 0; i < recebsMat.size(); i++) {
+                     
+            if(recebsMat.get(i).getPago().equals("Não Pago"))
+                return recebsMat.get(i);
+
+        }
+       
+        return null;
+    }
+    
+    private boolean validaRecebatualaux(List<Recebimentos> recebsMat){
         
-        boolean ok = false;
-        int i;
+        boolean flag = true;
+        Recebimentos recebAux;
         
-        for (i = 0;  i<preco.length() && preco.charAt(i) != '.' ; i++){}
+        for (int i = 0; i < recebsMat.size() && flag; i++) {
+                    
+            recebAux = recebsMat.get(i);
+           if(recebAux.getPago().equals("Pago")){
+               
+               if(recebAux.getDtreceb().equals(recebAtual.getDtreceb())){
+                   
+                   if(recebAtual.getRecebimentoid() < recebAux.getRecebimentoid())
+                       flag = !flag;
+               }
+               else if(recebAtual.getDtreceb().isBefore(recebAux.getDtreceb()))
+                   flag = !flag;
+           }
+
+        }
+       
+        return flag;
+    }
+    
+    private List<Recebimentos> recebMat(){
+        
+        List<Recebimentos> recebsMat = new ArrayList();
+        
+        for (int i = 0; i < recebs.size(); i++) {
             
+            if(recebs.get(i).getMat().getNummat() == recebAtual.getMat().getNummat())
+                recebsMat.add(recebs.get(i));
+        }
         
-        if(i <=7 )
-            ok = true;
+        Collections.sort(recebsMat, Comparator.comparing(Recebimentos::getRecebimentoid));
+        return recebsMat;
+    }
+    
+    private boolean validaRecebimentoAtual(List<Recebimentos> recebsMat){
         
+        boolean ok;
+        Alert a = null;
+        
+        ok = validaRecebatualaux(recebsMat);
+        
+        if (!ok) {
+
+            a = new Alert(Alert.AlertType.WARNING, "Este recebimento não é o mais atual, logo não pode ser estornado!!", ButtonType.CLOSE);
+        }
+        
+         if(a != null)
+             a.showAndWait();
         return ok;
     }
      
+  
     private boolean validaValor(String valor){
         
         String auxiliar="";
@@ -545,13 +591,12 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         }
         
         Alert a = null;
-        boolean ok = true,tamanho = true;
+        boolean ok = true;
         double valorTrans = 0;
         
         try{
             valorTrans = Double.parseDouble(auxiliar);
-            tamanho = validaPrecoTam(valor);
-            
+                       
         }catch(NumberFormatException e){ ok = false;}
         
         if(valor.isEmpty()){
@@ -559,27 +604,14 @@ public class FXMLConsultarRecebimentosController implements Initializable {
             a = new Alert(Alert.AlertType.WARNING, "Valor pago não pode estar vazio!!", ButtonType.CLOSE);
             setTextFieldErro(txValorPago);
             txValorPago.requestFocus();
-        }
-        else if(!valor.isEmpty() && !ok){
-                          
-            a = new Alert(Alert.AlertType.WARNING, "Valor pago inválido!!", ButtonType.CLOSE);
-            setTextFieldErro(txValorPago);
-            txValorPago.requestFocus();
-        }
-        else if(ok && valorTrans <= 0){
+        }       
+        else if(ok && valorTrans == 0) {
             
             ok = false;
             a = new Alert(Alert.AlertType.WARNING, "Valor pago negativo ou igual a zero!", ButtonType.CLOSE);
             setTextFieldErro(txValorPago);
             txValorPago.requestFocus();
-        } 
-        else if(!tamanho){
-            
-            ok = false;
-            setTextFieldErro(txValorPago);
-            a = new Alert(Alert.AlertType.WARNING, "É permitido apenas 7 digitos antes da casa decimal!", ButtonType.CLOSE);
-            txValorPago.requestFocus();
-        }
+        }        
         else 
             setTextFieldnormal(txValorPago);
         
@@ -606,6 +638,26 @@ public class FXMLConsultarRecebimentosController implements Initializable {
      
     }
     
+    private boolean validaData(LocalDate date){
+        
+        Alert a = null;
+        boolean ok = true;
+        
+        if(date.isBefore(recebAtual.getDtemissoa()))
+        {
+            ok = false;
+            setDataErro(dtDataReceb);
+             a = new Alert(Alert.AlertType.WARNING, "Data de pagamento antes da data de emissão!", ButtonType.CLOSE);
+        }
+        else
+            setDataNormal(dtDataReceb);
+        
+        if(a != null)
+            a.showAndWait();
+        
+        return ok;
+    }
+    
     @FXML
     private void evtConfirmar(ActionEvent event) {
 
@@ -615,6 +667,8 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         Alert alert = null;
         Recebimentos rec, recebAux;
         boolean ok = true;
+        
+        //if(validaData(dtDataReceb.getValue())){}
         if (validaValor(txValorPago.getText())) {
 
             try {
@@ -634,6 +688,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 diferenca = recebAtual.getValor() - valorPago;
 
                 recebAux = new Recebimentos();
+                recebAux.setRecebimentoid(recebAtual.getRecebimentoid());
                 recebAux.setCaixa(recebAtual.getCaixa());
                 recebAux.setMat(recebAtual.getMat());
                 recebAux.setDtemissoa(recebAtual.getDtemissoa());
@@ -642,7 +697,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                 recebAux.setValorpago(valorPago);
                 recebAux.setDtreceb(dtDataReceb.getValue());
                 recebAux.setPago("Pago");
-
+                recebAux.setaDatas();
                 recebs.add(recebAux);
 
                 if (diferenca > 0) {
@@ -657,8 +712,9 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                     rec.setCaixa(recebAtual.getCaixa());
                     rec.setMat(recebAtual.getMat());
                     rec.setDtemissoa(LocalDate.now());
-                    rec.setDtvencimento(LocalDate.now().plusDays(30));
+                    rec.setDtvencimento(recebAtual.getDtvencimento().plusDays(30));
                     rec.setValor(Double.parseDouble(diferenca2));
+                    rec.setaDatas();
                     recebs.add(rec);
                 }
 
@@ -687,24 +743,33 @@ public class FXMLConsultarRecebimentosController implements Initializable {
     @FXML
     private void evtEstorno(ActionEvent event) {
 
-        Recebimentos rec;
+        Recebimentos rec,aux;
         Alert alert;
+        List<Recebimentos> recebsMat = recebMat();
 
-        if (validaRecebimentoAtual()) {
+        if (validaRecebimentoAtual(recebsMat)) {
 
             alert = new Alert(Alert.AlertType.CONFIRMATION, "Deseja realizar estorno?", ButtonType.YES, ButtonType.NO);
 
             if (alert.showAndWait().get() == ButtonType.YES) {
 
                 rec = new Recebimentos();
+                rec.setRecebimentoid(recebAtual.getRecebimentoid());
                 rec.setCaixa(recebAtual.getCaixa());
                 rec.setMat(recebAtual.getMat());
                 rec.setDtemissoa(recebAtual.getDtemissoa());
                 rec.setDtvencimento(recebAtual.getDtvencimento());
                 rec.setValor(recebAtual.getValor());
-
+                rec.setaDatas();
+                
+                aux = retornaNaoPago(recebsMat);
+                if(aux != null){
+                         recebs.remove(recebs.indexOf(aux));
+                }
+                
+                recebs.remove(recebs.indexOf(recebAtual));
                 recebs.add(rec);
-                recebs.remove(indexAtual);
+                             
                 alterou = true;
                 btFinalizar.setDisable(false);
                 alert = new Alert(Alert.AlertType.INFORMATION, "Recebimento estornado com sucesso!", ButtonType.CLOSE);
@@ -739,6 +804,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         
         if (a.showAndWait().get() == ButtonType.YES) {
 
+            Collections.sort(recebs, Comparator.comparing(Recebimentos::getRecebimentoid));
             DALRecebimento dale = new DALRecebimento();
             ok = dale.InserirTudo(recebs);
 

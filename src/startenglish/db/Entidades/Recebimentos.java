@@ -1,6 +1,7 @@
 package startenglish.db.Entidades;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class Recebimentos {
@@ -11,6 +12,9 @@ public class Recebimentos {
     private LocalDate dtvencimento;
     private LocalDate dtreceb;
     private LocalDate dtemissoa;
+    private String dtVencimentoFORM;
+    private String dtRecebFORM;
+    private String dtEmissaoFORM;
     private double valor;
     private double valorpago;
     private String pago;
@@ -28,8 +32,49 @@ public class Recebimentos {
             this.pago = "Pago";
         else
             this.pago = "Não Pago";
+     
+        setaDatas();
+
     }
 
+    public void setaDatas(){
+        
+        if (dtemissoa != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            this.dtVencimentoFORM = this.dtvencimento.format(formatter);
+            if(dtreceb !=null)
+             this.dtRecebFORM = this.dtreceb.format(formatter);
+            
+            this.dtEmissaoFORM = this.dtemissoa.format(formatter);
+        }
+    }
+    
+    public String getDtVencimentoFORM() {
+        return dtVencimentoFORM;
+    }
+
+    public String getDtRecebFORM() {
+        return dtRecebFORM;
+    }
+
+    public String getDtEmissaoFORM() {
+        return dtEmissaoFORM;
+    }
+
+    
+    public void setDtVencimentoFORM(String dtVencimentoFORM) {
+        this.dtVencimentoFORM = dtVencimentoFORM;
+    }
+
+    public void setDtRecebFORM(String dtRecebFORM) {
+        this.dtRecebFORM = dtRecebFORM;
+    }
+
+    public void setDtEmissaoFORM(String dtEmissaoFORM) {
+        this.dtEmissaoFORM = dtEmissaoFORM;
+    }
+
+    
     public String getPago() {
         return pago;
     }

@@ -118,6 +118,7 @@ public class FXMLMatriculaController implements Initializable
     private JFXTextField txCausa;
     @FXML
     private JFXCheckBox checkAtivoPesq;
+    private String filtro_atual;
   
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -143,10 +144,12 @@ public class FXMLMatriculaController implements Initializable
         combo.add("Aluno");
         combo.add("CPF");
         combo.add("Nível");
+       
         
         ObservableList<String> modelo = FXCollections.observableArrayList(combo);
         cbFiltro.setItems(modelo);
-        cbFiltro.setValue("Turma");
+        cbFiltro.setValue("Aluno");
+        filtro_atual = cbFiltro.getSelectionModel().getSelectedItem();
         
         List<Aluno> comboAlunos = new ArrayList();
         DALAluno prof = new DALAluno();
@@ -185,10 +188,27 @@ public class FXMLMatriculaController implements Initializable
 
     @FXML
     private void evtPesquisar(ActionEvent event) {
+        
+        String pesquisa = txPesquisa.getText();
+        String sql;               
+        
+        if(filtro_atual.equals("Aluno"))
+             sql = " inner join aluno on aluno.alunoid = matricula.alunoid where aluno.nome = '%"+pesquisa+"%'";
+        else if(filtro_atual.equals("CPF"))
+          sql = " inner join aluno on aluno.alunoid = matricula.alunoid where aluno.cpf = '%"+pesquisa+"%'";
+        else
+           sql = " where aluno.nivel = '%"+pesquisa+"%'";
+            
+        if(checkAtivoPesq.isSelected())
+            sql += " and matricula.ativo = 'A'";
+        
+        CarregaTabela(sql);
     }
 
     @FXML
     private void evtFiltroTxt(ActionEvent event) {
+        
+        filtro_atual = cbFiltro.getSelectionModel().getSelectedItem();
     }
 
     @FXML

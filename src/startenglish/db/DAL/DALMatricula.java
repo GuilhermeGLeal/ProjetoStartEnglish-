@@ -86,11 +86,12 @@ public class DALMatricula {
     
     public ArrayList<Matricula> get(String filtro) {
         
-        String sql="select * from numeromatricula";
-             
-        if(!filtro.isEmpty())
-            sql+=" "+filtro;
+        String sql;
+        sql = "select * from matricula";
 
+        if (!filtro.isEmpty()) 
+            sql += " " + filtro;
+        
         ArrayList<Matricula> mats = new ArrayList();
         
         Matricula aux = null;

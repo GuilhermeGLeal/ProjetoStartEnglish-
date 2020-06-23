@@ -1,5 +1,6 @@
 package startenglish.db.Entidades;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -8,16 +9,16 @@ public class EncomendaDeLivros {
     
     private int codigoEnc;
     private Funcionario func;
-    private Date dataEncomenda;
+    private LocalDate dataEncomenda;
     private String fornecedor;
     private double valor;
-    private Date previsaoEntrega;
+    private LocalDate previsaoEntrega;
     private List<ItemEncomenda> itens;
 
     public EncomendaDeLivros() {
     }
 
-    public EncomendaDeLivros(int codigoEnc, Funcionario func, Date dataEncomenda, String fornecedor, double valor, Date previsaoEntrega, List<ItemEncomenda> itens) {
+    public EncomendaDeLivros(int codigoEnc, Funcionario func, LocalDate dataEncomenda, String fornecedor, double valor, LocalDate previsaoEntrega, List<ItemEncomenda> itens) {
         this.codigoEnc = codigoEnc;
         this.func = func;
         this.dataEncomenda = dataEncomenda;
@@ -27,6 +28,15 @@ public class EncomendaDeLivros {
         this.itens = itens;
     }
 
+    public EncomendaDeLivros(int codigoEnc, Funcionario func, LocalDate dataEncomenda, String fornecedor, double valor, LocalDate previsaoEntrega) {
+        this.codigoEnc = codigoEnc;
+        this.func = func;
+        this.dataEncomenda = dataEncomenda;
+        this.fornecedor = fornecedor;
+        this.valor = valor;
+        this.previsaoEntrega = previsaoEntrega;
+    }
+    
     public int getCodigoEnc() {
         return codigoEnc;
     }
@@ -43,11 +53,11 @@ public class EncomendaDeLivros {
         this.func = func;
     }
 
-    public Date getDataEncomenda() {
+    public LocalDate getDataEncomenda() {
         return dataEncomenda;
     }
 
-    public void setDataEncomenda(Date dataEncomenda) {
+    public void setDataEncomenda(LocalDate dataEncomenda) {
         this.dataEncomenda = dataEncomenda;
     }
 
@@ -67,11 +77,11 @@ public class EncomendaDeLivros {
         this.valor = valor;
     }
 
-    public Date getPrevisaoEntrega() {
+    public LocalDate getPrevisaoEntrega() {
         return previsaoEntrega;
     }
 
-    public void setPrevisaoEntrega(Date previsaoEntrega) {
+    public void setPrevisaoEntrega(LocalDate previsaoEntrega) {
         this.previsaoEntrega = previsaoEntrega;
     }
 

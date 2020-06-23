@@ -2,6 +2,7 @@ package startenglish.db.DAL;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import startenglish.db.Entidades.EncomendaDeLivros;
@@ -13,7 +14,7 @@ public class DALEncomendaDeLivro {
     
     public List<ItemEncomenda> BuscaItens(int cod)
     {
-        String sql="select *from itensencomenda where encomendaid ="+cod;
+        String sql="select * from itensencomenda where encomendaid ="+cod;
         
         List <ItemEncomenda> aux = new ArrayList();
         ResultSet rs = Banco.getCon().consultar(sql);
@@ -21,16 +22,20 @@ public class DALEncomendaDeLivro {
         {
             while(rs.next())
             {
-                //DALFuncionario auxFunc = new DALFuncionario();
-                
-//                aux.add(new EncomendaDeLivros(rs.getInt("encomendaid"), auxFunc.get(rs.getInt("funcid")), 
-//                        rs.getDate("dataencomenda"), rs.getString("fornecedor"), rs.getDouble("valortotal"),
-//                        rs.getDate("previsaoenterga"), itens));
-                
+                                
                 DALLivro dall = new DALLivro();
-                Livro livroaux = dall.get(rs.getInt("livroid"));
-                double valorconta = livroaux.getValor()*rs.getInt("quantidade");
-                aux.add(new ItemEncomenda(livroaux, rs.getInt("quantidade"),valorconta));
+                Livro livaux = dall.get(rs.getInt("livroid"));
+                String auxiliarconta;
+                double valor = 0;
+                DecimalFormat df = new DecimalFormat("#.##");
+                auxiliarconta = df.format(rs.getInt("quantidade")*livaux.getValor());
+                auxiliarconta = auxiliarconta.replace(',', '.');
+                try {
+                   valor = Double.parseDouble(auxiliarconta); 
+                } catch (Exception e) {
+                }
+                
+                aux.add(new ItemEncomenda(dall.get(rs.getInt("livroid")), rs.getInt("quantidade"), valor));
             }
         } 
         catch (SQLException ex) 
@@ -43,7 +48,7 @@ public class DALEncomendaDeLivro {
     
     public List<EncomendaDeLivros> BuscaEncomendas(String filtro){
         
-        String sql="select *from encomendalivros";
+        String sql="select * from encomendalivros";
         if(!filtro.isEmpty())
             sql+=" where "+filtro;
         List <EncomendaDeLivros> aux = new ArrayList();
@@ -55,8 +60,8 @@ public class DALEncomendaDeLivro {
                 DALFuncionario auxFunc = new DALFuncionario();
                 
                 aux.add(new EncomendaDeLivros(rs.getInt("encomendaid"), auxFunc.get(rs.getInt("funcid")), 
-                        rs.getDate("dataencomenda"), rs.getString("fornecedor"), rs.getDouble("valortotal"),
-                        rs.getDate("previsaoenterga"), BuscaItens(rs.getInt("encomendaid"))));
+                        rs.getDate("dataencomenda").toLocalDate(), rs.getString("fornecedor"), rs.getDouble("valortotal"),
+                        rs.getDate("previsaoentrega").toLocalDate()));
             }
         } 
         catch (SQLException ex) 
@@ -68,13 +73,10 @@ public class DALEncomendaDeLivro {
     
     public boolean GravarEncomenda(EncomendaDeLivros e)
     {   
-        String sql = "insert into encomendalivros(encomendaid,funcid, dataencomenda, fornecedor, valortotal, previsaoentrega) "
-                + "values(#1,#2,'#3','#4',#5,'#6')";
+        String sql = "insert into encomendalivros(funcid, dataencomenda, fornecedor, valortotal, previsaoentrega) "
+                + "values(#2,'#3','#4',#5,'#6')";
         
-        //System.out.println(c.getCod());
         
-        sql = sql.replace("#1", ""+e.getCodigoEnc());
-        //System.out.println(c.getGar().getCod());
 
         sql = sql.replace("#2", ""+e.getFunc().getID());
         //System.out.println(c.getNum());
@@ -203,6 +205,6 @@ public class DALEncomendaDeLivro {
     
     public int getMaxPK()
     {
-        return Banco.getCon().getMaxPK("comanda", "com_id");
+        return Banco.getCon().getMaxPK("encomendalivros", "encomendaid");
     }
 }

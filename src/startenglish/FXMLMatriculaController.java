@@ -240,6 +240,7 @@ public class FXMLMatriculaController implements Initializable
         cbAluno.setDisable(false);
         cbLivro.setDisable(false);
         cbLivro.getSelectionModel().selectFirst();
+        cbAluno.getSelectionModel().selectFirst();
         txNomeResp.setDisable(false);
         txEscola.setDisable(false);
         txNivel.setDisable(false);
@@ -646,11 +647,11 @@ public class FXMLMatriculaController implements Initializable
         String sql;               
         
         if(filtro_atual.equals("Aluno"))
-             sql = " inner join aluno on aluno.alunoid = matricula.alunoid where aluno.nome = '%"+pesquisa+"%'";
+             sql = " inner join aluno on(aluno.alunoid = matricula.alunoid) where aluno.nome like  '%"+pesquisa+"%'";
         else if(filtro_atual.equals("CPF"))
-          sql = " inner join aluno on aluno.alunoid = matricula.alunoid where aluno.cpf = '%"+pesquisa+"%'";
+          sql = " inner join aluno on (aluno.alunoid = matricula.alunoid) where aluno.cpf like '%"+pesquisa+"%'";
         else
-           sql = " where aluno.nivel = '%"+pesquisa+"%'";
+           sql = " where matricula.nivel like '%"+pesquisa+"%'";
             
         if(checkAtivoPesq.isSelected())
             sql += " and matricula.ativo = 'A'";

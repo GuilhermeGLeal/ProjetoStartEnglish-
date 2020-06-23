@@ -1,6 +1,7 @@
 package startenglish.db.Entidades;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 public class Recebimentos {
@@ -8,14 +9,17 @@ public class Recebimentos {
     private int recebimentoid;
     private Caixa caixa;
     private Matricula mat;
-    private Date dtvencimento;
-    private Date dtreceb;
-    private Date dtemissoa;
+    private LocalDate dtvencimento;
+    private LocalDate dtreceb;
+    private LocalDate dtemissoa;
+    private String dtVencimentoFORM;
+    private String dtRecebFORM;
+    private String dtEmissaoFORM;
     private double valor;
     private double valorpago;
     private String pago;
 
-    public Recebimentos(int recebimentoid, Caixa caixa, Matricula mat, Date dtvencimento, Date dtreceb, Date dtemissoa, double valor, double valorpago) {
+    public Recebimentos(int recebimentoid, Caixa caixa, Matricula mat, LocalDate dtvencimento, LocalDate dtreceb, LocalDate dtemissoa, double valor, double valorpago) {
         this.recebimentoid = recebimentoid;
         this.caixa = caixa;
         this.mat = mat;
@@ -26,12 +30,64 @@ public class Recebimentos {
         this.valorpago = valorpago;
         if(valorpago > 0 )
             this.pago = "Pago";
+        else
+            this.pago = "Não Pago";
+     
+        setaDatas();
+
     }
 
+    public void setaDatas(){
+        
+        if (dtemissoa != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            this.dtVencimentoFORM = this.dtvencimento.format(formatter);
+            if(dtreceb !=null)
+             this.dtRecebFORM = this.dtreceb.format(formatter);
+            
+            this.dtEmissaoFORM = this.dtemissoa.format(formatter);
+        }
+    }
+    
+    public String getDtVencimentoFORM() {
+        return dtVencimentoFORM;
+    }
+
+    public String getDtRecebFORM() {
+        return dtRecebFORM;
+    }
+
+    public String getDtEmissaoFORM() {
+        return dtEmissaoFORM;
+    }
+
+    
+    public void setDtVencimentoFORM(String dtVencimentoFORM) {
+        this.dtVencimentoFORM = dtVencimentoFORM;
+    }
+
+    public void setDtRecebFORM(String dtRecebFORM) {
+        this.dtRecebFORM = dtRecebFORM;
+    }
+
+    public void setDtEmissaoFORM(String dtEmissaoFORM) {
+        this.dtEmissaoFORM = dtEmissaoFORM;
+    }
+
+    
+    public String getPago() {
+        return pago;
+    }
+
+    public void setPago(String pago) {
+        this.pago = pago;
+    }
+
+    
     public Recebimentos() {
         
         this(0,new Caixa(),new Matricula(),null,null,null,0.0,0.0);
-        this.pago = "Não pago";
+        this.pago = "Não Pago";
     }
 
     public int getRecebimentoid() {
@@ -58,27 +114,27 @@ public class Recebimentos {
         this.mat = mat;
     }
 
-    public Date getDtvencimento() {
+    public LocalDate getDtvencimento() {
         return dtvencimento;
     }
 
-    public void setDtvencimento(Date dtvencimento) {
+    public void setDtvencimento(LocalDate dtvencimento) {
         this.dtvencimento = dtvencimento;
     }
 
-    public Date getDtreceb() {
+    public LocalDate getDtreceb() {
         return dtreceb;
     }
 
-    public void setDtreceb(Date dtreceb) {
+    public void setDtreceb(LocalDate dtreceb) {
         this.dtreceb = dtreceb;
     }
 
-    public Date getDtemissoa() {
+    public LocalDate getDtemissoa() {
         return dtemissoa;
     }
 
-    public void setDtemissoa(Date dtemissoa) {
+    public void setDtemissoa(LocalDate dtemissoa) {
         this.dtemissoa = dtemissoa;
     }
 

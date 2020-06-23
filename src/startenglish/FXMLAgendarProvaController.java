@@ -59,7 +59,7 @@ public class FXMLAgendarProvaController implements Initializable {
     @FXML
     private TableColumn<Agenda, String> tcProfessor;
     @FXML
-    private TableColumn<Agenda, Date> tcData;
+    private TableColumn<Agenda, String> tcData;
     @FXML
     private TableColumn<Agenda, String> tcStatus;
     @FXML
@@ -126,7 +126,7 @@ public class FXMLAgendarProvaController implements Initializable {
 
         tcNomeAluno.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAluno().getNome()));
         tcCPF.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAluno().getCpf()));
-        tcData.setCellValueFactory(new PropertyValueFactory("dataProva"));
+        tcData.setCellValueFactory(new PropertyValueFactory("dataProvaFORM"));
         tcHoraIni.setCellValueFactory(new PropertyValueFactory("horaini"));
         tcHoraFim.setCellValueFactory(new PropertyValueFactory("horafim"));
         tcProfessor.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProfessor().getFunc().getNome()));
@@ -510,7 +510,7 @@ public class FXMLAgendarProvaController implements Initializable {
             dtDataAgend.requestFocus();
             setDataErro(dtDataAgend);
 
-        } else if (date.isBefore(LocalDate.now())) {
+        } else if (!alterando && date.isBefore(LocalDate.now())) {
 
             ok = false;
             a = new Alert(Alert.AlertType.WARNING, "Data de agendamento antes do dia atual!", ButtonType.CLOSE);
@@ -586,6 +586,7 @@ public class FXMLAgendarProvaController implements Initializable {
     private void evtInserir(ActionEvent event) {
 
         Agenda a = new Agenda();
+        boolean problem = false;
 
         if (validaData(dtDataAgend.getValue())) {
 
@@ -606,30 +607,45 @@ public class FXMLAgendarProvaController implements Initializable {
                             a.setHorafim(txHoraFim.getText());
                             a.setStatus(cbStatus.getSelectionModel().getSelectedItem());
                             a.setSituacao_prova(retornaStatus(cbStatus.getSelectionModel().getSelectedItem()));
-                            
-                            if(alterando){
-                                
-                                listaauxliar.remove(indexalterando);
+                            a.setaData();
+                            if (alterando) {
+
+                                if (indexalterando < listaauxliar.size()) {
+                                    listaauxliar.remove(indexalterando);
+                                    listaauxliar.add(a);
+                                 
+                                }
+                                else{
+                                     problem = true;
+                                }
+
+                            } else {
                                 listaauxliar.add(a);
-                                
+
                             }
-                            else{
-                                listaauxliar.add(a);
+                            Alert alert;
+
+                            if (problem) {
                                 
+                                alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento já excluido, impossivel alterar!", ButtonType.CLOSE);
+                                 alert.showAndWait();
+
+                            } else {
+
+                                if (alterando) {
+                                    alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento atualizado com sucesso!", ButtonType.CLOSE);
+                                } else {
+                                    alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento inserido com sucesso!", ButtonType.CLOSE);
+                                }
+
+                                alterando = false;
+                                carregaTabela('L');
+                                alert.showAndWait();
+                                alterou = true;
+                                btSalvarOp.setDisable(false);
+                                evtNovo(event);
                             }
-                             Alert alert;
-                             
-                            if(alterando)
-                             alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento atualizado com sucesso!", ButtonType.CLOSE);
-                            else
-                               alert = new Alert(Alert.AlertType.INFORMATION, "Agendamento inserido com sucesso!", ButtonType.CLOSE);
-                                
-                            alterando = false;
-                            carregaTabela('L');
-                            alert.showAndWait();
-                            alterou = true;
-                             btSalvarOp.setDisable(false);
-                            evtNovo(event);
+
                         }
                     }
                 }

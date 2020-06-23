@@ -296,5 +296,18 @@ public class FXMLPrincipalController implements Initializable {
         } 
     }
 
+    @FXML
+    private void evtEfetuarMatricula(ActionEvent event) 
+    {
+        try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLMatricula.fxml"));
+            pnMudanca.setCenter(aux);
+            labelNome.setText("Efetuar Matrícula");
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+
     
 }

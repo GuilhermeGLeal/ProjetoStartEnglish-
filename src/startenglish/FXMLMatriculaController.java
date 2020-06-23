@@ -186,7 +186,7 @@ public class FXMLMatriculaController implements Initializable
     {
         cbTurma.setDisable(true);
         cbAluno.setDisable(true);
-        cbAluno.getSelectionModel().selectFirst();
+        cbAluno.getSelectionModel().clearSelection();
         cbLivro.getSelectionModel().selectFirst();
         txEmail.setDisable(true);
         txCPF.setDisable(true);
@@ -199,6 +199,8 @@ public class FXMLMatriculaController implements Initializable
         cbLivro.setDisable(true);
         cbParcelas.setDisable(true);
         cbVencimentos.setDisable(true);
+        cbVencimentos.getSelectionModel().clearSelection();
+        cbParcelas.getSelectionModel().clearSelection();
         checkAtivo.setDisable(true);
         checkSegunda.setDisable(true);
         checkTerca.setDisable(true);
@@ -237,7 +239,6 @@ public class FXMLMatriculaController implements Initializable
     {
         cbAluno.setDisable(false);
         cbLivro.setDisable(false);
-        cbAluno.getSelectionModel().selectFirst();
         cbLivro.getSelectionModel().selectFirst();
         txNomeResp.setDisable(false);
         txEscola.setDisable(false);
@@ -481,6 +482,11 @@ public class FXMLMatriculaController implements Initializable
             ok=false;
             a= new Alert(Alert.AlertType.WARNING,"Parcelas não selecionadas",ButtonType.CLOSE);
         }
+        if(cbAluno.getSelectionModel().isEmpty())
+        {
+            ok=false;
+            a= new Alert(Alert.AlertType.WARNING,"Aluno não selecionado!!",ButtonType.CLOSE);
+        }
         if(a != null)
             a.showAndWait();
         return ok;
@@ -492,6 +498,7 @@ public class FXMLMatriculaController implements Initializable
         {
             int cod,desconto;
             String semana="";
+            boolean ok2=true;
             Double valor;
              String auxiliar="";
             for (int i = 0; i < txValor.getText().length(); i++)
@@ -526,7 +533,22 @@ public class FXMLMatriculaController implements Initializable
                 desconto=0;
                 valor=0.0;
             }
-            DALMatricula dalm = new DALMatricula();
+
+                DALMatricula dalma = new DALMatricula();
+                List<Matricula> comboMatri = new ArrayList();
+                
+                comboMatri=dalma.get("where alunoid="+cbAluno.getSelectionModel().getSelectedItem().getID());
+                ObservableList<Matricula> modeloMatri = FXCollections.observableArrayList(comboMatri);
+                
+                for (int i = 0; i < modeloMatri.size(); i++)
+                {
+                    if(modeloMatri.get(i).getAtivo()=='A')
+                        ok2=false;
+                }
+            
+            if(ok2 || cod!=0)
+            {
+                DALMatricula dalm = new DALMatricula();
             Matricula m = new Matricula();
             m.setAluno(cbAluno.getSelectionModel().getSelectedItem());
             m.setDesconto(desconto);
@@ -565,7 +587,6 @@ public class FXMLMatriculaController implements Initializable
                     else
                     { 
                         ok = dalm.atualizar(m);
-
                         if(ok)
                         {
                             a = new Alert(Alert.AlertType.CONFIRMATION, "Matrícula atualizada!!", ButtonType.OK);
@@ -594,6 +615,13 @@ public class FXMLMatriculaController implements Initializable
                 {
                     System.out.println(ex.getMessage());
                 }
+            }
+            else
+            {
+                Alert a = new Alert(Alert.AlertType.ERROR, "Aluno ainda possui matrícula em aberto!!", ButtonType.OK);
+                a.showAndWait();
+            }
+            
         }
     }
 
@@ -660,8 +688,12 @@ public class FXMLMatriculaController implements Initializable
     @FXML
     private void evtPreenche(ActionEvent event)
     {
-        txCPF.setText(cbAluno.getSelectionModel().getSelectedItem().getCpf());
-        txEmail.setText(cbAluno.getSelectionModel().getSelectedItem().getEmail());
+        if(!cbAluno.getSelectionModel().isEmpty())
+        {
+            txCPF.setText(cbAluno.getSelectionModel().getSelectedItem().getCpf());
+            txEmail.setText(cbAluno.getSelectionModel().getSelectedItem().getEmail());
+        }
+        
     }
     
     @FXML
@@ -723,9 +755,13 @@ public class FXMLMatriculaController implements Initializable
     @FXML
     private void evtVencimentoChange(ActionEvent event)
     {
-        int auxiliar=cbParcelas.getSelectionModel().getSelectedItem().charAt(0);
-        cbVencimentos.setDisable(false);
-        cbVencimentos.getSelectionModel().select(auxiliar);
+        if(cbParcelas.getSelectionModel().getSelectedIndex()>=0)
+        {
+            int auxiliar=cbParcelas.getSelectionModel().getSelectedItem().charAt(0);
+            cbVencimentos.setDisable(false);
+            cbVencimentos.getSelectionModel().select(auxiliar);
+        }
+        
     }
 
     @FXML
@@ -794,11 +830,15 @@ public class FXMLMatriculaController implements Initializable
                 else if(aux.getSemana().charAt(6)=='1' && semana.charAt(6)=='0')
                     retira=true;
                 if(retira==true)
-                    comboTurmas.remove(i);                
+                {
+                    comboTurmas.remove(i);
+                    i--;
+                }                                  
             }
             
             if(comboTurmas.size()>0)
             {
+                
                 cbTurma.setDisable(false);
                 ObservableList<Turma> modeloTur = FXCollections.observableArrayList(comboTurmas);
                 cbTurma.setItems(modeloTur);

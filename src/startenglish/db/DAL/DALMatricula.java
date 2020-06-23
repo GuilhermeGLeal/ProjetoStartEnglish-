@@ -39,7 +39,7 @@ public class DALMatricula {
     public boolean atualizar(Matricula mat){
         
         String sql = "update matricula set livroid = #1,turmaid = #2, alunoid = #3,ativo = '#4',desconto = #5, informacoescancelamento = '#6',"
-                + "instituiensino = '#7',valor = #8,nomeresponsavel = '#9',nivel = '#10' where numeromatricula = "+mat.getNummat();
+                + "instituiensino = '#7',valor = #8,nomeresponsavel = '#9',nivel = '#zz' where numeromatricula = "+mat.getNummat();
         
         sql = sql.replaceAll("#1", ""+mat.getLivro().getLivroID());
         sql = sql.replaceAll("#2", ""+mat.getTurmaID().getTurmaID());
@@ -50,7 +50,7 @@ public class DALMatricula {
         sql = sql.replaceAll("#7", mat.getInstuiEnsino());
         sql = sql.replaceAll("#8", ""+mat.getValor());
         sql = sql.replaceAll("#9", mat.getNomeResponsável());
-        sql = sql.replaceAll("#10",mat.getNivel());
+        sql = sql.replaceAll("#zz",mat.getNivel());
         
         return Banco.getCon().manipular(sql);
     }

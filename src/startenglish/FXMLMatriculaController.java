@@ -6,6 +6,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -16,6 +18,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputControl;
@@ -25,10 +29,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import startenglish.db.DAL.DALAluno;
 import startenglish.db.DAL.DALLivro;
+import startenglish.db.DAL.DALMatricula;
+import startenglish.db.DAL.DALTurma;
 import startenglish.db.Entidades.Aluno;
 import startenglish.db.Entidades.Livro;
 import startenglish.db.Entidades.Matricula;
 import startenglish.db.Entidades.Turma;
+import startenglish.db.util.Banco;
 import startenglish.util.MaskFieldUtil;
 
 public class FXMLMatriculaController implements Initializable 
@@ -36,10 +43,6 @@ public class FXMLMatriculaController implements Initializable
 
     @FXML
     private AnchorPane pndados;
-    @FXML
-    private JFXTextField txHorIni;
-    @FXML
-    private JFXTextField txHorFim;
     @FXML
     private JFXButton btInserir;
     @FXML
@@ -120,6 +123,7 @@ public class FXMLMatriculaController implements Initializable
     private JFXTextField txCausa;
     @FXML
     private JFXCheckBox checkAtivoPesq;
+    private String filtro_atual;
     @FXML
     private JFXCheckBox checkVerif;
   
@@ -136,8 +140,6 @@ public class FXMLMatriculaController implements Initializable
        MaskFieldUtil.maxField(txNomeResp,29);
        MaskFieldUtil.maxField(txEscola,50);
        MaskFieldUtil.maxField(txNivel,15);
-       MaskFieldUtil.maxField(txHorIni,5);
-       MaskFieldUtil.maxField(txHorFim,5);
        MaskFieldUtil.monetaryField(txValor);
        MaskFieldUtil.numericField(txDesconto);
        MaskFieldUtil.maxField(txCausa,255);
@@ -147,10 +149,12 @@ public class FXMLMatriculaController implements Initializable
         combo.add("Aluno");
         combo.add("CPF");
         combo.add("Nível");
+       
         
         ObservableList<String> modelo = FXCollections.observableArrayList(combo);
         cbFiltro.setItems(modelo);
-        cbFiltro.setValue("Turma");
+        cbFiltro.setValue("Aluno");
+        filtro_atual = cbFiltro.getSelectionModel().getSelectedItem();
         
         List<Aluno> comboAlunos = new ArrayList();
         DALAluno prof = new DALAluno();
@@ -165,18 +169,30 @@ public class FXMLMatriculaController implements Initializable
         cbLivro.setItems(modeloLiv);
         cbLivro.getSelectionModel().selectFirst();
         EstadoOriginal();
+       
     }    
+    
+    private void CarregaTabela(String filtro)
+    {
+        DALMatricula dalm = new DALMatricula();       
+        List <Matricula> listaMat = dalm.get(filtro);
+        listaMat = dalm.get(filtro);           
+        ObservableList <Matricula> modelo;
+        modelo = FXCollections.observableArrayList(listaMat);       
+        tabela.setItems(modelo);
+    }
     
     private void EstadoOriginal()
     {
+        cbTurma.setDisable(true);
         cbAluno.setDisable(true);
+        cbAluno.getSelectionModel().selectFirst();
+        cbLivro.getSelectionModel().selectFirst();
         txEmail.setDisable(true);
         txCPF.setDisable(true);
         txNomeResp.setDisable(true);
         txEscola.setDisable(true);
         txNivel.setDisable(true);
-        txHorIni.setDisable(true);
-        txHorFim.setDisable(true);
         txValor.setDisable(true);
         txDesconto.setDisable(true);
         txCausa.setDisable(true);
@@ -208,22 +224,23 @@ public class FXMLMatriculaController implements Initializable
         btCancelar.setDisable(false);
         btConfirmar.setDisable(true);
         txPesquisa.clear();
-        cbFiltro.setDisable(true);
+        cbFiltro.setDisable(false);
         ObservableList <Node> componentes=pndados.getChildren();
         for(Node n : componentes)
         {
             if (n instanceof TextInputControl)  // textfield, textarea e htmleditor
                 ((TextInputControl)n).setText("");
         }
+        CarregaTabela("");
     }
     private void EstadoEdicao()
     {
         cbAluno.setDisable(false);
         cbLivro.setDisable(false);
+        cbAluno.getSelectionModel().selectFirst();
+        cbLivro.getSelectionModel().selectFirst();
         txNomeResp.setDisable(false);
         txEscola.setDisable(false);
-        txHorIni.setDisable(false);
-        txHorFim.setDisable(false);
         txNivel.setDisable(false);
         checkAtivo.setDisable(false);
         checkSegunda.setDisable(false);
@@ -248,31 +265,375 @@ public class FXMLMatriculaController implements Initializable
     private void evtInserir(ActionEvent event) 
     {
         EstadoEdicao();
+        cbAluno.getSelectionModel().selectFirst();
         checkAtivo.setSelected(true);
     }
 
     @FXML
-    private void evtAlterar(ActionEvent event) {
+    private void evtAlterar(ActionEvent event) 
+    {
+        if(tabela.getSelectionModel().getSelectedItem() != null)
+        {     
+            EstadoEdicao();
+            Matricula m = tabela.getSelectionModel().getSelectedItem();
+            Double auxiliar;
+            txCausa.setText(""+m.getInfoCancelamento());
+            txDesconto.setText(""+m.getDesconto());           
+            txEscola.setText(m.getInstuiEnsino());
+            txNivel.setText(m.getNivel());
+            txNomeResp.setText(m.getNomeResponsável());
+            txNumMatricula.setText(""+m.getNummat());
+            if(m.getAtivo()=='A')
+            {
+                txCausa.setDisable(true);
+                checkAtivo.setSelected(true);
+            }
+            else
+            {
+                txCausa.setDisable(false);
+                checkAtivo.setSelected(false);
+            }
+                
+            auxiliar=m.getValor();
+            int conversor= auxiliar.intValue();
+            String auxiliardec;
+            auxiliar=auxiliar-conversor;
+            auxiliardec=auxiliar.toString();
+            txValor.setText(""+m.getValor());
+            if(auxiliardec.length()==3 && auxiliardec.charAt(2)!='0')
+                txValor.setText(txValor.getText()+'0');
+            if(auxiliar==0)
+                txValor.setText(txValor.getText()+'0');
+            
+            cbAluno.getSelectionModel().select(m.getAluno());
+            cbLivro.getSelectionModel().select(m.getLivro());
+            txCPF.setText(m.getAluno().getCpf());
+            txEmail.setText(m.getAluno().getEmail());
+            cbParcelas.setDisable(false);
+            cbVencimentos.setDisable(false);
+            checkVerif.setSelected(true);
+            cbTurma.getSelectionModel().select(m.getTurmaID());
+        }
     }
 
     @FXML
-    private void evtExcluir(ActionEvent event) {
+    private void evtExcluir(ActionEvent event) 
+    {
+        Alert a = new Alert(Alert.AlertType.CONFIRMATION, "Confirmar exclusão?", ButtonType.YES,ButtonType.NO);
+            boolean ok = true;
+
+            if(a.showAndWait().get() == ButtonType.YES)
+            {           
+                Matricula m = new Matricula();
+                DALMatricula dalm = new DALMatricula();
+
+                m = tabela.getSelectionModel().getSelectedItem();
+
+                try{
+
+                    Banco.getCon().getConnect().setAutoCommit(false);
+
+                    ok = dalm.apagar(m.getNummat());
+
+                    if(ok)
+                    {                   
+                         Banco.getCon().getConnect().commit();
+                        a =  new Alert(Alert.AlertType.CONFIRMATION," Exclusão ocorrida com sucesso!!", ButtonType.OK);
+                    }
+                    else
+                    {                  
+                        Banco.getCon().getConnect().rollback();
+                        a =  new Alert(Alert.AlertType.ERROR, "Erro ao deletar matrícula!", ButtonType.OK);
+                    }
+
+                    a.showAndWait();
+
+                }catch(SQLException ex){System.out.println(ex.getMessage());}
+
+                EstadoOriginal();    
+                CarregaTabela("");
+            
+            }
+    }
+ private boolean validatxt(String nivel,String valor)
+    {
+        boolean ok=true;
+        Alert a=null;
+        if(nivel.isEmpty())
+        {        
+            ok = false;
+            txNivel.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            
+            if(a==null)
+            {
+                txNivel.requestFocus();
+                a = new Alert(Alert.AlertType.WARNING, "Nível obrigatório!!", ButtonType.CLOSE);            
+                a.showAndWait();
+            }
+            
+        }
+        else
+        {
+            txNivel.setStyle("-fx-border-width: 0;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+        }
+        if(valor.isEmpty())
+        {        
+            ok = false;
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            
+            if(a==null)
+            {
+                txValor.requestFocus();
+                a = new Alert(Alert.AlertType.WARNING, "Valor obrigatório!!", ButtonType.CLOSE);            
+                a.showAndWait();
+            }
+            
+        }
+        else
+        {
+            txValor.setStyle("-fx-border-width: 0;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+        }
+        return ok;
+    }
+    private boolean validaPreco(String preco)
+    {       
+        String auxiliar="";
+        for (int i = 0; i < preco.length(); i++)
+        {
+            if(preco.charAt(i)!='.')
+            {
+                if(preco.charAt(i)==',')
+                    auxiliar+='.';
+                else
+                    auxiliar+=preco.charAt(i);
+            }
+        }
+        
+        double preco_inserido = 0;
+        Alert a = null;
+        boolean ok = true,problema = false;
+        
+        try{
+            
+            preco_inserido = Double.parseDouble(auxiliar);
+            
+        }catch(NumberFormatException ex){problema = true;}
+        
+        if(preco.isEmpty())
+        {           
+            ok = false;
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            a = new Alert(Alert.AlertType.WARNING, "Valor obrigatório!!", ButtonType.CLOSE);
+            txValor.requestFocus();           
+        }
+        else if(!preco.isEmpty() && problema)
+        {           
+            ok = false;
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            a = new Alert(Alert.AlertType.WARNING, "Valor inválido!", ButtonType.CLOSE);
+            txValor.requestFocus();
+        }
+        else if(!preco.isEmpty() && preco_inserido <=0)
+        {            
+            ok = false;
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            a = new Alert(Alert.AlertType.WARNING, "Valor igual ou menor que 0!", ButtonType.CLOSE);
+            txValor.requestFocus();
+        }
+        else
+        {
+            txValor.setStyle("-fx-border-width: 0;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+        }
+            
+        
+        if(a != null)
+            a.showAndWait();
+        return ok;
+    }
+    private boolean verificacoes()
+    {
+        boolean ok=true;
+        Alert a=null;
+        if(!checkVerif.isSelected())
+        {
+           ok = false;
+            
+           a = new Alert(Alert.AlertType.WARNING, "Turma não selecionada", ButtonType.CLOSE);
+        }
+        if(cbParcelas.getSelectionModel().isEmpty())
+        {
+            ok=false;
+            a= new Alert(Alert.AlertType.WARNING,"Parcelas não selecionadas",ButtonType.CLOSE);
+        }
+        if(a != null)
+            a.showAndWait();
+        return ok;
+    }
+    @FXML
+    private void evtConfirmar(ActionEvent event) 
+    {
+        if(validatxt(txNivel.getText(),txValor.getText()) && validaPreco(txValor.getText()) && verificacoes())
+        {
+            int cod,desconto;
+            String semana="";
+            Double valor;
+             String auxiliar="";
+            for (int i = 0; i < txValor.getText().length(); i++)
+            {
+                if(txValor.getText().charAt(i)!='.')
+                {
+                    if(txValor.getText().charAt(i)==',')
+                        auxiliar+='.';
+                    else
+                        auxiliar+=txValor.getText().charAt(i);
+                }
+            }
+            try
+            {
+                cod = Integer.parseInt(txNumMatricula.getText());
+                
+            }
+            catch (NumberFormatException ex) 
+            {
+                cod = 0;    
+                
+            }
+            try{
+                if(!txDesconto.getText().isEmpty())
+                    desconto=Integer.parseInt(txDesconto.getText());
+                else
+                    desconto=0;
+                valor=Double.parseDouble(auxiliar);
+            }
+            catch(NumberFormatException ex)
+            {
+                desconto=0;
+                valor=0.0;
+            }
+            DALMatricula dalm = new DALMatricula();
+            Matricula m = new Matricula();
+            m.setAluno(cbAluno.getSelectionModel().getSelectedItem());
+            m.setDesconto(desconto);
+            m.setInfoCancelamento(" "+txCausa.getText());
+            m.setInstuiEnsino(" "+txEscola.getText());
+            m.setLivro(cbLivro.getSelectionModel().getSelectedItem());
+            m.setNivel(txNivel.getText());
+            m.setNomeResponsável(" "+txNomeResp.getText());
+            m.setTurmaID(cbTurma.getSelectionModel().getSelectedItem());
+            m.setValor(valor);
+            if(checkAtivo.isSelected())
+                m.setAtivo('A');
+            else
+                m.setAtivo('F');
+            m.setNummat(cod);
+            Alert a = null;
+            boolean ok;
+            try
+                {
+                    Banco.getCon().getConnect().setAutoCommit(false);
+
+                    if (cod == 0)
+                    {
+                        ok = dalm.gravar(m);
+
+                        if (ok)
+                        {
+                            a = new Alert(Alert.AlertType.CONFIRMATION, "Matrícula inserida!!", ButtonType.OK);
+                        } 
+                        else 
+                        {
+                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao inserir a Matrícula!!", ButtonType.OK);
+                        }
+
+                    } 
+                    else
+                    { 
+                        ok = dalm.atualizar(m);
+
+                        if(ok)
+                        {
+                            a = new Alert(Alert.AlertType.CONFIRMATION, "Matrícula atualizada!!", ButtonType.OK);
+                        } 
+                        else
+                        {
+                            a = new Alert(Alert.AlertType.ERROR, "Problemas ao atualizar a Matrícula!!", ButtonType.OK);
+                        }
+
+                    }
+
+                    a.showAndWait();
+                    if(ok)
+                    {
+                        Banco.getCon().getConnect().commit();
+                        EstadoOriginal();
+                        CarregaTabela("");
+                    } 
+                    else
+                    {
+                        Banco.getCon().getConnect().rollback();
+                    }
+
+                }
+                catch (SQLException ex)
+                {
+                    System.out.println(ex.getMessage());
+                }
+        }
     }
 
     @FXML
-    private void evtConfirmar(ActionEvent event) {
-    }
-
-    @FXML
-    private void evtCancelar(ActionEvent event) {
+    private void evtCancelar(ActionEvent event) 
+    {
+        if (!cbAluno.isDisabled())
+        {
+            EstadoOriginal();
+        } 
+        else
+        {           
+            FXMLPrincipalController.snprincipal.setCenter(null);
+            FXMLPrincipalController.nome.setText("");          
+        }
     }
 
     @FXML
     private void evtPesquisar(ActionEvent event) {
+        
+        String pesquisa = txPesquisa.getText();
+        String sql;               
+        
+        if(filtro_atual.equals("Aluno"))
+             sql = " inner join aluno on aluno.alunoid = matricula.alunoid where aluno.nome = '%"+pesquisa+"%'";
+        else if(filtro_atual.equals("CPF"))
+          sql = " inner join aluno on aluno.alunoid = matricula.alunoid where aluno.cpf = '%"+pesquisa+"%'";
+        else
+           sql = " where aluno.nivel = '%"+pesquisa+"%'";
+            
+        if(checkAtivoPesq.isSelected())
+            sql += " and matricula.ativo = 'A'";
+        
+        CarregaTabela(sql);
     }
 
     @FXML
     private void evtFiltroTxt(ActionEvent event) {
+        
+        filtro_atual = cbFiltro.getSelectionModel().getSelectedItem();
     }
 
     @FXML
@@ -291,7 +652,6 @@ public class FXMLMatriculaController implements Initializable
         checkVerif.setSelected(false);
     }
 
-    @FXML
     private void notVerifica(InputMethodEvent event) 
     {
         checkVerif.setSelected(false);
@@ -302,6 +662,158 @@ public class FXMLMatriculaController implements Initializable
     {
         txCPF.setText(cbAluno.getSelectionModel().getSelectedItem().getCpf());
         txEmail.setText(cbAluno.getSelectionModel().getSelectedItem().getEmail());
+    }
+    
+    @FXML
+    private void evtGerar(ActionEvent event) 
+    {
+        if(validaPreco(txValor.getText()))
+        {
+                String auxiliar="";
+                    String preco=txValor.getText();
+                    for (int i = 0; i < preco.length(); i++)
+                    {
+                        if(preco.charAt(i)!='.')
+                        {
+                            if(preco.charAt(i)==',')
+                                auxiliar+='.';
+                            else
+                                auxiliar+=preco.charAt(i);
+                        }
+                    }
+                int desc;
+                double valor=Double.parseDouble(auxiliar);
+                if(!txDesconto.getText().isEmpty())
+                    desc=Integer.parseInt(txDesconto.getText());
+                else
+                    desc=0;
+                if(desc>100)
+                    desc=100;
+                double total=valor-((valor*desc)/100);
+                double par;
+                List<String> cpar = new ArrayList();
+                for (int i = 1; i <= 20; i++)
+                {                    
+                    par=total/i;
+                    cpar.add(i+" parcela(s) de R$"+par);  
+                }
+                ObservableList<String> modelopar = FXCollections.observableArrayList(cpar);
+                cbParcelas.getItems().clear();
+                cbParcelas.setItems(modelopar);
+                cbParcelas.getSelectionModel().selectFirst();
+                cbParcelas.setDisable(false);
+                cbVencimentos.getItems().clear();
+                for (int i = 0; i < 20; i++)
+                {
+                    cbVencimentos.getItems().add(LocalDate.now().plusMonths(i).toString());
+                }
+                cbVencimentos.getSelectionModel().selectFirst();
+        }
+        else
+        {
+            txValor.setStyle("-fx-border-color: red; -fx-border-width: 2;"
+                    + "-fx-background-color: #BEBEBE;"
+                    + "-fx-font-weight: bold;");
+            txValor.requestFocus();
+               Alert a = new Alert(Alert.AlertType.WARNING, "Valor inválido!!", ButtonType.CLOSE);            
+                a.showAndWait();
+        }
+    }
+
+    @FXML
+    private void evtVencimentoChange(ActionEvent event)
+    {
+        int auxiliar=cbParcelas.getSelectionModel().getSelectedItem().charAt(0);
+        cbVencimentos.setDisable(false);
+        cbVencimentos.getSelectionModel().select(auxiliar);
+    }
+
+    @FXML
+    private void evtCausa(ActionEvent event)
+    {
+        if(checkAtivo.isSelected())
+            txCausa.setDisable(true);
+        else
+            txCausa.setDisable(false);
+    }
+
+    @FXML
+    private void evtVerificarDisp(ActionEvent event) 
+    {
+        String semana="";
+        if(checkSegunda.isSelected())
+                semana+='1';
+            else
+                semana+='0';
+            if(checkTerca.isSelected())
+                semana+='1';
+            else
+                semana+='0';
+            if(checkQuarta.isSelected())
+                semana+='1';
+            else
+                semana+='0';
+            if(checkQuinta.isSelected())
+                semana+='1';
+            else
+                semana+='0';
+            if(checkSexta.isSelected())
+                semana+='1';
+            else
+                semana+='0';
+            if(checkSabado.isSelected())
+                semana+='1';
+            else
+                semana+='0';
+            if(checkDomingo.isSelected())
+                semana+='1';
+            else
+                semana+='0';
+            
+            List<Turma> comboTurmas = new ArrayList();
+            DALTurma Tur = new DALTurma();
+            comboTurmas=Tur.get("");
+            
+            boolean retira;
+            for (int i = 0; i < comboTurmas.size(); i++)
+            {
+                retira=false;
+                Turma aux= comboTurmas.get(i);
+                if(retira==false && aux.getSemana().charAt(0)=='1' && semana.charAt(0)=='0')
+                    retira=true;
+                else if(aux.getSemana().charAt(1)=='1' && semana.charAt(1)=='0')
+                    retira=true;
+                else if(aux.getSemana().charAt(2)=='1' && semana.charAt(2)=='0')
+                    retira=true;
+                else if(aux.getSemana().charAt(3)=='1' && semana.charAt(3)=='0')
+                    retira=true;
+                else if(aux.getSemana().charAt(4)=='1' && semana.charAt(4)=='0')
+                    retira=true;
+                else if(aux.getSemana().charAt(5)=='1' && semana.charAt(5)=='0')
+                    retira=true;
+                else if(aux.getSemana().charAt(6)=='1' && semana.charAt(6)=='0')
+                    retira=true;
+                if(retira==true)
+                    comboTurmas.remove(i);                
+            }
+            
+            if(comboTurmas.size()>0)
+            {
+                cbTurma.setDisable(false);
+                ObservableList<Turma> modeloTur = FXCollections.observableArrayList(comboTurmas);
+                cbTurma.setItems(modeloTur);
+                cbTurma.getSelectionModel().selectFirst();
+                checkVerif.setSelected(true);
+                
+            }
+            else
+            {
+                checkVerif.setSelected(false);          
+               Alert a = new Alert(Alert.AlertType.WARNING, "Não existem turmas nas datas informadas!!", ButtonType.CLOSE);            
+                a.showAndWait();
+            }
+                
+            
     }
     
 }

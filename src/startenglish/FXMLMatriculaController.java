@@ -15,8 +15,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
@@ -118,6 +120,8 @@ public class FXMLMatriculaController implements Initializable
     private JFXTextField txCausa;
     @FXML
     private JFXCheckBox checkAtivoPesq;
+    @FXML
+    private JFXCheckBox checkVerif;
   
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -153,7 +157,6 @@ public class FXMLMatriculaController implements Initializable
         comboAlunos=prof.get("");
         ObservableList<Aluno> modeloAlu = FXCollections.observableArrayList(comboAlunos);
         cbAluno.setItems(modeloAlu);
-        cbAluno.getSelectionModel().selectFirst();
         
         List<Livro> comboLivros = new ArrayList();
         DALLivro liv = new DALLivro();
@@ -161,10 +164,91 @@ public class FXMLMatriculaController implements Initializable
         ObservableList<Livro> modeloLiv = FXCollections.observableArrayList(comboLivros);
         cbLivro.setItems(modeloLiv);
         cbLivro.getSelectionModel().selectFirst();
+        EstadoOriginal();
     }    
-
+    
+    private void EstadoOriginal()
+    {
+        cbAluno.setDisable(true);
+        txEmail.setDisable(true);
+        txCPF.setDisable(true);
+        txNomeResp.setDisable(true);
+        txEscola.setDisable(true);
+        txNivel.setDisable(true);
+        txHorIni.setDisable(true);
+        txHorFim.setDisable(true);
+        txValor.setDisable(true);
+        txDesconto.setDisable(true);
+        txCausa.setDisable(true);
+        cbLivro.setDisable(true);
+        cbParcelas.setDisable(true);
+        cbVencimentos.setDisable(true);
+        checkAtivo.setDisable(true);
+        checkSegunda.setDisable(true);
+        checkTerca.setDisable(true);
+        checkQuarta.setDisable(true);
+        checkQuinta.setDisable(true);
+        checkSexta.setDisable(true);
+        checkSabado.setDisable(true);
+        checkDomingo.setDisable(true);       
+        checkAtivo.setSelected(false);
+        checkSegunda.setSelected(false);
+        checkTerca.setSelected(false);
+        checkQuarta.setSelected(false);
+        checkQuinta.setSelected(false);
+        checkSexta.setSelected(false);
+        checkSabado.setSelected(false);
+        checkDomingo.setSelected(false);
+        checkVerif.setSelected(false);
+        btVerificar.setDisable(true);
+        btGerar.setDisable(true);
+        btInserir.setDisable(false);
+        btAlterar.setDisable(true);
+        btExcluir.setDisable(true);
+        btCancelar.setDisable(false);
+        btConfirmar.setDisable(true);
+        txPesquisa.clear();
+        cbFiltro.setDisable(true);
+        ObservableList <Node> componentes=pndados.getChildren();
+        for(Node n : componentes)
+        {
+            if (n instanceof TextInputControl)  // textfield, textarea e htmleditor
+                ((TextInputControl)n).setText("");
+        }
+    }
+    private void EstadoEdicao()
+    {
+        cbAluno.setDisable(false);
+        cbLivro.setDisable(false);
+        txNomeResp.setDisable(false);
+        txEscola.setDisable(false);
+        txHorIni.setDisable(false);
+        txHorFim.setDisable(false);
+        txNivel.setDisable(false);
+        checkAtivo.setDisable(false);
+        checkSegunda.setDisable(false);
+        checkTerca.setDisable(false);
+        checkQuarta.setDisable(false);
+        checkQuinta.setDisable(false);
+        checkSexta.setDisable(false);
+        checkSabado.setDisable(false);
+        checkDomingo.setDisable(false);
+        btInserir.setDisable(true);
+        btAlterar.setDisable(true);
+        btExcluir.setDisable(true);
+        btCancelar.setDisable(false);
+        btConfirmar.setDisable(false);
+        txValor.setDisable(false);
+        txDesconto.setDisable(false);
+        btVerificar.setDisable(false);
+        btGerar.setDisable(false);
+    }
+    
     @FXML
-    private void evtInserir(ActionEvent event) {
+    private void evtInserir(ActionEvent event) 
+    {
+        EstadoEdicao();
+        checkAtivo.setSelected(true);
     }
 
     @FXML
@@ -192,15 +276,32 @@ public class FXMLMatriculaController implements Initializable
     }
 
     @FXML
-    private void evtClickTabela(MouseEvent event) {
+    private void evtClickTabela(MouseEvent event) 
+    {
+        if(tabela.getSelectionModel().getSelectedIndex()>=0)
+        {
+           btAlterar.setDisable(false);
+           btExcluir.setDisable(false);
+        }
     }
 
     @FXML
-    private void notVerifica(ActionEvent event) {
+    private void notVerifica(ActionEvent event) 
+    {
+        checkVerif.setSelected(false);
     }
 
     @FXML
-    private void notVerifica(InputMethodEvent event) {
+    private void notVerifica(InputMethodEvent event) 
+    {
+        checkVerif.setSelected(false);
+    }
+
+    @FXML
+    private void evtPreenche(ActionEvent event)
+    {
+        txCPF.setText(cbAluno.getSelectionModel().getSelectedItem().getCpf());
+        txEmail.setText(cbAluno.getSelectionModel().getSelectedItem().getEmail());
     }
     
 }

@@ -121,13 +121,16 @@ public class Matricula
         this.infoCancelamento = infoCancelamento;
     }
 
-    public int getDesconto() {
+    public int getDesconto() 
+    {
         return desconto;
     }
 
-    public void setDesconto(int desconto) {
+    public void setDesconto(int desconto) 
+    {
         this.desconto = desconto;
     }
+    
 
     public String getNomeResponsável() {
         return nomeResponsável;

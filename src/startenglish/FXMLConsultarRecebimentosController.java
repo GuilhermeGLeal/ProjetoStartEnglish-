@@ -488,7 +488,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                     txValorPago.setText(txValorPago  .getText()+'0');    
              
             recebAtual = receb;
-            indexAtual = recebs.indexOf(recebAtual);
+            indexAtual = recebs.indexOf(recebAtual); // alterei
             
             if(recebAtual.getDtreceb() != null){
                 btEstorno.setDisable(false);
@@ -668,7 +668,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         Recebimentos rec, recebAux;
         boolean ok = true;
         
-        //if(validaData(dtDataReceb.getValue())){}
+        //if(validaData(dtDataReceb.getValue())){} // alterei
         if (validaValor(txValorPago.getText())) {
 
             try {
@@ -712,7 +712,7 @@ public class FXMLConsultarRecebimentosController implements Initializable {
                     rec.setCaixa(recebAtual.getCaixa());
                     rec.setMat(recebAtual.getMat());
                     rec.setDtemissoa(LocalDate.now());
-                    rec.setDtvencimento(recebAtual.getDtvencimento().plusDays(30));
+                    rec.setDtvencimento(recebAtual.getDtvencimento().plusDays(30)); //alterei
                     rec.setValor(Double.parseDouble(diferenca2));
                     rec.setaDatas();
                     recebs.add(rec);

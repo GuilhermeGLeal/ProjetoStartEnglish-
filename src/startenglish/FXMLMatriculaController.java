@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -701,20 +702,14 @@ public class FXMLMatriculaController implements Initializable
     @FXML
     private void evtGerar(ActionEvent event) 
     {
+        
         if(validaPreco(txValor.getText()))
         {
-                String auxiliar="";
-                    String preco=txValor.getText();
-                    for (int i = 0; i < preco.length(); i++)
-                    {
-                        if(preco.charAt(i)!='.')
-                        {
-                            if(preco.charAt(i)==',')
-                                auxiliar+='.';
-                            else
-                                auxiliar+=preco.charAt(i);
-                        }
-                    }
+            DecimalFormat df = new DecimalFormat("#.##");
+            String auxiliar;
+            auxiliar=df.format(txValor.getText());
+            auxiliar=auxiliar.replace(',', '.');
+                
                 int desc;
                 double valor=Double.parseDouble(auxiliar);
                 if(!txDesconto.getText().isEmpty())

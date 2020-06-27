@@ -102,8 +102,6 @@ public class FXMLMatriculaController implements Initializable
     @FXML
     private JFXComboBox<String> cbParcelas;
     @FXML
-    private JFXComboBox<String> cbVencimentos;
-    @FXML
     private JFXComboBox<Livro> cbLivro;
     @FXML
     private JFXButton btGerar;
@@ -126,6 +124,8 @@ public class FXMLMatriculaController implements Initializable
     private String filtro_atual;
     @FXML
     private JFXCheckBox checkVerif;
+    @FXML
+    private JFXDatePicker dtpVencimento;
   
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -198,8 +198,6 @@ public class FXMLMatriculaController implements Initializable
         txCausa.setDisable(true);
         cbLivro.setDisable(true);
         cbParcelas.setDisable(true);
-        cbVencimentos.setDisable(true);
-        cbVencimentos.getSelectionModel().clearSelection();
         cbParcelas.getSelectionModel().clearSelection();
         checkAtivo.setDisable(true);
         checkSegunda.setDisable(true);
@@ -312,7 +310,6 @@ public class FXMLMatriculaController implements Initializable
             txCPF.setText(m.getAluno().getCpf());
             txEmail.setText(m.getAluno().getEmail());
             cbParcelas.setDisable(false);
-            cbVencimentos.setDisable(false);
             checkVerif.setSelected(true);
             cbTurma.getSelectionModel().select(m.getTurmaID());
         }
@@ -679,11 +676,15 @@ public class FXMLMatriculaController implements Initializable
     private void notVerifica(ActionEvent event) 
     {
         checkVerif.setSelected(false);
+        cbTurma.setDisable(true);
+        cbTurma.getItems().clear();
     }
 
     private void notVerifica(InputMethodEvent event) 
     {
         checkVerif.setSelected(false);
+        cbTurma.setDisable(true);
+        cbTurma.getItems().clear();
     }
 
     @FXML
@@ -735,12 +736,6 @@ public class FXMLMatriculaController implements Initializable
                 cbParcelas.setItems(modelopar);
                 cbParcelas.getSelectionModel().selectFirst();
                 cbParcelas.setDisable(false);
-                cbVencimentos.getItems().clear();
-                for (int i = 0; i < 20; i++)
-                {
-                    cbVencimentos.getItems().add(LocalDate.now().plusMonths(i).toString());
-                }
-                cbVencimentos.getSelectionModel().selectFirst();
         }
         else
         {
@@ -751,18 +746,6 @@ public class FXMLMatriculaController implements Initializable
                Alert a = new Alert(Alert.AlertType.WARNING, "Valor inválido!!", ButtonType.CLOSE);            
                 a.showAndWait();
         }
-    }
-
-    @FXML
-    private void evtVencimentoChange(ActionEvent event)
-    {
-        if(cbParcelas.getSelectionModel().getSelectedIndex()>=0)
-        {
-            int auxiliar=cbParcelas.getSelectionModel().getSelectedItem().charAt(0);
-            cbVencimentos.setDisable(false);
-            cbVencimentos.getSelectionModel().select(auxiliar);
-        }
-        
     }
 
     @FXML
@@ -842,6 +825,7 @@ public class FXMLMatriculaController implements Initializable
                 
                 cbTurma.setDisable(false);
                 ObservableList<Turma> modeloTur = FXCollections.observableArrayList(comboTurmas);
+                cbTurma.getItems().clear();
                 cbTurma.setItems(modeloTur);
                 cbTurma.getSelectionModel().selectFirst();
                 checkVerif.setSelected(true);

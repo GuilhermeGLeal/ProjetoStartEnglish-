@@ -9,6 +9,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -31,10 +32,13 @@ import javafx.scene.layout.AnchorPane;
 import startenglish.db.DAL.DALAluno;
 import startenglish.db.DAL.DALLivro;
 import startenglish.db.DAL.DALMatricula;
+import startenglish.db.DAL.DALRecebimento;
 import startenglish.db.DAL.DALTurma;
 import startenglish.db.Entidades.Aluno;
+import startenglish.db.Entidades.Caixa;
 import startenglish.db.Entidades.Livro;
 import startenglish.db.Entidades.Matricula;
+import startenglish.db.Entidades.Recebimentos;
 import startenglish.db.Entidades.Turma;
 import startenglish.db.util.Banco;
 import startenglish.util.MaskFieldUtil;
@@ -126,7 +130,7 @@ public class FXMLMatriculaController implements Initializable
     @FXML
     private JFXCheckBox checkVerif;
     @FXML
-    private JFXDatePicker dtpVencimento;
+    private JFXComboBox<Integer> cbDiaVenc;
   
     @Override
     public void initialize(URL url, ResourceBundle rb) 
@@ -137,7 +141,13 @@ public class FXMLMatriculaController implements Initializable
        tabelaNivel.setCellValueFactory(new PropertyValueFactory("nivel"));
        tabelaTurma.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTurmaID().getNome()));
        tabelaAtivo.setCellValueFactory(new PropertyValueFactory("ativo"));
-       
+       List<Integer> diav = new ArrayList();
+        for (int i = 1; i < 20; i++)
+        {
+            diav.add(i);            
+        }
+       ObservableList<Integer> modelodiav = FXCollections.observableArrayList(diav);
+       cbDiaVenc.setItems(modelodiav);
        MaskFieldUtil.maxField(txNomeResp,29);
        MaskFieldUtil.maxField(txEscola,50);
        MaskFieldUtil.maxField(txNivel,15);
@@ -199,7 +209,7 @@ public class FXMLMatriculaController implements Initializable
         txCausa.setDisable(true);
         cbLivro.setDisable(true);
         cbParcelas.setDisable(true);
-        cbParcelas.getSelectionModel().clearSelection();
+        cbParcelas.getItems().clear();
         checkAtivo.setDisable(true);
         checkSegunda.setDisable(true);
         checkTerca.setDisable(true);
@@ -311,8 +321,17 @@ public class FXMLMatriculaController implements Initializable
             txCPF.setText(m.getAluno().getCpf());
             txEmail.setText(m.getAluno().getEmail());
             cbParcelas.setDisable(false);
+            
+            cbTurma.getItems().clear();
+            List<Turma> comboTurmas = new ArrayList();
+            DALTurma Tur = new DALTurma();
+            comboTurmas.add(Tur.get(m.getTurmaID().getTurmaID()));
+            cbTurma.setDisable(false);
+            ObservableList<Turma> modeloTur = FXCollections.observableArrayList(comboTurmas);               
+            cbTurma.setItems(modeloTur);
+            cbTurma.getSelectionModel().selectFirst();
             checkVerif.setSelected(true);
-            cbTurma.getSelectionModel().select(m.getTurmaID());
+            cbParcelas.setDisable(true);
         }
     }
 
@@ -564,7 +583,7 @@ public class FXMLMatriculaController implements Initializable
                 m.setAtivo('F');
             m.setNummat(cod);
             Alert a = null;
-            boolean ok;
+            boolean ok,okp;
             try
                 {
                     Banco.getCon().getConnect().setAutoCommit(false);
@@ -572,9 +591,55 @@ public class FXMLMatriculaController implements Initializable
                     if (cod == 0)
                     {
                         ok = dalm.gravar(m);
+                        
+                        DALRecebimento dalr = new DALRecebimento();
+                        String numparc="";
+                        for (int i = 0; cbParcelas.getSelectionModel().getSelectedItem().charAt(i)!=' '; i++)
+                        {
+                            numparc=numparc+cbParcelas.getSelectionModel().getSelectedItem().charAt(i);
+                        }   
+                        Caixa caixa = new Caixa(1);
+                        LocalDate d=LocalDate.now();
+                        d=d.withDayOfMonth(cbDiaVenc.getSelectionModel().getSelectedItem());
+                        if(cbDiaVenc.getSelectionModel().getSelectedItem()<LocalDate.now().getDayOfMonth())
+                            d.withMonth(d.getMonthValue()+2);
+                        else
+                            d.withMonth(d.getMonthValue()+1);
+                        
+                        String auxiliarP;
+                        if(cbParcelas.getSelectionModel().getSelectedItem().charAt(1)==' ')
+                            auxiliarP=cbParcelas.getSelectionModel().getSelectedItem().substring(18);
+                        else
+                            auxiliarP=cbParcelas.getSelectionModel().getSelectedItem().substring(19);
+                        for (int i = 0; i < cbParcelas.getSelectionModel().getSelectedItem().length(); i++)
+                        {
+                            if(cbParcelas.getSelectionModel().getSelectedItem().charAt(i)!='.')
+                            {
+                                if(cbParcelas.getSelectionModel().getSelectedItem().charAt(i)==',')
+                                    auxiliarP+='.';
+                                else
+                                    auxiliarP+=cbParcelas.getSelectionModel().getSelectedItem().charAt(i);
+                            }
+                        }
+                        Double valparc=Double.parseDouble(auxiliarP);
+
+                        for (int i = 0; i < Integer.parseInt(numparc); i++)
+                        {
+                            Recebimentos r = new Recebimentos();
+                            
+                            r.setCaixa(caixa);
+                            r.setDtemissoa(LocalDate.now());
+                            r.setDtvencimento(d);
+                            r.setMat(m);
+                            r.setValor(valparc);
+                            
+                            dalr.inserir(r);
+                        }
 
                         if (ok)
                         {
+                            DALTurma daltu = new DALTurma();
+                            daltu.subqtd(m.getTurmaID());
                             a = new Alert(Alert.AlertType.CONFIRMATION, "Matrícula inserida!!", ButtonType.OK);
                         } 
                         else 
@@ -585,9 +650,16 @@ public class FXMLMatriculaController implements Initializable
                     } 
                     else
                     { 
+                        Turma quanti = m.getTurmaID();
                         ok = dalm.atualizar(m);
                         if(ok)
                         {
+                            DALTurma daltu = new DALTurma();
+                            if(m.getAtivo()=='A')
+                            {
+                                daltu.subqtd(m.getTurmaID());
+                                daltu.addqtd(quanti.getTurmaID(),quanti.getQtdvagas());
+                            }                           
                             a = new Alert(Alert.AlertType.CONFIRMATION, "Matrícula atualizada!!", ButtonType.OK);
                         } 
                         else
@@ -702,14 +774,13 @@ public class FXMLMatriculaController implements Initializable
     @FXML
     private void evtGerar(ActionEvent event) 
     {
-        
-        if(validaPreco(txValor.getText()))
+        String auxiliar=txValor.getText();
+        if(validaPreco(auxiliar))
         {
             DecimalFormat df = new DecimalFormat("#.##");
-            String auxiliar;
-            auxiliar=df.format(txValor.getText());
             auxiliar=auxiliar.replace(',', '.');
-                
+            auxiliar=df.format(Double.parseDouble(auxiliar));
+                           
                 int desc;
                 double valor=Double.parseDouble(auxiliar);
                 if(!txDesconto.getText().isEmpty())
@@ -724,7 +795,8 @@ public class FXMLMatriculaController implements Initializable
                 for (int i = 1; i <= 20; i++)
                 {                    
                     par=total/i;
-                    cpar.add(i+" parcela(s) de R$"+par);  
+                    
+                    cpar.add(i+" parcela(s) de R$"+df.format(par));  
                 }
                 ObservableList<String> modelopar = FXCollections.observableArrayList(cpar);
                 cbParcelas.getItems().clear();
@@ -808,6 +880,8 @@ public class FXMLMatriculaController implements Initializable
                     retira=true;
                 else if(aux.getSemana().charAt(6)=='1' && semana.charAt(6)=='0')
                     retira=true;
+                if(aux.getQtdvagas()<=0)
+                    retira=true;
                 if(retira==true)
                 {
                     comboTurmas.remove(i);
@@ -816,8 +890,7 @@ public class FXMLMatriculaController implements Initializable
             }
             
             if(comboTurmas.size()>0)
-            {
-                
+            {               
                 cbTurma.setDisable(false);
                 ObservableList<Turma> modeloTur = FXCollections.observableArrayList(comboTurmas);
                 cbTurma.getItems().clear();

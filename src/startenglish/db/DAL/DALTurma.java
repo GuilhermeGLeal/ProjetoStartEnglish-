@@ -27,6 +27,18 @@ public class DALTurma
         return Banco.getCon().manipular(sql);
     }
     
+    public boolean subqtd(Turma tu)
+    {
+        String sql="update turma set qtd_vagas='"+(tu.getQtdvagas()-1)+"' where turmaid= "+tu.getTurmaID();
+        return Banco.getCon().manipular(sql);
+    }
+    
+    public boolean addqtd(int id,int qtdvag)
+    {
+        String sql="update turma set qtd_vagas='"+(qtdvag+1)+"' where turmaid="+id;
+        return Banco.getCon().manipular(sql);
+    }
+    
      public boolean alterar(Turma tu)
      {
         

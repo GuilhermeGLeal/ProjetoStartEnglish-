@@ -12,7 +12,7 @@ public class Matricula
     private double valor;
     private String instuiEnsino;
     private String infoCancelamento;
-    private double desconto;
+    private int desconto;
     private String nomeResponsável;
     private String nivel;
     
@@ -40,7 +40,7 @@ public class Matricula
         this.nivel=nivel;
     }
 
-    public Matricula(int nummat, Livro livro, Turma turmaID, Aluno aluno, char ativo, double valor, String instuiEnsino, String infoCancelamento, double desconto, String nomeResponsável,String nivel) {
+    public Matricula(int nummat, Livro livro, Turma turmaID, Aluno aluno, char ativo, double valor, String instuiEnsino, String infoCancelamento, int desconto, String nomeResponsável,String nivel) {
         this.nummat = nummat;
         this.livro = livro;
         this.turmaID = turmaID;
@@ -121,13 +121,16 @@ public class Matricula
         this.infoCancelamento = infoCancelamento;
     }
 
-    public double getDesconto() {
+    public int getDesconto() 
+    {
         return desconto;
     }
 
-    public void setDesconto(double desconto) {
+    public void setDesconto(int desconto) 
+    {
         this.desconto = desconto;
     }
+    
 
     public String getNomeResponsável() {
         return nomeResponsável;

@@ -9,6 +9,7 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -573,10 +574,105 @@ public class FXMLTurmasController implements Initializable
             
         return true;
     }
+    private boolean validaprof()
+    {
+        DALTurma t = new DALTurma();
+        List<Turma> lista = new ArrayList();
+        lista=t.get("");
+        String semana="";
+        if(checkSegunda.isSelected())
+            semana+='1';
+        else
+            semana+='0';
+        if(checkTerca.isSelected())
+            semana+='1';
+        else
+            semana+='0';
+        if(checkQuarta.isSelected())
+            semana+='1';
+        else
+            semana+='0';
+        if(checkQuinta.isSelected())
+            semana+='1';
+        else
+            semana+='0';
+        if(checkSexta.isSelected())
+            semana+='1';
+        else
+            semana+='0';
+        if(checkSabado.isSelected())
+            semana+='1';
+        else
+            semana+='0';
+        if(checkDomingo.isSelected())
+            semana+='1';
+        else
+            semana+='0';
+        boolean retira=false,conflito;
+        for (int i = 0; i < lista.size() && !retira; i++)
+        {
+            retira=false;
+            conflito=false;
+            List<Turma> comboTurmas = new ArrayList();
+            DALTurma Tur = new DALTurma();
+            comboTurmas=Tur.get("");
+            
+            LocalTime ini =java.time.LocalTime.parse(comboTurmas.get(i).getHorario().substring(0, 5));
+            LocalTime fim =java.time.LocalTime.parse(comboTurmas.get(i).getHorario().substring(8));
+            
+            LocalTime inin=java.time.LocalTime.parse(txHorIni.getText());
+            LocalTime fimn=java.time.LocalTime.parse(txHorFim.getText());
+            
+            if(inin.isBefore(ini))
+            {
+                if(!fimn.isBefore(ini))
+                {
+                    conflito=true;
+                }
+            }
+            else
+            {
+                if(!inin.isAfter(fim))
+                {
+                    conflito=true;
+                }
+            }
+            if(conflito && comboTurmas.get(i).getProf().getFunc().getNome().equals(cbProfessor.getSelectionModel().getSelectedItem().getFunc().getNome()))
+            {
+                Turma aux= comboTurmas.get(i);
+                if(aux.getSemana().charAt(0)=='1' && semana.charAt(0)=='1')
+                    retira=true;
+                else if(aux.getSemana().charAt(1)=='1' && semana.charAt(1)=='1')
+                    retira=true;
+                else if(aux.getSemana().charAt(2)=='1' && semana.charAt(2)=='1')
+                    retira=true;
+                else if(aux.getSemana().charAt(3)=='1' && semana.charAt(3)=='1')
+                    retira=true;
+                else if(aux.getSemana().charAt(4)=='1' && semana.charAt(4)=='1')
+                    retira=true;
+                else if(aux.getSemana().charAt(5)=='1' && semana.charAt(5)=='1')
+                    retira=true;
+                else if(aux.getSemana().charAt(6)=='1' && semana.charAt(6)=='1')
+                    retira=true;
+                if(retira && aux.getTurmaID()==Integer.parseInt(txID.getText()))
+                {
+                    retira=false;
+                }
+            }
+                     
+        }
+        if(retira)
+        {
+            Alert a = new Alert(Alert.AlertType.ERROR, "Professor leciona no horário informado!!", ButtonType.OK);
+            a.showAndWait();
+            return false;
+        }
+        return true;
+    }
     @FXML
     private void evtConfirmar(ActionEvent event)
     {
-        if(validatxt(txTurma.getText(), txHorIni.getText(), txHorFim.getText(), txVagas.getText()) && validadata())
+        if(validatxt(txTurma.getText(), txHorIni.getText(), txHorFim.getText(), txVagas.getText()) && validadata() && validaprof())
         {
             int cod;
             String semana="";

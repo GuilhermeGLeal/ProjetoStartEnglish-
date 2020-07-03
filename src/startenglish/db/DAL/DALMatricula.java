@@ -14,7 +14,7 @@ public class DALMatricula {
     public boolean gravar(Matricula mat){
     
         String sql = "insert into matricula(livroid,turmaid,alunoid,ativo,desconto,informacoescancelamento,instituiensino,valor,nomeresponsavel,nivel)"
-                + " values(#1,#2,#3,'#4',#5,'#6','#7',#8,'#9','#10')";
+                + " values(#1,#2,#3,'#4',#5,'#6','#7',#8,'#9','#zz')";
         
         sql = sql.replaceAll("#1", ""+mat.getLivro().getLivroID());
         sql = sql.replaceAll("#2", ""+mat.getTurmaID().getTurmaID());
@@ -25,21 +25,21 @@ public class DALMatricula {
         sql = sql.replaceAll("#7", mat.getInstuiEnsino());
         sql = sql.replaceAll("#8", ""+mat.getValor());
         sql = sql.replaceAll("#9", mat.getNomeResponsável());
-        sql = sql.replaceAll("#10",mat.getNivel());
+        sql = sql.replaceAll("#zz",mat.getNivel());
         
         return Banco.getCon().manipular(sql);
     }
     
     public boolean apagar(int cod){
         
-        String sql = "delete * from matricula where numeromatricula = "+cod;
+        String sql = "delete from matricula where numeromatricula = "+cod;
         return Banco.getCon().manipular(sql);
     }
     
     public boolean atualizar(Matricula mat){
         
         String sql = "update matricula set livroid = #1,turmaid = #2, alunoid = #3,ativo = '#4',desconto = #5, informacoescancelamento = '#6',"
-                + "instituiensino = '#7',valor = #8,nomeresponsavel = '#9',nivel = '#10' where numeromatricula = "+mat.getNummat();
+                + "instituiensino = '#7',valor = #8,nomeresponsavel = '#9',nivel = '#zz' where numeromatricula = "+mat.getNummat();
         
         sql = sql.replaceAll("#1", ""+mat.getLivro().getLivroID());
         sql = sql.replaceAll("#2", ""+mat.getTurmaID().getTurmaID());
@@ -50,7 +50,7 @@ public class DALMatricula {
         sql = sql.replaceAll("#7", mat.getInstuiEnsino());
         sql = sql.replaceAll("#8", ""+mat.getValor());
         sql = sql.replaceAll("#9", mat.getNomeResponsável());
-        sql = sql.replaceAll("#10",mat.getNivel());
+        sql = sql.replaceAll("#zz",mat.getNivel());
         
         return Banco.getCon().manipular(sql);
     }
@@ -74,7 +74,7 @@ public class DALMatricula {
                 livro = dall.get(rs.getInt("livroid"));
                 tu =  dalt.get(rs.getInt("turmaid"));
                 aux = new Matricula(rs.getInt("numeromatricula"), livro,tu, alu, rs.getString("ativo").charAt(0), rs.getDouble("valor"),
-                        rs.getString("instituiensino"),rs.getString("informacoescancelamento"),rs.getDouble("desconto"),rs.getString("nomeresponsavel"),"");
+                        rs.getString("instituiensino"),rs.getString("informacoescancelamento"),rs.getInt("desconto"),rs.getString("nomeresponsavel"),rs.getString("nivel"));
                 
             }
         } catch (SQLException ex) {
@@ -110,7 +110,7 @@ public class DALMatricula {
                 livro = dall.get(rs.getInt("livroid"));
                 tu =  dalt.get(rs.getInt("turmaid"));
                 aux = new Matricula(rs.getInt("numeromatricula"), livro,tu, alu, rs.getString("ativo").charAt(0), rs.getDouble("valor"),
-                        rs.getString("instituiensino"),rs.getString("informacoescancelamento"),rs.getDouble("desconto"),rs.getString("nomeresponsavel"),rs.getString("nivel"));
+                        rs.getString("instituiensino"),rs.getString("informacoescancelamento"),rs.getInt("desconto"),rs.getString("nomeresponsavel"),rs.getString("nivel"));
                 
                 mats.add(aux);
                 

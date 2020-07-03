@@ -74,7 +74,7 @@ public class DALMatricula {
                 livro = dall.get(rs.getInt("livroid"));
                 tu =  dalt.get(rs.getInt("turmaid"));
                 aux = new Matricula(rs.getInt("numeromatricula"), livro,tu, alu, rs.getString("ativo").charAt(0), rs.getDouble("valor"),
-                        rs.getString("instituiensino"),rs.getString("informacoescancelamento"),rs.getDouble("desconto"),rs.getString("nomeresponsavel"),rs.getString("nivel"));
+                        rs.getString("instituiensino"),rs.getString("informacoescancelamento"),rs.getDouble("desconto"),rs.getString("nomeresponsavel"),"");
                 
             }
         } catch (SQLException ex) {

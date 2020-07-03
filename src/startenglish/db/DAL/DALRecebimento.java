@@ -16,10 +16,10 @@ public class DALRecebimento {
         
         String sql;
         if(r.getDtreceb() != null)
-         sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb)"
+         sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb,amarracao)"
                 + " values(#1,#2,'#3','#4','#5',#6,#7)";
         else
-            sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb)"
+            sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb,amarracao)"
                 + " values(#1,#2,'#3',#4,'#5',#6,#7)";
         
         sql = sql.replaceAll("#1",""+r.getMat().getNummat());
@@ -56,12 +56,12 @@ public class DALRecebimento {
                         aux.add(
                         new Recebimentos(rs.getInt("recebimentoid"), new Caixa(rs.getInt("caixaid")),mat , 
                                 rs.getDate("dtvencimento").toLocalDate(), null , rs.getDate("dtemissao").toLocalDate(),
-                                rs.getDouble("valor"), rs.getDouble("valorreceb")));
+                                rs.getDouble("valor"), rs.getDouble("valorreceb"),rs.getInt("amarracao")));
                     else
                         aux.add(
                         new Recebimentos(rs.getInt("recebimentoid"), new Caixa(rs.getInt("caixaid")),mat , 
                                 rs.getDate("dtvencimento").toLocalDate(), rs.getDate("dtreceb").toLocalDate() , rs.getDate("dtemissao").toLocalDate(),
-                                rs.getDouble("valor"), rs.getDouble("valorreceb")));
+                                rs.getDouble("valor"), rs.getDouble("valorreceb"),rs.getInt("amarracao")));
                 }
             }
            

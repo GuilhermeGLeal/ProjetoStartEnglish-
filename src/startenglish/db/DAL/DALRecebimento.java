@@ -12,15 +12,35 @@ import startenglish.db.util.Banco;
 
 public class DALRecebimento {
     
-    public boolean inserir(Recebimentos r){
+    public int maxAmarracao() {
+
+        String sql = "select max(amarracao) from recebimentos";
+        ResultSet rs = Banco.getCon().consultar(sql);
+        int amarracaoMax = 0;
+        
+        try 
+        {
+            if(rs != null){
+                amarracaoMax = rs.getInt("amarracao");
+            }
+            
+        }catch(SQLException ex){System.out.println(ex.getMessage());};
+
+        return amarracaoMax;
+    }
+    
+    public boolean inserir(Recebimentos r,boolean tabelaMat){
         
         String sql;
         if(r.getDtreceb() != null)
-         sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb)"
+         sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb,amarracao)"
                 + " values(#1,#2,'#3','#4','#5',#6,#7)";
         else
-            sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb)"
+            sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb,amarracao)"
                 + " values(#1,#2,'#3',#4,'#5',#6,#7)";
+        
+        if(tabelaMat)
+         r.setAmarracao(maxAmarracao()+1);
         
         sql = sql.replaceAll("#1",""+r.getMat().getNummat());
         sql = sql.replaceAll("#2",""+r.getCaixa().getCaixaid());
@@ -29,7 +49,7 @@ public class DALRecebimento {
         sql = sql.replaceAll("#5",""+r.getDtemissoa());
         sql = sql.replaceAll("#6",""+r.getValor());
         sql = sql.replaceAll("#7",""+r.getValorpago());
-        
+        sql = sql.replaceAll("#8", ""+r.getAmarracao());
         return Banco.getCon().manipular(sql);
     }
     
@@ -56,12 +76,12 @@ public class DALRecebimento {
                         aux.add(
                         new Recebimentos(rs.getInt("recebimentoid"), new Caixa(rs.getInt("caixaid")),mat , 
                                 rs.getDate("dtvencimento").toLocalDate(), null , rs.getDate("dtemissao").toLocalDate(),
-                                rs.getDouble("valor"), rs.getDouble("valorreceb")));
+                                rs.getDouble("valor"), rs.getDouble("valorreceb"),rs.getInt("amarracao")));
                     else
                         aux.add(
                         new Recebimentos(rs.getInt("recebimentoid"), new Caixa(rs.getInt("caixaid")),mat , 
                                 rs.getDate("dtvencimento").toLocalDate(), rs.getDate("dtreceb").toLocalDate() , rs.getDate("dtemissao").toLocalDate(),
-                                rs.getDouble("valor"), rs.getDouble("valorreceb")));
+                                rs.getDouble("valor"), rs.getDouble("valorreceb"),rs.getInt("amarracao")));
                 }
             }
            
@@ -89,7 +109,7 @@ public class DALRecebimento {
 
                 for (int i = 0; i < Recebimentos.size() && ok; i++) {
 
-                    ok = inserir(Recebimentos.get(i));
+                    ok = inserir(Recebimentos.get(i),false);
                 }
             }
 

@@ -18,8 +18,9 @@ public class Recebimentos {
     private double valor;
     private double valorpago;
     private String pago;
+    private int amarracao;
 
-    public Recebimentos(int recebimentoid, Caixa caixa, Matricula mat, LocalDate dtvencimento, LocalDate dtreceb, LocalDate dtemissoa, double valor, double valorpago) {
+    public Recebimentos(int recebimentoid, Caixa caixa, Matricula mat, LocalDate dtvencimento, LocalDate dtreceb, LocalDate dtemissoa, double valor, double valorpago,int amarracao) {
         this.recebimentoid = recebimentoid;
         this.caixa = caixa;
         this.mat = mat;
@@ -34,9 +35,18 @@ public class Recebimentos {
             this.pago = "Não Pago";
      
         setaDatas();
+        this.amarracao = amarracao;
 
     }
 
+    public int getAmarracao() {
+        return amarracao;
+    }
+
+    public void setAmarracao(int amarracao) {
+        this.amarracao = amarracao;
+    }
+    
     public void setaDatas(){
         
         if (dtemissoa != null) {
@@ -86,7 +96,7 @@ public class Recebimentos {
     
     public Recebimentos() {
         
-        this(0,new Caixa(),new Matricula(),null,null,null,0.0,0.0);
+        this(0,new Caixa(),new Matricula(),null,null,null,0.0,0.0,0);
         this.pago = "Não Pago";
     }
 

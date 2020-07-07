@@ -12,8 +12,9 @@ public class Matricula
     private double valor;
     private String instuiEnsino;
     private String infoCancelamento;
-    private double desconto;
+    private int desconto;
     private String nomeResponsável;
+    private String nivel;
     
 
     public Matricula() 
@@ -21,16 +22,25 @@ public class Matricula
         
     }
 
-    public Matricula(int nummat, Livro livro, Turma turmaID, Aluno aluno, char ativo, double valor) {
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
+    }
+
+    public Matricula(int nummat, Livro livro, Turma turmaID, Aluno aluno, char ativo, double valor,String nivel) {
         this.nummat = nummat;
         this.livro = livro;
         this.turmaID = turmaID;
         this.aluno = aluno;
         this.ativo = ativo;
         this.valor = valor;
+        this.nivel=nivel;
     }
 
-    public Matricula(int nummat, Livro livro, Turma turmaID, Aluno aluno, char ativo, double valor, String instuiEnsino, String infoCancelamento, double desconto, String nomeResponsável) {
+    public Matricula(int nummat, Livro livro, Turma turmaID, Aluno aluno, char ativo, double valor, String instuiEnsino, String infoCancelamento, int desconto, String nomeResponsável,String nivel) {
         this.nummat = nummat;
         this.livro = livro;
         this.turmaID = turmaID;
@@ -41,6 +51,7 @@ public class Matricula
         this.infoCancelamento = infoCancelamento;
         this.desconto = desconto;
         this.nomeResponsável = nomeResponsável;
+        this.nivel=nivel;
     }
 
     
@@ -110,13 +121,16 @@ public class Matricula
         this.infoCancelamento = infoCancelamento;
     }
 
-    public double getDesconto() {
+    public int getDesconto() 
+    {
         return desconto;
     }
 
-    public void setDesconto(double desconto) {
+    public void setDesconto(int desconto) 
+    {
         this.desconto = desconto;
     }
+    
 
     public String getNomeResponsável() {
         return nomeResponsável;

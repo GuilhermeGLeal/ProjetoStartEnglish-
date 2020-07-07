@@ -49,7 +49,7 @@ public class DALLogin {
     public Login get(String usuario){
      
         Login log = null;
-        ResultSet rs = Banco.getCon().consultar("select * from login where usuario= '"+usuario+"' and status like 'A'");
+        ResultSet rs = Banco.getCon().consultar("select * from login where usuario like '"+usuario+"' and status like 'A'");
         
         try{
             

@@ -34,10 +34,10 @@ public class DALRecebimento {
         String sql;
         if(r.getDtreceb() != null)
          sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb,amarracao)"
-                + " values(#1,#2,'#3','#4','#5',#6,#7)";
+                + " values(#1,#2,'#3','#4','#5',#6,#7,#8)";
         else
             sql = "insert into recebimentos(matriculaid,caixaid,dtvencimento,dtreceb,dtemissao,valor,valorreceb,amarracao)"
-                + " values(#1,#2,'#3',#4,'#5',#6,#7)";
+                + " values(#1,#2,'#3',#4,'#5',#6,#7,#8)";
         
         if(tabelaMat)
          r.setAmarracao(maxAmarracao()+1);

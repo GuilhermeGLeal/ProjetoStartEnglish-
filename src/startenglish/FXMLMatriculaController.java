@@ -633,7 +633,7 @@ public class FXMLMatriculaController implements Initializable
                             r.setMat(m);
                             r.setValor(valparc);
                             
-    //                        dalr.inserir(r,true);
+                            //dalr.inserir(r);
                         }
 
                         if (ok)

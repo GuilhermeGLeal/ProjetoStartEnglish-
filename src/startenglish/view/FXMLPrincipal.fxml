@@ -40,7 +40,7 @@
             </MenuButton>
             <MenuButton fx:id="btConsulta" maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Consulta" VBox.vgrow="ALWAYS">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#evtConsultaReceb" text="Consultar Recebimentos" />
+                  <MenuItem fx:id="btConsultaReceb" mnemonicParsing="false" onAction="#evtConsultaReceb" text="Consultar Recebimentos" />
                   <MenuItem mnemonicParsing="false" text="Action 2" />
                </items>
                <VBox.margin>
@@ -49,9 +49,10 @@
             </MenuButton>
             <MenuButton fx:id="btFinanceiro" maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Fundamentais" VBox.vgrow="ALWAYS">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#evtAgendaProva" text="Agendar Prova" />
-                  <MenuItem mnemonicParsing="false" onAction="#evtEfetuarMatricula" text="Efetuar Matrícula" />
-                  <MenuItem mnemonicParsing="false" onAction="#evtOfertarTurmas" text="Ofertar Turmas" />
+                  <MenuItem fx:id="btAgendaProva" mnemonicParsing="false" onAction="#evtAgendaProva" text="Agendar Prova" />
+                  <MenuItem fx:id="btEncomendaLivros" mnemonicParsing="false" onAction="#evtEncomendaLivro" text="Encomenda de Livros" />
+                  <MenuItem fx:id="btEfetuarMatricula" mnemonicParsing="false" onAction="#evtEfetuarMatricula" text="Efetuar Matrícula" />
+                  <MenuItem fx:id="btOfertarTurma" mnemonicParsing="false" onAction="#evtOfertarTurmas" text="Ofertar Turmas" />
                </items>
                <VBox.margin>
                   <Insets bottom="10.0" />

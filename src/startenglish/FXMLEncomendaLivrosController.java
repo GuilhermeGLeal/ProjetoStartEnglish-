@@ -146,6 +146,7 @@ public class FXMLEncomendaLivrosController implements Initializable {
         
         listaItens = new ArrayList<ItemEncomenda>();
         MaskFieldUtil.maxField(txtFornecedor, 30);
+        MaskFieldUtil.numericField(txtQtd);
         //MaskFieldUtil.monetaryField(txtValorTotal);
         //MaskFieldUtil.monetaryField(txtValorUni);
         
@@ -154,14 +155,13 @@ public class FXMLEncomendaLivrosController implements Initializable {
     private void seta_combobox()
     {
         List<String> listaPesquisa = new ArrayList<>();
-        listaPesquisa.add("Usuario");
-        listaPesquisa.add("Status");
+        listaPesquisa.add("Data Encomenda");
+        listaPesquisa.add("Fornecedor");
+        listaPesquisa.add("Previsão");
         
         comboBox.setItems(FXCollections.observableArrayList(listaPesquisa));
         
-        List<String> listaAux = new ArrayList<>();
-        listaAux.add("Ativo");
-        listaAux.add("Inativo");
+        seta_pesquisa();
         
            
            DALFuncionario dale = new DALFuncionario();
@@ -177,6 +177,16 @@ public class FXMLEncomendaLivrosController implements Initializable {
            
            cbLivro.setItems(modelo2);                   
         
+    }
+    
+    private void seta_pesquisa(){
+    
+        txPesquisa.clear();
+        dtpdataini.setDisable(true);
+        dtpdatafim.setDisable(true);
+        comboBox.setValue("Fornecedor");
+        dtpdataini.setValue(LocalDate.now());
+        dtpdatafim.setValue(LocalDate.now());
     }
     
     private void EstadoOriginal()
@@ -237,7 +247,7 @@ public class FXMLEncomendaLivrosController implements Initializable {
     
     private void habilitatudo()
     {
-        
+        txtFornecedor.setEditable(true);
         txtQtd.setEditable(true);
         btAdicionar.setDisable(false);
         btRemover.setDisable(false);
@@ -370,20 +380,39 @@ public class FXMLEncomendaLivrosController implements Initializable {
         
         return ok;
     }
+    
+    private boolean validaDatasPesquisa(LocalDate dataEnc, LocalDate dataPrev)
+    {
+        boolean ok = false;
+        Alert a = null;
+        Date datahoje = new Date();
+        LocalDate hoje = datahoje.toInstant().atZone( ZoneId.systemDefault() ).toLocalDate();
+        
+        
+        if(dataEnc !=  null && dataPrev != null)
+        {
+            
+                if(dataPrev.isAfter(dataEnc))
+                {
+                    ok = true;
+                }
+                else{
+                    a= new Alert(Alert.AlertType.WARNING, "A data final não pode ser anterior a inicial!!", ButtonType.CLOSE);
+                    a.showAndWait();
+                    dtpdatafim.requestFocus();
+                }
+            
+        }else{
+            a= new Alert(Alert.AlertType.WARNING, "Datas de encomenda e previsão obrigatórias!!", ButtonType.CLOSE);
+            a.showAndWait();
+            dtpdataini.requestFocus();
+        }
+        
+        return ok;
+    }
 
     @FXML
     private void evtCancelar(ActionEvent event) {
-//         if (!pndados.isDisabled())
-//        {
-//            EstadoOriginal();
-//        } 
-//        else{
-//            
-//            FXMLPrincipalController.snprincipal.setCenter(null);
-//            FXMLPrincipalController.nome.setText("");
-//           
-//        }
-
         EstadoOriginal();
     }
 
@@ -393,14 +422,71 @@ public class FXMLEncomendaLivrosController implements Initializable {
 
     @FXML
     private void evtPesquisa(ActionEvent event) {
+        String filtro = comboBox.getSelectionModel().getSelectedItem(),texto;
+        String sql = "";
+        LocalDate dataini = null,datafim = null;
+        boolean ok = false;
+        
+                
+//            sql = "previsaoentrega is not null AND";
+            
+            if(filtro.contains("Data")){
+                if(validaDatasPesquisa(dtpdataini.getValue(),dtpdatafim.getValue()))
+                {
+                    dataini = dtpdataini.getValue();
+                    datafim = dtpdatafim.getValue();
+                    sql +=" dataencomenda BETWEEN '"+dataini+"' AND '"+datafim+"'";
+                    ok = true;
+                } 
+            }
+            else
+            if(filtro.equals("Fornecedor")){
+                ok = true;
+                texto = txPesquisa.getText();
+                sql +=" upper(fornecedor) like '%"+texto.toUpperCase()+"%'";
+            }
+            else if(filtro.equals("Previsão"))
+            {   
+                if(validaDatasPesquisa(dtpdataini.getValue(),dtpdatafim.getValue()))
+                {
+                    dataini = dtpdataini.getValue();
+                    datafim = dtpdatafim.getValue();
+                    sql +=" dataencomenda BETWEEN '"+dataini+"' AND '"+datafim+"'";
+                    ok= true;
+                }
+            }
+      if(ok)  
+        CarregaTabela(sql);
     }
 
     @FXML
     private void evtComboBox(ActionEvent event) {
+        String filtro = comboBox.getSelectionModel().getSelectedItem();
+        
+        CarregaTabela("");
+        if(filtro.contains("Data")){
+            
+            txPesquisa.setDisable(true);
+            dtpdataini.setDisable(false);
+            dtpdatafim.setDisable(false);           
+        }
+        else if(filtro.equals("Fornecedor")){
+            
+            txPesquisa.setDisable(false);
+            dtpdatafim.setDisable(true);
+            dtpdataini.setDisable(true);
+        }
+        else if(filtro.equals("Previsão")){
+            txPesquisa.setDisable(true);
+            dtpdataini.setDisable(false);
+            dtpdatafim.setDisable(false); 
+        }
     }
 
     @FXML
     private void evtLimparFiltros(ActionEvent event) {
+        seta_pesquisa();
+        CarregaTabela("");
     }
 
     @FXML
@@ -431,7 +517,7 @@ public class FXMLEncomendaLivrosController implements Initializable {
         }
         
         
-        if(listaItens.size() == 0)
+        if(listaItens.isEmpty())
         {
            listaItens.add(item);
         }
@@ -442,8 +528,15 @@ public class FXMLEncomendaLivrosController implements Initializable {
                     flag=i;
             if(flag != -1)
             {
+                df = new DecimalFormat("#.##");
+                auxiliarconta = df.format(listaItens.get(flag).getValor()+item.getValor());
+                auxiliarconta = auxiliarconta.replace(',', '.');
+                
                 item.setQuantidade(listaItens.get(flag).getQuantidade()+item.getQuantidade());
-                item.setValor(listaItens.get(flag).getValor()+item.getValor());
+                try {
+                        item.setValor(Double.parseDouble(auxiliarconta)); 
+                    } catch (Exception e) {
+                    }
                 
                 listaItens.remove(flag);
                 listaItens.add(item);
@@ -456,7 +549,12 @@ public class FXMLEncomendaLivrosController implements Initializable {
         cbLivro.getSelectionModel().select(-1);
         tabelaItens.setItems(FXCollections.observableArrayList(listaItens));
         double valor = calculaTot();
-        txtValorTotal.setText(""+valor);
+        String auxiliarcontaa;
+        DecimalFormat decimal = new DecimalFormat("#.##");
+        auxiliarcontaa = decimal.format(valor);
+        auxiliarcontaa = auxiliarcontaa.replace(',', '.');
+        
+        txtValorTotal.setText(auxiliarcontaa);
         
     }
     
@@ -476,8 +574,12 @@ public class FXMLEncomendaLivrosController implements Initializable {
         int auxiliar = tabelaItens.getSelectionModel().getSelectedIndex();
         listaItens.remove(auxiliar);
         tabelaItens.setItems(FXCollections.observableArrayList(listaItens));
-        double valor = calculaTot();
-        txtValorTotal.setText(""+valor);
+        double valor = calculaTot();String auxiliarcontaa;
+        DecimalFormat decimal = new DecimalFormat("#.##");
+        auxiliarcontaa = decimal.format(valor);
+        auxiliarcontaa = auxiliarcontaa.replace(',', '.');
+        
+        txtValorTotal.setText(auxiliarcontaa);
     }
 
     
@@ -518,13 +620,6 @@ public class FXMLEncomendaLivrosController implements Initializable {
             
             Visualizando();
             
-//            listaItens = e.getItens();
-//            
-//            ObservableList<ItemEncomenda> modelo = FXCollections.observableArrayList(listaItens);
-//            tabelaItens.setItems(modelo);
-            
-            
-            //estadoedicao();
         }
         
     }

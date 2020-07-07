@@ -35,7 +35,7 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></ComboBox>
-                  <JFXTextField fx:id="txtValorUni" alignment="CENTER" editable="false" focusColor="#ff7f27" labelFloat="true" layoutX="39.0" layoutY="181.0" prefHeight="25.0" prefWidth="127.0" promptText="Valor Unitário" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" unFocusColor="BLACK">
+                  <JFXTextField fx:id="txtValorUni" alignment="CENTER" editable="false" focusColor="#ff7f27" labelFloat="true" layoutX="39.0" layoutY="181.0" prefHeight="25.0" prefWidth="127.0" promptText="Valor Unitário (*)" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" unFocusColor="BLACK">
                      <cursor>
                         <Cursor fx:constant="TEXT" />
                      </cursor></JFXTextField>
@@ -58,7 +58,7 @@
                         <InnerShadow />
                      </effect>
                   </TableView>
-                  <JFXTextField fx:id="txtFornecedor" alignment="CENTER" focusColor="#ff7f27" labelFloat="true" layoutX="37.0" layoutY="272.0" prefHeight="25.0" prefWidth="238.0" promptText="Fornecedor" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" unFocusColor="BLACK">
+                  <JFXTextField fx:id="txtFornecedor" alignment="CENTER" focusColor="#ff7f27" labelFloat="true" layoutX="37.0" layoutY="272.0" prefHeight="25.0" prefWidth="238.0" promptText="Fornecedor (*)" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" unFocusColor="BLACK">
                      <cursor>
                         <Cursor fx:constant="TEXT" />
                      </cursor></JFXTextField>
@@ -66,7 +66,7 @@
                      <cursor>
                         <Cursor fx:constant="NONE" />
                      </cursor></JFXTextField>
-                  <ComboBox fx:id="cbFuncionario" layoutX="37.0" layoutY="336.0" prefWidth="150.0" promptText="Funcionário" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
+                  <ComboBox fx:id="cbFuncionario" layoutX="37.0" layoutY="336.0" prefWidth="150.0" promptText="Funcionário (*)" style="-fx-background-color: #bebebe; -fx-font-weight: bold;" />
                   <JFXDatePicker fx:id="dtPEncomenda" defaultColor="BLACK" layoutX="221.0" layoutY="336.0" prefHeight="25.0" prefWidth="229.0" style="-fx-background-color: #bebebe; -fx-font-weight: bold;">
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -75,8 +75,8 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor></JFXDatePicker>
-                  <Label layoutX="220.0" layoutY="313.0" text="Data Encomenda" textFill="WHITE" />
-                  <Label layoutX="477.0" layoutY="314.0" text="Previsão de Chegada" textFill="WHITE" />
+                  <Label layoutX="220.0" layoutY="313.0" text="Data Encomenda (*)" textFill="WHITE" />
+                  <Label layoutX="477.0" layoutY="314.0" text="Previsão de Chegada (*)" textFill="WHITE" />
                   <Label layoutX="66.0" layoutY="55.0" text="Campos Obrigatórios" textFill="#bebebe">
                      <font>
                         <Font size="16.0" />

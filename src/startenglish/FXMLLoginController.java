@@ -32,8 +32,6 @@ public class FXMLLoginController implements Initializable {
     private VBox vbox;
     private Parent fxml;
     @FXML
-    private JFXButton btn_fechar;
-    @FXML
     public static AnchorPane APLogin;
     @FXML
     private BorderPane telaPrincipal;
@@ -92,18 +90,10 @@ public class FXMLLoginController implements Initializable {
         });
     }
     
-    @FXML
     private void close_login(ActionEvent event)
     {
         System.exit(0);
     }
 
-    @FXML
-    private void no_close(MouseEvent event) {
-    }
-
-    @FXML
-    private void enter_to_close(MouseEvent event) {
-    }
    
 }

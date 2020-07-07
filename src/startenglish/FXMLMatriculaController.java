@@ -148,6 +148,8 @@ public class FXMLMatriculaController implements Initializable
         }
        ObservableList<Integer> modelodiav = FXCollections.observableArrayList(diav);
        cbDiaVenc.setItems(modelodiav);
+       cbDiaVenc.getSelectionModel().selectFirst();
+       
        MaskFieldUtil.maxField(txNomeResp,29);
        MaskFieldUtil.maxField(txEscola,50);
        MaskFieldUtil.maxField(txNivel,15);
@@ -591,7 +593,7 @@ public class FXMLMatriculaController implements Initializable
                     if (cod == 0)
                     {
                         ok = dalm.gravar(m);
-                        
+                        /*
                         DALRecebimento dalr = new DALRecebimento();
                         String numparc="";
                         for (int i = 0; cbParcelas.getSelectionModel().getSelectedItem().charAt(i)!=' '; i++)
@@ -602,16 +604,16 @@ public class FXMLMatriculaController implements Initializable
                         LocalDate d=LocalDate.now();
                         d=d.withDayOfMonth(cbDiaVenc.getSelectionModel().getSelectedItem());
                         if(cbDiaVenc.getSelectionModel().getSelectedItem()<LocalDate.now().getDayOfMonth())
-                            d.withMonth(d.getMonthValue()+2);
+                            d=d.withMonth(d.getMonthValue()+2);
                         else
-                            d.withMonth(d.getMonthValue()+1);
+                            d=d.withMonth(d.getMonthValue()+1);
                         
                         String auxiliarP;
                         if(cbParcelas.getSelectionModel().getSelectedItem().charAt(1)==' ')
                             auxiliarP=cbParcelas.getSelectionModel().getSelectedItem().substring(18);
                         else
                             auxiliarP=cbParcelas.getSelectionModel().getSelectedItem().substring(19);
-                        for (int i = 0; i < cbParcelas.getSelectionModel().getSelectedItem().length(); i++)
+                        for (int i = 0; i < auxiliarP.length(); i++)
                         {
                             if(cbParcelas.getSelectionModel().getSelectedItem().charAt(i)!='.')
                             {
@@ -633,8 +635,8 @@ public class FXMLMatriculaController implements Initializable
                             r.setMat(m);
                             r.setValor(valparc);
                             
-                            //dalr.inserir(r);
-                        }
+                            dalr.inserir(r);
+                        }*/
 
                         if (ok)
                         {
@@ -779,7 +781,6 @@ public class FXMLMatriculaController implements Initializable
         {
             DecimalFormat df = new DecimalFormat("#.##");
             auxiliar=auxiliar.replace(',', '.');
-            auxiliar=df.format(Double.parseDouble(auxiliar));
                            
                 int desc;
                 double valor=Double.parseDouble(auxiliar);

@@ -159,7 +159,7 @@
                   </Label>
                   <JFXComboBox fx:id="cbTurma" disable="true" layoutX="663.0" layoutY="295.0" prefHeight="25.0" prefWidth="245.0" style="-fx-background-color: #BEBEBE;" />
                   <JFXCheckBox fx:id="checkVerif" disable="true" layoutX="268.0" layoutY="299.0" text="Verificado" textFill="#bebebe" />
-                  <JFXComboBox fx:id="cbDiaVenc" layoutX="741.0" layoutY="364.0" prefHeight="25.0" prefWidth="171.0" />
+                  <JFXComboBox fx:id="cbDiaVenc" layoutX="741.0" layoutY="364.0" prefHeight="25.0" prefWidth="171.0" promptText="ad" />
                </children>
             </AnchorPane>
          </children>

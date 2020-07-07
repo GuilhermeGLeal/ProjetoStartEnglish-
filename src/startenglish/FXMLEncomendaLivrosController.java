@@ -146,6 +146,7 @@ public class FXMLEncomendaLivrosController implements Initializable {
         
         listaItens = new ArrayList<ItemEncomenda>();
         MaskFieldUtil.maxField(txtFornecedor, 30);
+        MaskFieldUtil.maxField(txtQtd, 4);
         MaskFieldUtil.numericField(txtQtd);
         //MaskFieldUtil.monetaryField(txtValorTotal);
         //MaskFieldUtil.monetaryField(txtValorUni);
@@ -218,6 +219,7 @@ public class FXMLEncomendaLivrosController implements Initializable {
     private void EstadoEdicao()
     {
         habilitatudo();
+        comboBox.getItems().clear();
         seta_combobox();
         pndados.setDisable(false);
         btConfirmar.setDisable(false);
@@ -413,7 +415,18 @@ public class FXMLEncomendaLivrosController implements Initializable {
 
     @FXML
     private void evtCancelar(ActionEvent event) {
-        EstadoOriginal();
+      
+        
+        if (!pndados.isDisabled())
+        {
+              EstadoOriginal();
+        } 
+        else{
+            
+            FXMLPrincipalController.snprincipal.setCenter(null);
+            FXMLPrincipalController.nome.setText("");
+           
+        }
     }
 
     @FXML
@@ -462,25 +475,27 @@ public class FXMLEncomendaLivrosController implements Initializable {
     @FXML
     private void evtComboBox(ActionEvent event) {
         String filtro = comboBox.getSelectionModel().getSelectedItem();
-        
-        CarregaTabela("");
-        if(filtro.contains("Data")){
-            
-            txPesquisa.setDisable(true);
-            dtpdataini.setDisable(false);
-            dtpdatafim.setDisable(false);           
+
+        if (filtro != null) {
+
+            CarregaTabela("");
+            if (filtro.contains("Data")) {
+
+                txPesquisa.setDisable(true);
+                dtpdataini.setDisable(false);
+                dtpdatafim.setDisable(false);
+            } else if (filtro.equals("Fornecedor")) {
+
+                txPesquisa.setDisable(false);
+                dtpdatafim.setDisable(true);
+                dtpdataini.setDisable(true);
+            } else if (filtro.equals("Previsão")) {
+                txPesquisa.setDisable(true);
+                dtpdataini.setDisable(false);
+                dtpdatafim.setDisable(false);
+            }
         }
-        else if(filtro.equals("Fornecedor")){
-            
-            txPesquisa.setDisable(false);
-            dtpdatafim.setDisable(true);
-            dtpdataini.setDisable(true);
-        }
-        else if(filtro.equals("Previsão")){
-            txPesquisa.setDisable(true);
-            dtpdataini.setDisable(false);
-            dtpdatafim.setDisable(false); 
-        }
+
     }
 
     @FXML

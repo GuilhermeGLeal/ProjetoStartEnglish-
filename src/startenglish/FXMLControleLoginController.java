@@ -495,6 +495,12 @@ public class FXMLControleLoginController implements Initializable {
         {
             EstadoOriginal();
         }
+         else{
+            
+            FXMLPrincipalController.snprincipal.setCenter(null);
+            FXMLPrincipalController.nome.setText("");
+           
+        }
     }
 
     @FXML

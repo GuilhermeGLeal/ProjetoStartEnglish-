@@ -309,5 +309,17 @@ public class FXMLPrincipalController implements Initializable {
         } 
     }
 
+    @FXML
+    private void evtEncomendaLivro(ActionEvent event) {
+        try {
+            Parent aux = FXMLLoader.load(getClass().getResource("view/FXMLEncomendaLivros.fxml"));
+            pnMudanca.setCenter(aux);
+            labelNome.setText("Encomenda de Livros");
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } 
+    }
+
     
 }

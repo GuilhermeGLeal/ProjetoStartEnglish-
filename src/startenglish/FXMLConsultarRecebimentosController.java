@@ -119,20 +119,10 @@ public class FXMLConsultarRecebimentosController implements Initializable {
         MaskFieldUtil.monetaryField(txValorPago);
         MaskFieldUtil.monetaryField(txValor);
         setaIDrecebAtual();
-        setaAmarracao();
+        
       
     }    
-
-    private void setaAmarracao(){
-        
-        int amarra = 1;
-        
-        for (int i = 0; i < recebs.size(); i++) {
-            
-            recebs.get(i).setAmarracao(amarra++);
-        }
-    }
-    
+       
     private void estadoOriginal(){
         
         alterou = false;

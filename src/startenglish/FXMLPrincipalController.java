@@ -66,6 +66,16 @@ public class FXMLPrincipalController implements Initializable {
     private MenuItem btCadParamet;
     @FXML
     private MenuItem btCadLogin;
+    @FXML
+    private MenuItem btConsultaReceb;
+    @FXML
+    private MenuItem btAgendaProva;
+    @FXML
+    private MenuItem btEncomendaLivros;
+    @FXML
+    private MenuItem btEfetuarMatricula;
+    @FXML
+    private MenuItem btOfertarTurma;
     
        
     @Override

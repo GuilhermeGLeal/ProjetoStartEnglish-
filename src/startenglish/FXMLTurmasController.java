@@ -618,7 +618,7 @@ public class FXMLTurmasController implements Initializable
             comboTurmas=Tur.get("");
             
             LocalTime ini =java.time.LocalTime.parse(comboTurmas.get(i).getHorario().substring(0, 5));
-            LocalTime fim =java.time.LocalTime.parse(comboTurmas.get(i).getHorario().substring(8));
+           LocalTime fim =java.time.LocalTime.parse(comboTurmas.get(i).getHorario().substring(8));
             
             LocalTime inin=java.time.LocalTime.parse(txHorIni.getText());
             LocalTime fimn=java.time.LocalTime.parse(txHorFim.getText());
@@ -632,7 +632,7 @@ public class FXMLTurmasController implements Initializable
             }
             else
             {
-                if(!inin.isAfter(fim))
+                if(!inin.isAfter(fim));
                 {
                     conflito=true;
                 }

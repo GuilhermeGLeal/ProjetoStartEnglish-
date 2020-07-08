@@ -41,7 +41,6 @@
             <MenuButton fx:id="btConsulta" maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Consulta" VBox.vgrow="ALWAYS">
                <items>
                   <MenuItem fx:id="btConsultaReceb" mnemonicParsing="false" onAction="#evtConsultaReceb" text="Consultar Recebimentos" />
-                  <MenuItem mnemonicParsing="false" text="Action 2" />
                </items>
                <VBox.margin>
                   <Insets bottom="10.0" />
@@ -58,12 +57,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </MenuButton>
-            <MenuButton fx:id="btRelatorio" maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Relatórios" VBox.vgrow="ALWAYS">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="Action 1" />
-                  <MenuItem mnemonicParsing="false" text="Action 2" />
-               </items>
-            </MenuButton>
+            <MenuButton fx:id="btRelatorio" maxHeight="1000.0" mnemonicParsing="false" prefHeight="105.0" prefWidth="146.0" style="-fx-background-color: #FF7F27;" text="Relatórios" VBox.vgrow="ALWAYS" />
          </children>
          <opaqueInsets>
             <Insets />
